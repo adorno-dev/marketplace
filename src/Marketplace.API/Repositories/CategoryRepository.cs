@@ -9,16 +9,18 @@ namespace Marketplace.API.Repositories
     {
         private readonly AppDbContext context;
 
-        public CategoryRepository(AppDbContext context)
-        {
-            this.context = context;
-        }
+        public CategoryRepository(AppDbContext context) => this.context = context;
 
         public async Task<IEnumerable<Category>?> GetCategories(bool includeParent = false)
         {
             return includeParent ?
                 await context.Categories.Include(c => c.Parent).Include("Parent.Parent").AsNoTracking().ToListAsync():
                 await context.Categories.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Category>?> GetCategories(params ushort[] ids)
+        {
+            return await context.Categories.Where(c => ids.Any(w => w.Equals(c.Id))).ToListAsync();
         }
 
         public async Task<Category?> GetCategory(ushort id, bool includeParent = false)
@@ -39,11 +41,15 @@ namespace Marketplace.API.Repositories
 
         public async Task<Category?> UpdateCategory(Category category)
         {
-            context.Entry<Category>(category).State = EntityState.Modified;
+            try
+            {
+                context.Entry<Category>(category).State = EntityState.Modified;
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            return category;
+                return category;
+            }
+            catch { return null; }
         }
 
         public async Task<Category?> DeleteCategory(ushort id)

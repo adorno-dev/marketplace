@@ -7,36 +7,37 @@ namespace Marketplace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class StoresController : ControllerBase
     {
-        private readonly ICategoryService service;
+        private readonly IStoreService service;
 
-        public CategoriesController(ICategoryService service) => this.service = service;
+        public StoresController(IStoreService service) => this.service = service;
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<StoreResponse>>> GetStores()
         {
-            var categories = await service.GetCategories(true);
+            var categories = await service.GetStores();
 
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryResponse?>> GetCategory(ushort id)
+        public async Task<ActionResult<StoreResponse?>> GetStore(ushort id)
         {
-            var category = await service.GetCategory(id);
+            var category = await service.GetStore(id);
 
             if (category is null)
                 return NotFound();
             
-            return Ok();
+            return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
+        public async Task<IActionResult> CreateStore([FromBody] CreateStoreRequest request)
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.CreateCategory(request);
+                var response = await service.CreateStore(request);
                 
                 return Ok(response);
             }
@@ -45,11 +46,11 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryRequest request)
+        public async Task<IActionResult> UpdateStore([FromBody] UpdateStoreRequest request)
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.UpdateCategory(request);
+                var response = await service.UpdateStore(request);
                 
                 return response is not null ?
                     Ok(response):
@@ -60,9 +61,9 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(ushort id)
+        public async Task<IActionResult> DeleteStore(ushort id)
         {
-            var response = await service.DeleteCategory(id);
+            var response = await service.DeleteStore(id);
 
             if (response is null)
                 return NotFound();
