@@ -9,9 +9,9 @@ namespace Marketplace.API.Contracts.Mappings
     {
         public CategoryMappingProfile()
         {
-            CreateMap<Category, CreateCategoryRequest>().ReverseMap();
-            CreateMap<Category, UpdateCategoryRequest>().ReverseMap();
-            CreateMap<Category, CategoryResponse>().ReverseMap();
+            CreateMap<CreateCategoryRequest, Category>().ReverseMap();
+            CreateMap<UpdateCategoryRequest, Category>().ReverseMap();
+            CreateMap<CategoryResponse, Category>().ReverseMap();
         }
     }
 }

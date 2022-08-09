@@ -17,7 +17,7 @@ namespace Marketplace.API.Repositories
         public async Task<IEnumerable<Category>?> GetCategories(bool includeParent = false)
         {
             return includeParent ?
-                await context.Categories.Include(c => c.Parent).AsNoTracking().ToListAsync():
+                await context.Categories.Include(c => c.Parent).Include("Parent.Parent").AsNoTracking().ToListAsync():
                 await context.Categories.AsNoTracking().ToListAsync();
         }
 

@@ -17,10 +17,23 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CategoryResponse>?> GetCategories() => await service.GetCategories();
+        public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
+        {
+            var categories = await service.GetCategories(true);
+
+            return Ok(categories);
+        }
 
         [HttpGet("{id}")]
-        public async Task<CategoryResponse?> GetCategory(ushort id) => await service.GetCategory(id);
+        public async Task<ActionResult<CategoryResponse?>> GetCategory(ushort id)
+        {
+            var category = await service.GetCategory(id);
+
+            if (category is null)
+                return NotFound();
+            
+            return Ok();
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)

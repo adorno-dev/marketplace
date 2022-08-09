@@ -36,6 +36,9 @@ namespace Marketplace.API.Services
         {
             var category = mapper.Map<Category>(request);
 
+            if (request.ParentId is not null)
+                category.Parent = await repository.GetCategory(request.ParentId.Value);
+
             var response = await repository.CreateCategory(category);
 
             return mapper.Map<CategoryResponse>(response);
@@ -44,6 +47,9 @@ namespace Marketplace.API.Services
         public async Task<CategoryResponse?> UpdateCategory(UpdateCategoryRequest request)
         {
             var category = mapper.Map<Category>(request);
+
+            if (request.ParentId is not null)
+                category.Parent = await repository.GetCategory(request.ParentId.Value);
 
             var response = await repository.UpdateCategory(category);
 

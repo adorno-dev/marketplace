@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Marketplace.API.Data;
 using Marketplace.API.Repositories;
 using Marketplace.API.Repositories.Contracts;
@@ -12,7 +13,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(connectionString));
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 
 var app = builder.Build();
 
