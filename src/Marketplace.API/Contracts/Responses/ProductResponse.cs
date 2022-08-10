@@ -1,5 +1,3 @@
-using Marketplace.API.Models;
-
 namespace Marketplace.API.Contracts.Responses
 {
     public class ProductResponse
@@ -10,7 +8,7 @@ namespace Marketplace.API.Contracts.Responses
         public decimal Price { get; set; }
         public long Stock { get; set; }
 
-        public Store? Store { get; set; }
-        public Category? Category { get; set; }
+        public StoreResponse? Store { get; set; }
+        public CategoryResponse? Category { get; set; }
     }
 }
