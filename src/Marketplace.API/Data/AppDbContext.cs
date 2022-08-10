@@ -12,10 +12,13 @@ namespace Marketplace.API.Data
 
         public DbSet<Store> Stores => Set<Store>();
 
+        public DbSet<Product> Products => Set<Product>();
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.ConfigureCategory();
             mb.ConfigureStore();
+            mb.ConfigureProduct();
         }
     }
 }

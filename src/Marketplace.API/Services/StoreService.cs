@@ -22,8 +22,6 @@ namespace Marketplace.API.Services
         {
             var stores = await repository.GetStores();
 
-            var x = mapper.Map<IEnumerable<StoreResponse>?>(stores);
-
             return mapper.Map<IEnumerable<StoreResponse>?>(stores);
         }
 

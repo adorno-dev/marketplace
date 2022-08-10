@@ -30,6 +30,16 @@ namespace Marketplace.API.Data.Configurations
               .Property(p => p.Price)
               .HasPrecision(10, 2)
               .IsRequired();
+            
+            mb.Entity<Product>()
+              .Property(p => p.Stock)
+              .IsRequired();
+            
+            mb.Entity<Product>()
+              .HasOne<Category>(c => c.Category);
+            
+            mb.Entity<Product>()
+              .HasOne<Store>(s => s.Store);
         }
     }
 }
