@@ -13,12 +13,12 @@ namespace Marketplace.API.Repositories
 
         public async Task<IEnumerable<Store>?> GetStores()
         {
-            return await context.Stores.AsNoTracking().ToListAsync();
+            return await context.Stores.Include("User").AsNoTracking().ToListAsync();
         }
 
         public async Task<Store?> GetStore(Guid id)
         {
-            return await context.Stores.FindAsync(id);
+            return await context.Stores.Include("User").FirstOrDefaultAsync(s => s.Id.Equals(id));
         }
 
         public async Task<bool> CreateStore(Store store)

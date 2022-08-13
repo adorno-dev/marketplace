@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Marketplace.API.Migrations
 {
-    public partial class StoreConfiguration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace Marketplace.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stores", x => x.Id);
+                    table.UniqueConstraint("AK_Stores_UserId", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,7 +83,7 @@ namespace Marketplace.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -105,8 +106,7 @@ namespace Marketplace.API.Migrations
                         name: "FK_AspNetUsers_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -228,7 +228,7 @@ namespace Marketplace.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Posted = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 13, 13, 40, 15, 97, DateTimeKind.Utc).AddTicks(3453)),
+                    Posted = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2022, 8, 13, 17, 5, 32, 416, DateTimeKind.Utc).AddTicks(2356)),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<short>(type: "smallint", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -248,6 +248,41 @@ namespace Marketplace.API.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name", "ParentId" },
+                values: new object[,]
+                {
+                    { 1000, "Animals", null },
+                    { 1001, "Animated Objects", null },
+                    { 1002, "Animations", null },
+                    { 1003, "Apparel", null },
+                    { 1004, "Art", null },
+                    { 1005, "Audio and Video", null },
+                    { 1006, "Avatar Accessories", null },
+                    { 1007, "Avatar Appearance", null },
+                    { 1008, "Avatar Components", null },
+                    { 1009, "Breedables", null },
+                    { 1010, "Building and Object Components", null },
+                    { 1011, "Buildings and Other Structures", null },
+                    { 1012, "Business", null },
+                    { 1013, "Celebrations", null },
+                    { 1014, "Complete Avatars", null },
+                    { 1015, "Furry", null },
+                    { 1016, "Gachas", null },
+                    { 1017, "Gadgets", null },
+                    { 1018, "Home and Garden", null },
+                    { 1019, "Miscellaneous", null },
+                    { 1020, "Real Estate", null },
+                    { 1021, "Recreation and Entertainment", null },
+                    { 1022, "Scripts", null },
+                    { 1023, "Services", null },
+                    { 1024, "Used Items", null },
+                    { 1025, "Vehicles", null },
+                    { 1026, "Weapons", null },
+                    { 1027, "Everything Else", null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -286,7 +321,8 @@ namespace Marketplace.API.Migrations
                 name: "IX_AspNetUsers_StoreId",
                 table: "AspNetUsers",
                 column: "StoreId",
-                unique: true);
+                unique: true,
+                filter: "[StoreId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

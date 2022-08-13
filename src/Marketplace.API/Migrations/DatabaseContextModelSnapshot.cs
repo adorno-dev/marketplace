@@ -43,6 +43,148 @@ namespace Marketplace.API.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1000,
+                            Name = "Animals"
+                        },
+                        new
+                        {
+                            Id = 1001,
+                            Name = "Animated Objects"
+                        },
+                        new
+                        {
+                            Id = 1002,
+                            Name = "Animations"
+                        },
+                        new
+                        {
+                            Id = 1003,
+                            Name = "Apparel"
+                        },
+                        new
+                        {
+                            Id = 1004,
+                            Name = "Art"
+                        },
+                        new
+                        {
+                            Id = 1005,
+                            Name = "Audio and Video"
+                        },
+                        new
+                        {
+                            Id = 1006,
+                            Name = "Avatar Accessories"
+                        },
+                        new
+                        {
+                            Id = 1007,
+                            Name = "Avatar Appearance"
+                        },
+                        new
+                        {
+                            Id = 1008,
+                            Name = "Avatar Components"
+                        },
+                        new
+                        {
+                            Id = 1009,
+                            Name = "Breedables"
+                        },
+                        new
+                        {
+                            Id = 1010,
+                            Name = "Building and Object Components"
+                        },
+                        new
+                        {
+                            Id = 1011,
+                            Name = "Buildings and Other Structures"
+                        },
+                        new
+                        {
+                            Id = 1012,
+                            Name = "Business"
+                        },
+                        new
+                        {
+                            Id = 1013,
+                            Name = "Celebrations"
+                        },
+                        new
+                        {
+                            Id = 1014,
+                            Name = "Complete Avatars"
+                        },
+                        new
+                        {
+                            Id = 1015,
+                            Name = "Furry"
+                        },
+                        new
+                        {
+                            Id = 1016,
+                            Name = "Gachas"
+                        },
+                        new
+                        {
+                            Id = 1017,
+                            Name = "Gadgets"
+                        },
+                        new
+                        {
+                            Id = 1018,
+                            Name = "Home and Garden"
+                        },
+                        new
+                        {
+                            Id = 1019,
+                            Name = "Miscellaneous"
+                        },
+                        new
+                        {
+                            Id = 1020,
+                            Name = "Real Estate"
+                        },
+                        new
+                        {
+                            Id = 1021,
+                            Name = "Recreation and Entertainment"
+                        },
+                        new
+                        {
+                            Id = 1022,
+                            Name = "Scripts"
+                        },
+                        new
+                        {
+                            Id = 1023,
+                            Name = "Services"
+                        },
+                        new
+                        {
+                            Id = 1024,
+                            Name = "Used Items"
+                        },
+                        new
+                        {
+                            Id = 1025,
+                            Name = "Vehicles"
+                        },
+                        new
+                        {
+                            Id = 1026,
+                            Name = "Weapons"
+                        },
+                        new
+                        {
+                            Id = 1027,
+                            Name = "Everything Else"
+                        });
                 });
 
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
@@ -92,7 +234,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 13, 13, 40, 15, 97, DateTimeKind.Utc).AddTicks(3453));
+                        .HasDefaultValue(new DateTime(2022, 8, 13, 17, 5, 32, 416, DateTimeKind.Utc).AddTicks(2356));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -131,7 +273,8 @@ namespace Marketplace.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -185,7 +328,7 @@ namespace Marketplace.API.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("StoreId")
+                    b.Property<Guid?>("StoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -206,7 +349,8 @@ namespace Marketplace.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("StoreId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[StoreId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -394,8 +538,7 @@ namespace Marketplace.API.Migrations
                     b.HasOne("Marketplace.API.Models.Store", "Store")
                         .WithOne("User")
                         .HasForeignKey("Marketplace.API.Models.User", "StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasPrincipalKey("Marketplace.API.Models.Store", "UserId");
 
                     b.Navigation("Store");
                 });

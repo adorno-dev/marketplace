@@ -8,7 +8,7 @@ namespace Marketplace.API.Contracts.Mappings
     {
         public UserMappingProfile()
         {
-            CreateMap<UserResponse, User>();
+            CreateMap<UserResponse, User>().ReverseMap();
         }  
     }
 }

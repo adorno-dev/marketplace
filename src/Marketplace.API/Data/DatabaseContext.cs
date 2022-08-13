@@ -20,8 +20,12 @@ namespace Marketplace.API.Data
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
-            mb.ConfigureCategory();
-            mb.ConfigureStore();
+            mb.ConfigureCategory()
+              .WithDataCategories();
+              
+            mb.ConfigureStore()
+              .WithDataStores();
+
             mb.ConfigureProduct();
             mb.ConfigureUser();
             mb.ConfigureReview();
