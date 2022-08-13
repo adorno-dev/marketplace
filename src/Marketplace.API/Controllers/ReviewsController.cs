@@ -7,37 +7,36 @@ namespace Marketplace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ReviewsController : ControllerBase
     {
-        private readonly IProductService service;
+        private readonly IReviewService service;
 
-        public ProductsController(IProductService service) => this.service = service;
-
+        public ReviewsController(IReviewService service) => this.service = service;
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ReviewResponse>>> GetReviews()
         {
-            var categories = await service.GetProducts();
+            var categories = await service.GetReviews();
 
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductResponse?>> GetProduct(Guid id)
+        public async Task<ActionResult<ReviewResponse?>> GetReview(Guid id)
         {
-            var category = await service.GetProduct(id);
+            var category = await service.GetReview(id);
 
             if (category is null)
                 return NotFound();
             
-            return Ok(category);
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
+        public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
         {
             if (ModelState.IsValid)                
             {
-                return await service.CreateProduct(request) ?
+                return await service.CreateReview(request) ?
                     Ok():
                     BadRequest();
             }
@@ -46,11 +45,11 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
+        public async Task<IActionResult> UpdateReview([FromBody] UpdateReviewRequest request)
         {
             if (ModelState.IsValid)                
             {
-                return await service.UpdateProduct(request) ?
+                return await service.UpdateReview(request) ?
                     Ok():
                     BadRequest();
             }
@@ -59,9 +58,9 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteReview(Guid id)
         {
-            return await service.DeleteProduct(id) ?
+            return await service.DeleteReview(id) ?
                 Ok():
                 NotFound();
         }

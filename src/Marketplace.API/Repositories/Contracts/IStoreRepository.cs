@@ -5,9 +5,9 @@ namespace Marketplace.API.Repositories.Contracts
     public interface IStoreRepository
     {
         Task<IEnumerable<Store>?> GetStores();
-        Task<Store?> GetStore(ushort id);
-        Task<Store?> CreateStore(Store store);
-        Task<Store?> UpdateStore(Store store);
-        Task<Store?> DeleteStore(ushort id);
+        Task<Store?> GetStore(Guid id);
+        Task<bool> CreateStore(Store store);
+        Task<bool> UpdateStore(Store store);
+        Task<bool> DeleteStore(Guid id);
     }
 }

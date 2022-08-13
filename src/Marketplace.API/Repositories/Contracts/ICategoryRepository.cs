@@ -7,8 +7,8 @@ namespace Marketplace.API.Repositories.Contracts
         Task<IEnumerable<Category>?> GetCategories(bool includeParent = false);
         Task<IEnumerable<Category>?> GetCategories(params ushort[] ids);
         Task<Category?> GetCategory(ushort id, bool includeParent = false);
-        Task<Category?> CreateCategory(Category category);
-        Task<Category?> UpdateCategory(Category category);
-        Task<Category?> DeleteCategory(ushort id);
+        Task<bool> CreateCategory(Category category);
+        Task<bool> UpdateCategory(Category category);
+        Task<bool> DeleteCategory(ushort id);
     }
 }

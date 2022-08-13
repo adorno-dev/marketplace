@@ -7,8 +7,8 @@ namespace Marketplace.API.Services.Contracts
     {
         Task<IEnumerable<CategoryResponse>?> GetCategories(bool includeParent = false);
         Task<CategoryResponse?> GetCategory(ushort id, bool includeParent = false);
-        Task<CategoryResponse?> CreateCategory(CreateCategoryRequest request);
-        Task<CategoryResponse?> UpdateCategory(UpdateCategoryRequest request);
-        Task<CategoryResponse?> DeleteCategory(ushort id);
+        Task<bool> CreateCategory(CreateCategoryRequest request);
+        Task<bool> UpdateCategory(UpdateCategoryRequest request);
+        Task<bool> DeleteCategory(ushort id);
     }
 }

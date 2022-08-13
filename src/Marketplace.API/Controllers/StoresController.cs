@@ -22,7 +22,7 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StoreResponse?>> GetStore(ushort id)
+        public async Task<ActionResult<StoreResponse?>> GetStore(Guid id)
         {
             var category = await service.GetStore(id);
 
@@ -37,9 +37,9 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.CreateStore(request);
-                
-                return Ok(response);
+                return await service.CreateStore(request) ?
+                    Ok():
+                    BadRequest();
             }
 
             return BadRequest(ModelState.Values);
@@ -50,25 +50,20 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.UpdateStore(request);
-                
-                return response is not null ?
-                    Ok(response):
-                    NotFound();
+                return await service.UpdateStore(request) ?
+                    Ok():
+                    BadRequest();
             }
 
             return BadRequest(ModelState.Values);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStore(ushort id)
+        public async Task<IActionResult> DeleteStore(Guid id)
         {
-            var response = await service.DeleteStore(id);
-
-            if (response is null)
-                return NotFound();
-            
-            return Ok(response);
+            return await service.DeleteStore(id) ?
+                Ok():
+                NotFound();
         }
     }
 }

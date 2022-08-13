@@ -32,35 +32,29 @@ namespace Marketplace.API.Services
             return mapper.Map<CategoryResponse>(category);
         }
 
-        public async Task<CategoryResponse?> CreateCategory(CreateCategoryRequest request)
+        public async Task<bool> CreateCategory(CreateCategoryRequest request)
         {
             var category = mapper.Map<Category>(request);
 
             if (request.ParentId is not null)
                 category.Parent = await repository.GetCategory(request.ParentId.Value);
 
-            var response = await repository.CreateCategory(category);
-
-            return mapper.Map<CategoryResponse>(response);
+            return await repository.CreateCategory(category);
         }
 
-        public async Task<CategoryResponse?> UpdateCategory(UpdateCategoryRequest request)
+        public async Task<bool> UpdateCategory(UpdateCategoryRequest request)
         {
             var category = mapper.Map<Category>(request);
 
             if (request.ParentId is not null)
                 category.Parent = await repository.GetCategory(request.ParentId.Value);
 
-            var response = await repository.UpdateCategory(category);
-
-            return mapper.Map<CategoryResponse>(response);
+            return await repository.UpdateCategory(category);
         }
 
-        public async Task<CategoryResponse?> DeleteCategory(ushort id)
+        public async Task<bool> DeleteCategory(ushort id)
         {
-            var response = await repository.DeleteCategory(id);
-
-            return mapper.Map<CategoryResponse>(response);
+            return await repository.DeleteCategory(id);
         }
     }
 }

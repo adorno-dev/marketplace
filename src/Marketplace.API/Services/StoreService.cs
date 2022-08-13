@@ -25,7 +25,7 @@ namespace Marketplace.API.Services
             return mapper.Map<IEnumerable<StoreResponse>?>(stores);
         }
 
-        public async Task<StoreResponse?> GetStore(ushort id)
+        public async Task<StoreResponse?> GetStore(Guid id)
         {
             var store = await repository.GetStore(id);
 
@@ -37,35 +37,29 @@ namespace Marketplace.API.Services
             return mapper.Map<StoreResponse?>(store);
         }
 
-        public async Task<StoreResponse?> CreateStore(CreateStoreRequest request)
+        public async Task<bool> CreateStore(CreateStoreRequest request)
         {
             var store = mapper.Map<Store>(request);
 
             if (request.Categories is not null && request.Categories.Any())
                 store.Categories = string.Join(" ", request.Categories);
             
-            var response = await repository.CreateStore(store);
-
-            return mapper.Map<StoreResponse>(response);
+            return await repository.CreateStore(store);
         }
 
-        public async Task<StoreResponse?> UpdateStore(UpdateStoreRequest request)
+        public async Task<bool> UpdateStore(UpdateStoreRequest request)
         {
             var store = mapper.Map<Store>(request);
 
             if (request.Categories is not null && request.Categories.Any())
                 store.Categories = string.Join(" ", request.Categories);
             
-            var response = await repository.UpdateStore(store);
-
-            return mapper.Map<StoreResponse>(response);
+            return await repository.UpdateStore(store);
         }
 
-        public async Task<StoreResponse?> DeleteStore(ushort id)
+        public async Task<bool> DeleteStore(Guid id)
         {
-            var response = await repository.DeleteStore(id);
-
-            return mapper.Map<StoreResponse>(response);
+            return await repository.DeleteStore(id);
         }
     }
 }

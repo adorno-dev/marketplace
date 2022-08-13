@@ -7,9 +7,9 @@ namespace Marketplace.API.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly AppDbContext context;
+        private readonly DatabaseContext context;
 
-        public CategoryRepository(AppDbContext context) => this.context = context;
+        public CategoryRepository(DatabaseContext context) => this.context = context;
 
         public async Task<IEnumerable<Category>?> GetCategories(bool includeParent = false)
         {
@@ -30,29 +30,21 @@ namespace Marketplace.API.Repositories
                 await context.Categories.FindAsync(id);
         }
 
-        public async Task<Category?> CreateCategory(Category category)
+        public async Task<bool> CreateCategory(Category category)
         {
             context.Categories.Add(category);
             
-            await context.SaveChangesAsync();
-
-            return category;
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<Category?> UpdateCategory(Category category)
+        public async Task<bool> UpdateCategory(Category category)
         {
-            try
-            {
-                context.Entry<Category>(category).State = EntityState.Modified;
+            context.Entry<Category>(category).State = EntityState.Modified;
 
-                await context.SaveChangesAsync();
-
-                return category;
-            }
-            catch { return null; }
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<Category?> DeleteCategory(ushort id)
+        public async Task<bool> DeleteCategory(ushort id)
         {
             var category = await context.Categories.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id.Equals(id));
 
@@ -63,10 +55,10 @@ namespace Marketplace.API.Repositories
 
                 context.Categories.Remove(category);
 
-                await context.SaveChangesAsync();
+                return await context.SaveChangesAsync() > 0;
             }
 
-            return category;
+            return false;
         }
     }
 }

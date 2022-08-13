@@ -7,8 +7,8 @@ namespace Marketplace.API.Services.Contracts
     {
         Task<IEnumerable<ProductResponse>?> GetProducts();
         Task<ProductResponse?> GetProduct(Guid id);
-        Task<ProductResponse?> CreateProduct(CreateProductRequest request);
-        Task<ProductResponse?> UpdateProduct(UpdateProductRequest request);
-        Task<ProductResponse?> DeleteProduct(Guid id);
+        Task<bool> CreateProduct(CreateProductRequest request);
+        Task<bool> UpdateProduct(UpdateProductRequest request);
+        Task<bool> DeleteProduct(Guid id);
     }
 }

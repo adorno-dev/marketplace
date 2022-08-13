@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Marketplace.API.Contracts.Requests
 {
     public class UpdateStoreRequest : CreateStoreRequest
     {
-        public ushort Id { get; set; }
+        [Required]
+        public Guid Id { get; set; }
     }
 }

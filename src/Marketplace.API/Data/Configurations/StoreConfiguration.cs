@@ -11,10 +11,6 @@ namespace Marketplace.API.Data.Configurations
               .HasKey(c => c.Id)
               .Metadata
               .IsPrimaryKey();
-
-            mb.Entity<Store>()
-              .Property(c => c.Id)
-              .UseIdentityColumn(1000, 1);
             
             mb.Entity<Store>()
               .Property(c => c.Name)
@@ -22,13 +18,14 @@ namespace Marketplace.API.Data.Configurations
               .IsRequired();
             
             mb.Entity<Store>()
-              .Property(c => c.Joined)
-              .HasDefaultValue<DateTime>(DateTime.UtcNow);
-            
-            mb.Entity<Store>()
               .Property(c => c.Categories)
               .HasMaxLength(255)
               .IsRequired();
+            
+            mb.Entity<Store>()
+              .HasOne<User>(p => p.User)
+              .WithOne(p => p.Store)
+              .HasForeignKey<User>(p => p.StoreId);
         }
     }
 }

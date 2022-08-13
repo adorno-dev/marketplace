@@ -32,29 +32,23 @@ namespace Marketplace.API.Services
             return mapper.Map<ProductResponse>(product);
         }
 
-        public async Task<ProductResponse?> CreateProduct(CreateProductRequest request)
+        public async Task<bool> CreateProduct(CreateProductRequest request)
         {
             var product = mapper.Map<Product>(request);
 
-            var response = await repository.CreateProduct(product);
-
-            return mapper.Map<ProductResponse>(response);
+            return await repository.CreateProduct(product);
         }
 
-        public async Task<ProductResponse?> UpdateProduct(UpdateProductRequest request)
+        public async Task<bool> UpdateProduct(UpdateProductRequest request)
         {
             var product = mapper.Map<Product>(request);
 
-            var response = await repository.UpdateProduct(product);
-
-            return mapper.Map<ProductResponse>(response);
+            return await repository.UpdateProduct(product);
         }
 
-        public async Task<ProductResponse?> DeleteProduct(Guid id)
+        public async Task<bool> DeleteProduct(Guid id)
         {
-            var response = await repository.DeleteProduct(id);
-
-            return mapper.Map<ProductResponse>(response);
+            return await repository.DeleteProduct(id);
         }
     }
 }

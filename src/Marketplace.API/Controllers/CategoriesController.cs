@@ -36,9 +36,9 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.CreateCategory(request);
-                
-                return Ok(response);
+                return await service.CreateCategory(request) ?
+                    Ok():
+                    BadRequest();
             }
 
             return BadRequest(ModelState.Values);
@@ -49,11 +49,9 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                var response = await service.UpdateCategory(request);
-                
-                return response is not null ?
-                    Ok(response):
-                    NotFound();
+                return await service.UpdateCategory(request) ?
+                    Ok():
+                    BadRequest();
             }
 
             return BadRequest(ModelState.Values);
@@ -62,12 +60,9 @@ namespace Marketplace.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(ushort id)
         {
-            var response = await service.DeleteCategory(id);
-
-            if (response is null)
-                return NotFound();
-            
-            return Ok(response);
+            return await service.DeleteCategory(id) ?
+                Ok():
+                NotFound();
         }
     }
 }

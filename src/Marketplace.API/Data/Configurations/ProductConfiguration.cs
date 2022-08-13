@@ -40,6 +40,11 @@ namespace Marketplace.API.Data.Configurations
             
             mb.Entity<Product>()
               .HasOne<Store>(s => s.Store);
+            
+            mb.Entity<Product>()
+              .HasMany<Review>(p => p.Reviews)
+              .WithOne(p => p.Product)
+              .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

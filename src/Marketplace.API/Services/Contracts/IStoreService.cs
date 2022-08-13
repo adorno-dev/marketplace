@@ -6,9 +6,9 @@ namespace Marketplace.API.Services.Contracts
     public interface IStoreService
     {
         Task<IEnumerable<StoreResponse>?> GetStores();
-        Task<StoreResponse?> GetStore(ushort id);
-        Task<StoreResponse?> CreateStore(CreateStoreRequest request);
-        Task<StoreResponse?> UpdateStore(UpdateStoreRequest request);
-        Task<StoreResponse?> DeleteStore(ushort id);
+        Task<StoreResponse?> GetStore(Guid id);
+        Task<bool> CreateStore(CreateStoreRequest request);
+        Task<bool> UpdateStore(UpdateStoreRequest request);
+        Task<bool> DeleteStore(Guid id);
     }
 }

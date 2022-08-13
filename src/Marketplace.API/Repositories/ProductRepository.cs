@@ -7,9 +7,9 @@ namespace Marketplace.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly AppDbContext context;
+        private readonly DatabaseContext context;
 
-        public ProductRepository(AppDbContext context) => this.context = context;
+        public ProductRepository(DatabaseContext context) => this.context = context;
 
         public async Task<IEnumerable<Product>?> GetProducts()
         {
@@ -21,29 +21,21 @@ namespace Marketplace.API.Repositories
             return await context.Products.Include(c => c.Category).Include(s => s.Store).FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
-        public async Task<Product?> CreateProduct(Product product)
+        public async Task<bool> CreateProduct(Product product)
         {
             context.Products.Add(product);
 
-            await context.SaveChangesAsync();
-
-            return product;
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<Product?> UpdateProduct(Product product)
+        public async Task<bool> UpdateProduct(Product product)
         {
-            try
-            {
-                context.Entry<Product>(product).State = EntityState.Modified;       
-                
-                await context.SaveChangesAsync();
-
-                return product;
-            }
-            catch { return null; }
+            context.Entry<Product>(product).State = EntityState.Modified;       
+            
+            return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<Product?> DeleteProduct(Guid id)
+        public async Task<bool> DeleteProduct(Guid id)
         {
             var product = await context.Products.FindAsync(id);
 
@@ -51,10 +43,10 @@ namespace Marketplace.API.Repositories
             {
                 context.Products.Remove(product);
 
-                await context.SaveChangesAsync();
+                return await context.SaveChangesAsync() > 0;
             }
 
-            return product;
+            return false;
         }
     }
 }
