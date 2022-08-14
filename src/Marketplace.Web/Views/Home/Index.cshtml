@@ -1,0 +1,13 @@
+@model IEnumerable<Category>?
+
+<h2>Welcome to Main Page</h2>
+
+@if (Model is not null)
+{
+    <ul>
+        @foreach (var category in Model)
+        {
+            <li>@category.Name</li>
+        }
+    </ul>
+}
