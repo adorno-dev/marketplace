@@ -14,6 +14,9 @@ namespace Marketplace.API.Data.Configurations
 
             mb.Entity<User>()
               .HasMany(p => p.Reviews);
+            
+            mb.Entity<User>()
+              .HasOne(s => s.Store);
         }
     }
 }

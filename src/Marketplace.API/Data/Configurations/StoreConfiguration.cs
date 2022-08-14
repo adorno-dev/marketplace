@@ -22,10 +22,10 @@ namespace Marketplace.API.Data.Configurations
               .HasMaxLength(255)
               .IsRequired();
             
-            // mb.Entity<Store>()
-            //   .HasOne<User>(p => p.User)
-            //   .WithOne(p => p.Store)
-            //   .HasPrincipalKey<Store>(p => p.UserId);
+            mb.Entity<Store>()
+              .HasOne(u => u.User)
+              .WithOne(s => s.Store)
+              .HasForeignKey<Store>(u => u.UserId);
 
             return mb;
         }

@@ -22,7 +22,7 @@ namespace Marketplace.API.Contracts.Requests
         public long Stock { get; set; }
 
         [Required]
-        public ushort StoreId { get; set; }
+        public Guid StoreId { get; set; }
 
         [Required]
         public ushort CategoryId { get; set; }

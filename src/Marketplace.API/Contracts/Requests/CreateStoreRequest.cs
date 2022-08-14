@@ -10,6 +10,9 @@ namespace Marketplace.API.Contracts.Requests
         public string? Name { get; set; }
 
         [Required]
+        public Guid UserId { get; set; }
+
+        [Required]
         public IEnumerable<ushort>? Categories { get; set; }
     }
 }

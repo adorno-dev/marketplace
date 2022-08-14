@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220813170532_Initial")]
+    [Migration("20220814005530_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,7 +236,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 8, 13, 17, 5, 32, 416, DateTimeKind.Utc).AddTicks(2356));
+                        .HasDefaultValue(new DateTime(2022, 8, 14, 0, 55, 29, 843, DateTimeKind.Utc).AddTicks(3571));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -275,11 +275,13 @@ namespace Marketplace.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("UserId")
-                        .IsRequired()
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Stores");
                 });
@@ -349,10 +351,6 @@ namespace Marketplace.API.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("StoreId")
-                        .IsUnique()
-                        .HasFilter("[StoreId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -535,14 +533,15 @@ namespace Marketplace.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Marketplace.API.Models.User", b =>
+            modelBuilder.Entity("Marketplace.API.Models.Store", b =>
                 {
-                    b.HasOne("Marketplace.API.Models.Store", "Store")
-                        .WithOne("User")
-                        .HasForeignKey("Marketplace.API.Models.User", "StoreId")
-                        .HasPrincipalKey("Marketplace.API.Models.Store", "UserId");
+                    b.HasOne("Marketplace.API.Models.User", "User")
+                        .WithOne("Store")
+                        .HasForeignKey("Marketplace.API.Models.Store", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Store");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -606,14 +605,11 @@ namespace Marketplace.API.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Marketplace.API.Models.Store", b =>
-                {
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Marketplace.API.Models.User", b =>
                 {
                     b.Navigation("Reviews");
+
+                    b.Navigation("Store");
                 });
 #pragma warning restore 612, 618
         }
