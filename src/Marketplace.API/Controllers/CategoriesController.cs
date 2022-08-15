@@ -28,7 +28,7 @@ namespace Marketplace.API.Controllers
             if (category is null)
                 return NotFound();
             
-            return Ok();
+            return Ok(category);
         }
 
         [HttpPost]

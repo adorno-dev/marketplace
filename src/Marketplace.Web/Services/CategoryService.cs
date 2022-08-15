@@ -32,5 +32,22 @@ namespace Marketplace.Web.Services
 
             return categories;
         }
+
+        public async Task<Category?> GetCategory(ushort id)
+        {
+            Category? category = null;
+
+            using (var response = await httpClient.GetAsync($"api/categories/{id}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStreamAsync();
+
+                    category = await JsonSerializer.DeserializeAsync<Category>(data, serializerOptions);
+                }
+            }
+
+            return category;
+        }
     }
 }
