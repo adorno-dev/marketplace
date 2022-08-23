@@ -1,0 +1,18 @@
+/* #navbar {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, .2);
+    max-height: 70px;
+    line-height: 70px;
+    padding: 0 200px;
+}
+
+#navbar #brand {
+  font-size: 1.2em;
+}
+
+#navbar a {
+  display: inline-block;
+  height: 70px;
+  margin: 0 20px;
+} */

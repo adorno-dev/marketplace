@@ -14,8 +14,8 @@ builder.Services.AddHttpClient("Marketplace.API", configure =>
     return handler;
 });
 
-
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddControllersWithViews();
 

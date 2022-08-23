@@ -1,0 +1,36 @@
+.checkbox {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.checkbox input {
+    display: none;
+}
+
+.checkbox label {
+    color: rgba(255, 255, 255, .7);
+    user-select: none;
+    cursor: pointer;
+}
+
+.checkbox label:hover {
+    color: #fff;
+}
+
+.checkbox input + label:before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 14px;
+    display: inline-block;
+    background: transparent;
+    border: 2px solid #fff;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    transition: 0.1s;
+}
+
+.checkbox input:checked + label:before {
+    background: gray;
+}

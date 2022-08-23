@@ -1,0 +1,60 @@
+.select {
+    background: #292929;
+    width: 100%;
+    margin: 10px 0;
+    user-select: none;
+    line-height: 32px;
+    position: relative;
+}
+
+.select i {
+    position: absolute;
+    right: 25px;
+    top: 13px;
+    transform: rotate(90deg);
+    transition: 0.1s;
+}
+
+.select.active i {
+    transform: rotate(0);
+}
+
+.select label {
+    display: block;
+    padding: 5px 25px;
+}
+
+.select label:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.select ul {
+    background: inherit;
+    width: inherit;
+    position: absolute;
+    list-style: none;
+    z-index: 1000;
+
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.select ul li {
+    padding: 5px 25px;
+}
+
+.select ul li:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.select ul li.selected {
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.select ul li.disabled {
+    color: gray;
+}
+
+.select:not(.active) ul {
+    display: none;
+}

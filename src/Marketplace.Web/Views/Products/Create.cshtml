@@ -1,0 +1,16 @@
+@model Marketplace.Web.Components.Select
+
+<div class="page">
+    <form method="post">
+        <div class="title">Create Product</div>
+        <vc:select model=@ViewBag.SelectViewComponent />
+        <input type="hidden" name="storeId" />
+        <input type="text" name="name" placeholder="Name" autoComplete="off" />
+        <input type="text" name="description" placeholder="Description" autoComplete="off" />
+        <div class="space-between">
+            <input type="number" name="price" placeholder="Price" />
+            <input type="number" name="stock" placeholder="Stock" />
+        </div>
+        <input type="submit" value="SAVE" />
+    </form>
+</div>

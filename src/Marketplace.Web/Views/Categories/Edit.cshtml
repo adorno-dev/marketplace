@@ -1,0 +1,11 @@
+@model Category
+
+<div class="page">
+    <form method="post">
+        <div class="title">Edit Category</div>
+        <vc:select model=@ViewBag.SelectViewComponent />
+        <input type="hidden" name="id" value="@Model.Id">
+        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
+        <input type="submit" value="SAVE" />
+    </form>
+</div>

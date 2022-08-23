@@ -1,0 +1,10 @@
+@model Marketplace.Web.Components.Select
+
+<div class="page">
+    <form method="post">
+        <div class="title">Create Category</div>
+        <vc:select model=@ViewBag.SelectViewComponent />
+        <input type="text" name="name" placeholder="Name" autoComplete="off" />
+        <input type="submit" value="SAVE" />
+    </form>
+</div>

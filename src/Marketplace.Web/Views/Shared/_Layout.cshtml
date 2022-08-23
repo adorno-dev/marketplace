@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/index.css">
-    <title>Marketplace (Aspnet)</title>
+    <link rel="icon" type="image/svg+xml" href="/images/vite.svg" />
+    <link rel="stylesheet" href="~/Marketplace.Web.styles.css" />
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <title>Marketplace</title>
 </head>
 <body>
-    <div class="navbar">
-        <a href="#">Brands</a>
-        <a href="#">SignOut</a>
+    <vc:navbar />
+    <div id="placeholder">
+        @RenderBody()
+        @RenderSection("Scripts", false)
     </div>
-    @RenderBody()
-    @RenderSection("Scripts", false)
+    <environment names="Development">
+        <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+    </environment>
 </body>
 </html>

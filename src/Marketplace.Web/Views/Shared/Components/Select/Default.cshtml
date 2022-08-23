@@ -1,0 +1,74 @@
+@model Marketplace.Web.Components.Select
+
+<div class="select">
+    <input type="hidden" name="@Model.name" value="@Model.value" />
+
+    @{
+        var text = Model.items?.FirstOrDefault(m => m.id.Equals(Model.value));
+
+        if (text is not null)
+        {
+            <label>@text (@Model.value)</label>
+        }
+        else
+        {
+            <label>@Model.text (@Model.value)</label>
+        }
+    }
+
+    <i class="fa-solid fa-angle-down"></i>
+    <ul>
+        <li class='disabled'>@Model.text</li>
+
+        @if (Model.items is not null)
+        {
+            @foreach (var item in Model.items)
+            {
+                <li class='@item.id.Equals(Model.value) ? "selected": ""' value="@item.id">@item.text</li>
+            }
+        }
+
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+    const select = document.querySelector(".select");
+    const input = select.querySelector("input");
+    const label = select.querySelector("label");
+    const list = select.querySelector("ul");
+    const items = list.querySelectorAll("li");
+
+    select.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (select === null)
+            return;
+        document.querySelectorAll(".active").forEach(control => {
+            if (!control.contains(select))
+                control.classList.remove("active");
+        })
+        window.onclick = () => {
+            window.onclick = null;
+            select.classList.remove("active");
+        }
+        select.classList.toggle("active");
+    })
+
+    items.forEach(item => {
+        item.addEventListener("click", () => {
+            let value = item.getAttribute("value");
+            list.querySelectorAll("li.selected").forEach(selected => selected.classList.remove("selected"));
+            if (input === undefined || label === null)
+                return;
+            if (value !== null) {
+                label.innerText = item.innerText;
+                item.className = "selected";
+                input.value = value;
+            } else {
+                label.innerText = "@Html.Raw(@Model.text)";
+                input.value = "";
+            }
+        })
+    })
+
+</script>

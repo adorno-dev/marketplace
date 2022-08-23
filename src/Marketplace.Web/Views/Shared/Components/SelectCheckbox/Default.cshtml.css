@@ -1,0 +1,79 @@
+.select-checkbox {
+    background: #292929;
+    width: 100%;
+    margin: 10px 0;
+    user-select: none;
+    line-height: 32px;
+    position: relative;
+}
+
+.select-checkbox i {
+    position: absolute;
+    right: 25px;
+    top: 13px;
+    transform: rotate(90deg);
+    transition: 0.1s;
+}
+
+.select-checkbox.active i {
+    transform: rotate(0);
+}
+
+.select-checkbox > label {
+    display: block;
+}
+
+.select-checkbox > label:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.select-checkbox label {
+    display: inline-block;
+    padding: 5px 0 5px 25px;
+    width: 100%;    
+}
+
+.select-checkbox ul {
+        background: inherit;
+        width: inherit;
+        position: absolute;
+        list-style: none;
+        z-index: 1000;
+
+        max-height: 420px;
+        overflow-y: auto;
+}
+
+.select-checkbox ul li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.select-checkbox ul li:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.select-checkbox ul li input[type=checkbox] {
+    display: none;
+}
+
+.select-checkbox ul li input[type=checkbox] + label::after {
+    position: absolute;
+    content: '';
+    width: 16px;
+    height: 16px;
+    margin-top: 5px;
+    right: 20px;
+    border-radius: 14px;
+    background: transparent;
+    border: 2px solid #fff;
+}
+
+.select-checkbox ul li input[type=checkbox]:checked + label::after {
+    background: gray;
+}
+
+.select-checkbox:not(.active) ul {
+    display: none;
+}
