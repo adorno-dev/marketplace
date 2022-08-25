@@ -1,18 +1,18 @@
 @model Marketplace.Web.Components.Select
 
 <div class="select">
-    <input type="hidden" name="@Model.name" value="@Model.value" />
+    <input type="hidden" name="@Model.name" value="@ViewBag.SelectViewComponent.value" />
 
     @{
-        var text = Model.items?.FirstOrDefault(m => m.id.Equals(Model.value));
+        var parent = Model.items?.FirstOrDefault(m => m.id.Equals(Model.value));
 
-        if (text is not null)
+        if (parent is not null)
         {
-            <label>@text (@Model.value)</label>
+            <label>@parent.text</label>
         }
         else
         {
-            <label>@Model.text (@Model.value)</label>
+            <label>@Model.text</label>
         }
     }
 
@@ -24,7 +24,14 @@
         {
             @foreach (var item in Model.items)
             {
-                <li class='@item.id.Equals(Model.value) ? "selected": ""' value="@item.id">@item.text</li>
+                if (item.id.Equals(parent?.id))
+                {
+                    <li class="selected" value="@item.id">@item.text</li>
+                }
+                else
+                {
+                    <li value="@item.id">@item.text</li>
+                }
             }
         }
 

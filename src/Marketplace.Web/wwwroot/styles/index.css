@@ -144,6 +144,7 @@
   margin-bottom: 5px;
 }
 
+.page .content,
 .page form {
   display: flex;
   flex-direction: column;
@@ -153,6 +154,10 @@
   margin: calc(70px) 0;
 }
 
+.page .content .button {
+  margin: 10px 0;
+}
+
 .page form .space-between {
   display: flex;
   justify-content: space-between;
@@ -160,6 +165,7 @@
   column-gap: 20px;
 }
 
+.page .content p,
 .page form p {
   line-height: normal !important;
   margin: 10px 0;

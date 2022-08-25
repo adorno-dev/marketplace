@@ -14,7 +14,7 @@ namespace Marketplace.Web.Controllers
 
             var selectItems = categories?.Select(s => new SelectItem(s.Id.ToString(), s.Name)).ToList();
 
-            return new Select("categoryId", "Empty Category", "", selectItems);
+            return new Select("categoryId", "Empty Category", value, selectItems);
         }
 
         public CategoriesController(ICategoryService categoryService)
@@ -35,11 +35,25 @@ namespace Marketplace.Web.Controllers
 
         public async Task<IActionResult> Edit(ushort id)
         {
-            ViewBag.SelectViewComponent = await GetSelectViewComponent(id.ToString());
+            var category = await categoryService.GetCategory(id);
+
+            if (category is null)
+                return NotFound();
+
+            var parentId = category.Parent is not null ? 
+                category.Parent.Id.ToString() :
+                string.Empty;
+
+            ViewBag.SelectViewComponent = await GetSelectViewComponent(parentId);
             
-            return View(await categoryService.GetCategory(id));
+            return View(category);
         }
 
-        public async Task<IActionResult> Delete(ushort id) => View(await categoryService.GetCategory(id));
+        public async Task<IActionResult> Delete(ushort id)
+        {
+            var category = await categoryService.GetCategory(id);
+
+            return View(category);
+        }
     }
 }

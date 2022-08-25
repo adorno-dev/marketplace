@@ -1,0 +1,18 @@
+@model Product
+
+<div class="page">
+    <div class="content">
+        <div class="title">Delete Product</div>
+        <p class="hints">Deleting the product bellow. Are you sure?</p>
+        <p class="hints">@Html.DisplayNameFor(m => m.Name)</p>
+        <label>@Model.Name</label>
+        <p class="hints">@Html.DisplayNameFor(m => m.Description)</p>
+        <label>@Model.Description</label>
+        <p class="hints">@Html.DisplayNameFor(m => m.Stock)</p>
+        <label>@Model.Stock</label>
+        <p class="hints">@Html.DisplayNameFor(m => m.Price)</p>
+        <label>@Model.Price</label>
+        <p></p>
+        <a href="#" class="button">DELETE</a>
+    </div>
+</div>

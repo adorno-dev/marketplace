@@ -6,7 +6,14 @@
         <a asp-controller="products" asp-action="index" to="/products">Products</a>
     </div>
     <div>
-        <a asp-controller="account" asp-action="signup">Sign Up</a>
-        <a asp-controller="account" asp-action="signin">Sign In</a>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="account" asp-action="signout">Sign Out</a>
+        }
+        else
+        {
+            <a asp-controller="account" asp-action="signup">Sign Up</a>
+            <a asp-controller="account" asp-action="signin">Sign In</a>
+        }
     </div>
 </div>

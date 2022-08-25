@@ -1,9 +1,11 @@
 using Marketplace.Web.Components;
 using Marketplace.Web.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.Web.Controllers
 {
+    [Authorize]
     public class StoresController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -14,7 +16,7 @@ namespace Marketplace.Web.Controllers
 
             var selectItems = categories?.Select(s => new SelectCheckboxItem(s.Id.ToString(), s.Name)).ToList();
 
-            return new SelectCheckbox("categoryId", "Empty Category", "", selectItems);
+            return new SelectCheckbox("categoryId", "Categories", "", selectItems);
         }
 
         public StoresController(ICategoryService categoryService)

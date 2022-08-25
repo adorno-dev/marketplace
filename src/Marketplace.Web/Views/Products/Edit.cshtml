@@ -1,0 +1,17 @@
+@model Product
+
+<div class="page">
+    <form method="post">
+        <div class="title">Create Product</div>
+        <vc:select model=@ViewBag.SelectViewComponent />
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="storeId" value="@Model.StoreId" />
+        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
+        <input type="text" name="description" placeholder="Description" autoComplete="off" value="@Model.Description" />
+        <div class="space-between">
+            <input type="number" name="price" placeholder="Price" value="@Model.Price" />
+            <input type="number" name="stock" placeholder="Stock" value="@Model.Stock" />
+        </div>
+        <input type="submit" value="SAVE" />
+    </form>
+</div>

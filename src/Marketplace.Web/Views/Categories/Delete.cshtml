@@ -1,0 +1,17 @@
+@model Category
+
+<div class="page">
+    <div class="content">
+        <div class="title">Delete Category</div>
+        <p class="hints">Deleting the category bellow. Are you sure?</p>
+        <p class="hints">@Html.DisplayNameFor(m => m.Name)</p>
+        <label>@Model.Name</label>
+        @if (Model.Parent is not null)
+        {
+            <p class="hints">@Html.DisplayNameFor(m => m.Parent)</p>
+            <label>@Model.Parent.Name</label>
+        }
+        <p></p>
+        <a href="#" class="button">DELETE</a>
+    </div>
+</div>

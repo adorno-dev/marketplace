@@ -23,7 +23,7 @@ namespace Marketplace.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryResponse?>> GetCategory(ushort id)
         {
-            var category = await service.GetCategory(id);
+            var category = await service.GetCategory(id, true);
 
             if (category is null)
                 return NotFound();
