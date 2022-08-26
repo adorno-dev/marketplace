@@ -37,6 +37,18 @@ namespace Marketplace.API.Services
             return mapper.Map<StoreResponse?>(store);
         }
 
+        public async Task<StoreResponse?> GetStoreByUserId(Guid userId)
+        {
+            var store = await repository.GetStoreByUserId(userId);
+
+            if (store?.Categories is not null)
+            {
+                var categoryIds = store.Categories.Split(" ").Select(s => ushort.Parse(s)).ToList();
+            }
+
+            return mapper.Map<StoreResponse?>(store);
+        }
+
         public async Task<bool> CreateStore(CreateStoreRequest request)
         {
             var store = mapper.Map<Store>(request);

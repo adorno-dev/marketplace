@@ -1,6 +1,8 @@
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
+using Marketplace.API.Utils;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Repositories
@@ -16,6 +18,21 @@ namespace Marketplace.API.Repositories
             return includeParent ?
                 await context.Categories.Include(c => c.Parent).Include("Parent.Parent").AsNoTracking().ToListAsync():
                 await context.Categories.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IPagination<Category>?> GetCategoriesPaginated(bool includeParent = false)
+        {
+            var categories = new Pagination<Category>();
+
+            categories.SetCount(await context.Categories.AsNoTracking().CountAsync());
+
+
+
+            categories.Items = includeParent ? 
+                await context.Categories.Include(c => c.Parent).Include("Parent.Parent").Skip(categories.PageIndex * categories.PageSize).Take(categories.PageSize).AsNoTracking().ToListAsync():
+                await context.Categories.Skip(categories.PageIndex * categories.PageSize).Take(categories.PageSize).AsNoTracking().ToListAsync();
+
+            return categories;
         }
 
         public async Task<IEnumerable<Category>?> GetCategories(params ushort[] ids)

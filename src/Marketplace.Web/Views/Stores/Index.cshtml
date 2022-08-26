@@ -1,9 +1,12 @@
+@model SaveStoreRequest
+
 <div class="page">
-    <form>
+    <form method="post">
         <div class="title">My Store</div>
-        <input type="hidden" name="userId" />
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="userId" value="@Model.UserId" />
         <vc:select-checkbox model=@ViewBag.SelectCheckboxViewComponent />
-        <input type="text" name="name" placeholder="Name" autoComplete="off" />
+        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
         <input type="submit" value="SAVE" />
     </form>
 </div>

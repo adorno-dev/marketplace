@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Marketplace.Web.Contracts.Requests;
-using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignIn() => View();
+        public IActionResult SignIn() => View(new SignInRequest());
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInRequest request)
@@ -41,25 +40,32 @@ namespace Marketplace.Web.Controllers
                         Id = Guid.Parse(identifier), 
                         Email = request.Email, 
                         UserName = request.Email,
-                        SecurityStamp = "" 
+                        SecurityStamp = Guid.NewGuid().ToString() 
                     };
 
                     await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal?.Claims);
+
+                    return RedirectToAction("index", "home");
                 }
             }
 
-            return RedirectToAction("index", "home");
+            return View(request);
         }
 
         [HttpGet]
-        public IActionResult SignUp() => View();
+        public IActionResult SignUp() => View(new SignUpRequest());
 
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpRequest request)
         {
-            var response = await accountService.SignUp(request);
+            if (ModelState.IsValid)
+            {
+                var response = await accountService.SignUp(request);
 
-            return RedirectToAction("index", "home");
+                return RedirectToAction("index", "home");
+            }
+
+            return View(request);
         }
 
         [HttpGet]

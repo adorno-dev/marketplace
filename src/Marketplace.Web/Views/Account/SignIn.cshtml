@@ -1,13 +1,15 @@
+@model SignInRequest
+
 <div class="page">
     <form method="post">
         <div class="title">Sign In</div>
         <p class="hints">Please enter your email and password.</p>
 
-        <input type="email" name="email" placeholder="Email" autoComplete="off" />
-        <input type="password" name="password" placeholder="Password" autoSave="off" />
+        <input type="email" name="email" placeholder="Email" autoComplete="off" value="@Model.Email" />
+        <input type="password" name="password" placeholder="Password" autoSave="off" value="@Model.Password" />
         <input type="submit" value="SIGN IN" />
         <div class="space-between">
-            <vc:checkbox name="remember" text="Remember Account?" />
+            <vc:checkbox name="remember" text="Remember Account?" value="@Model.Remember" />
             <a asp-controller="account" asp-action="forgotpassword">Forgot your password?</a>
         </div>
         @* <p class="hints">Don't you have an account? <a asp-controller="Account" asp-action="SignUp">Sign Up</a></p> *@

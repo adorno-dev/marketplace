@@ -21,6 +21,11 @@ namespace Marketplace.API.Repositories
             return await context.Stores.Include("User").FirstOrDefaultAsync(s => s.Id.Equals(id));
         }
 
+        public async Task<Store?> GetStoreByUserId(Guid userId)
+        {
+            return await context.Stores.Include("User").FirstOrDefaultAsync(s => s.UserId.Equals(userId));
+        }
+
         public async Task<bool> CreateStore(Store store)
         {
             context.Stores.Add(store);

@@ -9,7 +9,7 @@
             foreach (var item in Model.items)
             {
                 <li>
-                    <input type="checkbox" readonly name="@Model.name" id="@Model.name-@item.id" value="@item.id" />
+                    <input type="checkbox" readonly name="@Model.name" id="@Model.name-@item.id" value="@item.id" @(Model.values.Any(w => w.Equals(item.id)) ? "checked": "" ) />
                     <label for="@Model.name-@item.id">@item.text</label>
                 </li>
             }
@@ -47,5 +47,7 @@
             }
         })
     })
+
+    label.innerText = `@Html.Raw(@Model.text) (@Model.values.Length)`;
 
 </script>

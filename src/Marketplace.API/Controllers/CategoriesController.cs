@@ -1,6 +1,7 @@
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -12,10 +13,19 @@ namespace Marketplace.API.Controllers
         private readonly ICategoryService service;
 
         public CategoriesController(ICategoryService service) => this.service = service;
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
         {
-            var categories = await service.GetCategories(true);
+            var categories = await service.GetCategories(includeParent: true);
+
+            return Ok(categories);
+        }
+
+        [HttpGet("page/{skip:int}/{take:int}")]
+        public async Task<ActionResult<IPagination<CategoryResponse>>> GetCategoriesPaginated()
+        {
+            var categories = await service.GetCategoriesPaginated(includeParent: true);
 
             return Ok(categories);
         }

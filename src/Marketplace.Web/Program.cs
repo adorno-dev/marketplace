@@ -28,7 +28,7 @@ builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabas
 builder.Services
     .AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options => {
         options.User.RequireUniqueEmail = true;
-        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-._@+";
+        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-._@+ ";
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
@@ -53,7 +53,7 @@ builder.Services.ConfigureApplicationCookie(o =>
 {
     o.Cookie.Name = "IdentitySample";
     o.Cookie.HttpOnly = true;
-    o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    o.ExpireTimeSpan = TimeSpan.FromMinutes(120);
     o.LoginPath = "/account/signin";
     o.LogoutPath = "/account/signout";
     o.AccessDeniedPath = "/app/access-denied";
@@ -96,6 +96,7 @@ builder.Services.AddScoped<ITokenService>(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddControllersWithViews();

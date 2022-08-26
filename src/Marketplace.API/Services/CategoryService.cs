@@ -4,6 +4,7 @@ using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.Services.Contracts;
+using Marketplace.API.Utils.Contracts;
 
 namespace Marketplace.API.Services
 {
@@ -23,6 +24,13 @@ namespace Marketplace.API.Services
             var categories = await repository.GetCategories(includeParent);
 
             return mapper.Map<IEnumerable<CategoryResponse>?>(categories);
+        }
+
+        public async Task<IPagination<CategoryResponse>?> GetCategoriesPaginated(bool includeParent = false)
+        {
+            var categories = await repository.GetCategoriesPaginated(includeParent);
+
+            return mapper.Map<IPagination<CategoryResponse>?>(categories);
         }
 
         public async Task<CategoryResponse?> GetCategory(ushort id, bool includeParent = false)

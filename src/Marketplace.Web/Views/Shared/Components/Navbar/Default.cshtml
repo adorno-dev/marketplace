@@ -1,7 +1,7 @@
 <div id="navbar">
     <div>
         <a id="brand" asp-controller="home" asp-action="index">Marketplace</a>
-        <a asp-controller="stores" asp-action="index">My Store</a>
+        <vc:link asp-controller="stores" asp-action="index" text="My Store" />
         <a asp-controller="categories" asp-action="index">Categories</a>
         <a asp-controller="products" asp-action="index" to="/products">Products</a>
     </div>

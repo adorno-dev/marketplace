@@ -1,6 +1,13 @@
 @model Marketplace.Web.Components.Checkbox
 
 <div class="checkbox">
-    <input type="checkbox" id="@Model.name" name="@Model.name" />
+    <input type="checkbox" id="@Model.name" name="@Model.name" @(Model.value ? "checked": "") value="@Model.value" />
     <label for="@Model.name">@Model.text</label>
 </div>
+
+<script type="text/javascript">
+    const root = document.querySelector(".checkbox > input");
+    root.onchange = () => {
+        root.setAttribute("value", root.checked);
+    }
+</script>

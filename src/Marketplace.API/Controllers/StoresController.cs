@@ -32,6 +32,17 @@ namespace Marketplace.API.Controllers
             return Ok(category);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<StoreResponse?>> GetStoreByUserId(Guid userId)
+        {
+            var category = await service.GetStoreByUserId(userId);
+
+            if (category is null)
+                return NotFound();
+            
+            return Ok(category);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateStore([FromBody] CreateStoreRequest request)
         {
