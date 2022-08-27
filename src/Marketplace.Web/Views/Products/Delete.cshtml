@@ -13,6 +13,6 @@
         <p class="hints">@Html.DisplayNameFor(m => m.Price)</p>
         <label>@Model.Price</label>
         <p></p>
-        <a href="#" class="button">DELETE</a>
+        <a asp-controller="products" asp-action="confirmdelete" asp-route-id="@Model.Id" class="button">DELETE</a>
     </div>
 </div>

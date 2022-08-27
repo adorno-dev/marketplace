@@ -2,7 +2,7 @@
 
 <div class="checkbox">
     <input type="checkbox" id="@Model.name" name="@Model.name" @(Model.value ? "checked": "") value="@Model.value" />
-    <label for="@Model.name">@Model.text</label>
+    <label for="@Model.name" tabindex="0">@Model.text</label>
 </div>
 
 <script type="text/javascript">

@@ -1,10 +1,12 @@
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

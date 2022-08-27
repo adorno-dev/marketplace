@@ -12,5 +12,7 @@ namespace Marketplace.Web.Contracts.Requests
         public string? Password { get; set; }
         
         public bool Remember { get; set; }
+
+        public string? returnUrl { get; set; }
     }
 }

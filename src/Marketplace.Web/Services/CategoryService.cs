@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
 
@@ -48,6 +49,24 @@ namespace Marketplace.Web.Services
             }
 
             return category;
+        }
+
+        public async Task<bool> CreateCategory(CreateCategoryRequest request)
+        {
+            using (var post = await httpClient.PostAsJsonAsync<CreateCategoryRequest>("api/categories", request))
+                return post.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateCategory(UpdateCategoryRequest request)
+        {
+            using (var put = await httpClient.PutAsJsonAsync<UpdateCategoryRequest>("api/categories", request))
+                return put.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteCategory(ushort id)
+        {
+            using (var delete = await httpClient.DeleteAsync($"api/categories/{id}"))
+                return delete.IsSuccessStatusCode;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
 
@@ -48,6 +49,24 @@ namespace Marketplace.Web.Services
             }
 
             return product;
+        }
+
+        public async Task<bool> CreateProduct(CreateProductRequest request)
+        {
+            using (var post = await httpClient.PostAsJsonAsync<CreateProductRequest>("api/products", request))
+                return post.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateProduct(UpdateProductRequest request)
+        {
+            using (var put = await httpClient.PutAsJsonAsync<UpdateProductRequest>("api/products", request))
+                return put.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteProduct(Guid id)
+        {
+            using (var delete = await httpClient.DeleteAsync($"api/products/{id}"))
+                return delete.IsSuccessStatusCode;
         }
     }
 }

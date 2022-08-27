@@ -12,6 +12,6 @@
             <label>@Model.Parent.Name</label>
         }
         <p></p>
-        <a href="#" class="button">DELETE</a>
+        <a asp-controller="categories" asp-action="confirmdelete" asp-route-id="@Model.Id" class="button">DELETE</a>
     </div>
 </div>

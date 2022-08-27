@@ -161,7 +161,7 @@
 .page form .space-between {
   display: flex;
   justify-content: space-between;
-  /* margin: 10px 0; */
+  margin: 10px 0;
   column-gap: 20px;
 }
 
@@ -180,9 +180,23 @@
   font-style: italic;
 }
 
+/*  */
+
+.text-center {
+  text-align: center;
+}
+
+/*  */
 
 table {
   table-layout: auto;
+}
+
+table tbody tr td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 600px;
+  white-space: nowrap;
 }
 
 table tr th {

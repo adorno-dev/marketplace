@@ -45,6 +45,9 @@ namespace Marketplace.Web.Controllers
 
                     await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal?.Claims);
 
+                    if (request.returnUrl is not null)
+                        return Redirect(request.returnUrl);
+
                     return RedirectToAction("index", "home");
                 }
             }
