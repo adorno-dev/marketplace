@@ -23,7 +23,7 @@ namespace Marketplace.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index() => View(await categoryService.GetCategories());
+        public async Task<IActionResult> Index(int? page = 1) => View(await categoryService.GetCategoriesPaginated(page));
 
         public async Task<IActionResult> Create()
         {
@@ -61,7 +61,7 @@ namespace Marketplace.Web.Controllers
             {
                 updateCategoryRequest.Id = id;
                 updateCategoryRequest.Name = category.Name;
-                updateCategoryRequest.ParentId = category.Parent?.Id;
+                updateCategoryRequest.ParentId = category.ParentId;
             }
 
             ViewBag.SelectViewComponent = await GetSelectViewComponent(updateCategoryRequest.ParentId.ToString());

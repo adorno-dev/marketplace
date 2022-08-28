@@ -22,10 +22,13 @@ namespace Marketplace.API.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("page/{skip:int}/{take:int}")]
-        public async Task<ActionResult<IPagination<CategoryResponse>>> GetCategoriesPaginated()
+        [HttpGet("pages/{skip:int?}/{take:int?}")]
+        public async Task<ActionResult<IPagination<CategoryResponse>>> GetCategoriesPaginated(int skip = 1, int take = 12)
         {
-            var categories = await service.GetCategoriesPaginated(includeParent: true);
+            var categories = await service.GetCategoriesPaginated(skip, take, includeParent: true);
+
+            if (categories is null)
+                return NotFound();
 
             return Ok(categories);
         }

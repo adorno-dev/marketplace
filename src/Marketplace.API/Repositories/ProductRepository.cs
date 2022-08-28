@@ -1,6 +1,8 @@
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
+using Marketplace.API.Utils;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Repositories
@@ -13,12 +15,36 @@ namespace Marketplace.API.Repositories
 
         public async Task<IEnumerable<Product>?> GetProducts()
         {
-            return await context.Products.Include(c => c.Category).Include(s => s.Store).ToListAsync();
+            return await context.Products
+                // .Include(c => c.Category)
+                // .Include(s => s.Store)
+                .ToListAsync();
+        }
+
+        public async Task<IPagination<Product>?> GetProductsPaginated(int skip, int take, bool includeParent = false)
+        {
+            var products = new Pagination<Product>();
+
+            products.PageIndex = skip <= 0 ? 1 : skip;
+            products.PageSize = take;
+            products.SetCount(await context.Products.AsNoTracking().CountAsync());
+
+            products.Items = await context.Products
+                // .Include(c => c.Category)
+                // .Include(s => s.Store)
+                .Skip((products.PageIndex - 1) * products.PageSize)
+                .Take(products.PageSize)
+                .ToListAsync();
+
+            return products.Items.Any() ? products : null;
         }
 
         public async Task<Product?> GetProduct(Guid id)
         {
-            return await context.Products.Include(c => c.Category).Include(s => s.Store).FirstOrDefaultAsync(p => p.Id.Equals(id));
+            return await context.Products
+                .Include(c => c.Category)
+                .Include(s => s.Store)
+                .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
         public async Task<bool> CreateProduct(Product product)

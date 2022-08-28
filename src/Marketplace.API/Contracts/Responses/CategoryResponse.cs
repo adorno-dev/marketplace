@@ -4,6 +4,7 @@ namespace Marketplace.API.Contracts.Responses
     {
         public ushort Id { get; set; }
         public string? Name { get; set; }
+        public ushort? ParentId { get; set; }
         public CategoryResponse? Parent { get; set; }
     }
 }

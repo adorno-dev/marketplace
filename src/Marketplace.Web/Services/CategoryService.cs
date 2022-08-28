@@ -1,7 +1,10 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
+using Marketplace.Web.Utils;
+using Marketplace.Web.Utils.Contracts;
 
 namespace Marketplace.Web.Services
 {
@@ -14,7 +17,12 @@ namespace Marketplace.Web.Services
         {
             httpClient = httpClientFactory.CreateClient("Marketplace.API");
             
-            serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            serializerOptions = new JsonSerializerOptions 
+            { 
+                PropertyNameCaseInsensitive = true,
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull 
+            };
         }
 
         public async Task<IEnumerable<Category>?> GetCategories()
@@ -28,6 +36,23 @@ namespace Marketplace.Web.Services
                     var data = await response.Content.ReadAsStreamAsync();
 
                     categories = await JsonSerializer.DeserializeAsync<IEnumerable<Category>>(data, serializerOptions);
+                }
+            }
+
+            return categories;
+        }
+
+        public async Task<IPagination<Category>?> GetCategoriesPaginated(int? page = 1)
+        {
+            Pagination<Category>? categories = null;
+
+            using (var response = await httpClient.GetAsync($"api/categories/pages/{page}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStreamAsync();
+
+                    categories = await JsonSerializer.DeserializeAsync<Pagination<Category>>(data, serializerOptions);
                 }
             }
 

@@ -1,6 +1,8 @@
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
+using Marketplace.API.Utils;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Repositories
@@ -14,6 +16,22 @@ namespace Marketplace.API.Repositories
         public async Task<IEnumerable<Review>?> GetReviews()
         {
             return await context.Reviews.ToListAsync();
+        }
+
+        public async Task<IPagination<Review>?> GetReviewsPaginated(int skip, int take, bool includeParent = false)
+        {
+            var reviews = new Pagination<Review>();
+
+            reviews.PageIndex = skip <= 0 ? 1 : skip;
+            reviews.PageSize = take;
+            reviews.SetCount(await context.Reviews.AsNoTracking().CountAsync());
+
+            reviews.Items = await context.Reviews
+                .Skip((reviews.PageIndex - 1) * reviews.PageSize)
+                .Take(reviews.PageSize)
+                .ToListAsync();
+            
+            return reviews.Items.Any() ? reviews : null;
         }
 
         public async Task<Review?> GetReview(Guid id)

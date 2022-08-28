@@ -1,6 +1,6 @@
-using Marketplace.API.Utils.Contracts;
+using Marketplace.Web.Utils.Contracts;
 
-namespace Marketplace.API.Utils
+namespace Marketplace.Web.Utils
 {
     public class Pagination<T> : IPagination<T> where T : class
     {

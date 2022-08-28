@@ -1,7 +1,7 @@
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -21,6 +21,17 @@ namespace Marketplace.API.Controllers
             var categories = await service.GetProducts();
 
             return Ok(categories);
+        }
+
+        [HttpGet("pages/{skip:int?}/{take:int?}")]
+        public async Task<ActionResult<IPagination<ProductResponse>>> GetProductsPaginated(int skip = 1, int take = 10)
+        {
+            var products = await service.GetProductsPaginated(skip, take, includeParent: true);
+
+            if (products is null)
+                return NotFound();
+
+            return Ok(products);
         }
 
         [HttpGet("{id}")]

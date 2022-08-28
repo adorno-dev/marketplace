@@ -1,9 +1,9 @@
-@model IEnumerable<Category>
+@model IPagination<Category>
 
 <div class='page'>
     <div class="title">Categories</div>
     <div class="header">
-        <p class='hints'>We found @Model.Count() categories.</p>
+        <p class='hints'>We found @Model.TotalItems categories.</p>
     </div>
     <table>
         <thead>
@@ -18,21 +18,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @if (Model.Items is not null)
             {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>
-                        <a class="button" href="/categories/edit/@item.Id">
-                            <i class="fa-solid fa-file-pen">&nbsp;</i>
-                            <span>Edit</span>
-                        </a>
-                        <a class="button" href="/categories/delete/@item.Id">
-                            <i class="fa-solid fa-trash-can">&nbsp;</i>
-                            <span>Delete</span>
-                        </a>
-                    </td>
-                </tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>
+                            <a class="button" href="/categories/edit/@item.Id">
+                                <i class="fa-solid fa-file-pen">&nbsp;</i>
+                                <span>Edit</span>
+                            </a>
+                            <a class="button" href="/categories/delete/@item.Id">
+                                <i class="fa-solid fa-trash-can">&nbsp;</i>
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
