@@ -2,6 +2,8 @@ using System.Text.Json;
 using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
+using Marketplace.Web.Utils;
+using Marketplace.Web.Utils.Contracts;
 
 namespace Marketplace.Web.Services
 {
@@ -28,6 +30,23 @@ namespace Marketplace.Web.Services
                     var data = await response.Content.ReadAsStreamAsync();
 
                     products = await JsonSerializer.DeserializeAsync<IEnumerable<Product>>(data, serializerOptions);
+                }
+            }
+
+            return products;
+        }
+
+        public async Task<IPagination<Product>?> GetProductsPaginated(int? page = 1)
+        {
+            Pagination<Product>? products = null;
+
+            using (var response = await httpClient.GetAsync($"api/products/pages/{page}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStreamAsync();
+
+                    products = await JsonSerializer.DeserializeAsync<Pagination<Product>>(data, serializerOptions);
                 }
             }
 

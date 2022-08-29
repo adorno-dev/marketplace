@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.Web.Controllers
 {
+    [Route("products")]
     [Authorize]
     public class ProductsController : Controller
     {
@@ -31,8 +32,12 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View(await productService.GetProducts());
+        public async Task<IActionResult> Index() => View(await productService.GetProductsPaginated());
 
+        [Route("pages/{page:int}")]
+        public async Task<IActionResult> Index(int page = 1) => View(await productService.GetProductsPaginated(page));
+
+        [Route("create")]
         public async Task<IActionResult> Create()
         {
             var createProductRequest = new CreateProductRequest();
@@ -54,6 +59,7 @@ namespace Marketplace.Web.Controllers
             return View(createProductRequest);
         }
 
+        [Route("create")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductRequest request)
         {
@@ -67,8 +73,10 @@ namespace Marketplace.Web.Controllers
                 View(request);
         }
 
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(Guid id) => View(await productService.GetProduct(id));
 
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var updateProductRequest = new UpdateProductRequest();
@@ -93,21 +101,32 @@ namespace Marketplace.Web.Controllers
             return View(updateProductRequest);
         }
 
+        [Route("edit/{id}")]
         [HttpPost]
         public async Task<IActionResult> Edit(UpdateProductRequest request)
         {
             bool success = false;
 
             if (ModelState.IsValid)
+            {
+                if (request.Images is not null)
+                    foreach (var item in request.Images)
+                    {
+                        Console.WriteLine(item.FileName);
+                    }
+
                 success = await productService.UpdateProduct(request);
+            }
 
             return success ?
                 RedirectToAction(nameof(Index)):
                 View(request);
         }
 
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id) => View(await productService.GetProduct(id));
 
+        [Route("confirm-delete/{id}")]
         public async Task<IActionResult> ConfirmDelete(Guid id)
         {
             var success = await productService.DeleteProduct(id);

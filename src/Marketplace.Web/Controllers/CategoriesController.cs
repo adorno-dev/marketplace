@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.Web.Controllers
 {
+    [Route("categories")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -23,8 +24,12 @@ namespace Marketplace.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index(int? page = 1) => View(await categoryService.GetCategoriesPaginated(page));
+        public async Task<IActionResult> Index() => View(await categoryService.GetCategoriesPaginated());
 
+        [Route("pages/{page:int}")]
+        public async Task<IActionResult> Index(int page = 1) => View(await categoryService.GetCategoriesPaginated(page));
+
+        [Route("create")]
         public async Task<IActionResult> Create()
         {
             var createCategoryRequest = new CreateCategoryRequest();
@@ -34,6 +39,7 @@ namespace Marketplace.Web.Controllers
             return View(createCategoryRequest);
         }
 
+        [Route("create")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryRequest request)
         {
@@ -47,8 +53,10 @@ namespace Marketplace.Web.Controllers
                 View(request);
         }
 
+        [Route("details/{id}")]
         public async Task<IActionResult> Details(ushort id) => View(await categoryService.GetCategory(id));
 
+        [Route("edit/{id}")]
         public async Task<IActionResult> Edit(ushort id)
         {
             var updateCategoryRequest = new UpdateCategoryRequest();
@@ -69,6 +77,7 @@ namespace Marketplace.Web.Controllers
             return View(updateCategoryRequest);
         }
 
+        [Route("edit/{id}")]
         [HttpPost]
         public async Task<IActionResult> Edit(UpdateCategoryRequest request)
         {
@@ -82,6 +91,7 @@ namespace Marketplace.Web.Controllers
                 View(request);
         }
 
+        [Route("delete/{id}")]
         public async Task<IActionResult> Delete(ushort id)
         {
             var category = await categoryService.GetCategory(id);
@@ -89,6 +99,7 @@ namespace Marketplace.Web.Controllers
             return View(category);
         }
 
+        [Route("confirm-delete/{id}")]
         public async Task<IActionResult> ConfirmDelete(ushort id)
         {
             var success = await categoryService.DeleteCategory(id);

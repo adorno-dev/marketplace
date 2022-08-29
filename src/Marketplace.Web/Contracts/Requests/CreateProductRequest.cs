@@ -26,5 +26,8 @@ namespace Marketplace.Web.Contracts.Requests
 
         [Required]
         public ushort? CategoryId { get; set; }
+
+
+        public IFormFileCollection? Images { get; set; }
     }
 }

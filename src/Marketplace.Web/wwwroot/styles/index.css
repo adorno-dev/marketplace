@@ -199,21 +199,32 @@ table tbody tr td {
   white-space: nowrap;
 }
 
-table tr th {
+table thead tr th {
   text-align: left;
 }
 
-table tr th:last-child {
+table tbody tr th:last-child {
   font-weight: normal;
   /* width: 20%; */
   width: 260px;
 }
 
-table tr th:last-child,
-table tr td:last-child {
+table thead tr th:last-child,
+table tbody tr td:last-child {
   text-align: right;
 }
 
-table a.button {
+table thead a.button,
+table tbody a.button {
   margin: 3px;
+}
+
+table tfoot a.button {
+  padding: 10px 16px !important;
+  margin: 5px 5px 5px 0;
+}
+
+table tfoot a.button.active {
+  background: rgba(0, 0, 0, .2);
+  color: rgba(255, 255, 255, 0.87);
 }

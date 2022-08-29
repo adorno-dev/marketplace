@@ -38,5 +38,15 @@
                 }
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" align="center">
+                    @for (int pageIndex = 1; pageIndex <= Model.PageCount; pageIndex++)
+                    {
+                        <a class="button @(Model.PageIndex.Equals(pageIndex) ? "active": "")" asp-controller="categories" asp-action="index" asp-route-page="@pageIndex">@pageIndex</a>
+                    }
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>

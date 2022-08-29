@@ -1,45 +1,58 @@
-@model IEnumerable<Product>
+@model IPagination<Product>
 
 <div class='page'>
     <div class="title">Products</div>
     <div class="header">
-        <p class='hints'>We found @Model.Count() products.</p>
+        <p class='hints'>We found @Model.TotalItems products.</p>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(m => m.Name)</th>
-                <th>@Html.DisplayNameFor(m => m.Description)</th>
-                <th class="text-center">@Html.DisplayNameFor(m => m.Stock)</th>
-                <th class="text-center">@Html.DisplayNameFor(m => m.Price)</th>
-                <th>
-                    <a class="button" asp-controller="products" asp-action="create">
-                        <i class="fa-solid fa-file-circle-plus">&nbsp;</i>
-                        <span>New</span>
-                    </a>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Take(13))
-            {
+    @if (Model.Items is not null)
+    {
+        <table>
+            <thead>
                 <tr>
-                    <td>@Html.DisplayFor(m => item.Name)</td>
-                    <td width="30px">@Html.DisplayFor(m => item.Description)</td>
-                    <td class="text-center">@Html.DisplayFor(m => item.Stock)</td>
-                    <td class="text-center">@Html.DisplayFor(m => item.Price)</td>
-                    <td>
-                        <a class="button" asp-controller="products" asp-action="edit" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-file-pen">&nbsp;</i>
-                            <span>Edit</span>
+                    <th>@Html.DisplayNameFor(m => Model.Items.GetEnumerator().Current.Name)</th>
+                    <th>@Html.DisplayNameFor(m => Model.Items.GetEnumerator().Current.Description)</th>
+                    <th class="text-center">@Html.DisplayNameFor(m => Model.Items.GetEnumerator().Current.Stock)</th>
+                    <th class="text-center">@Html.DisplayNameFor(m => Model.Items.GetEnumerator().Current.Price)</th>
+                    <th>
+                        <a class="button" asp-controller="products" asp-action="create">
+                            <i class="fa-solid fa-file-circle-plus">&nbsp;</i>
+                            <span>New</span>
                         </a>
-                        <a class="button" asp-controller="products" asp-action="delete" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-trash-can">&nbsp;</i>
-                            <span>Delete</span>
-                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.Name)</td>
+                        <td width="30px">@Html.DisplayFor(m => item.Description)</td>
+                        <td class="text-center">@Html.DisplayFor(m => item.Stock)</td>
+                        <td class="text-center">@Html.DisplayFor(m => item.Price)</td>
+                        <td>
+                            <a class="button" asp-controller="products" asp-action="edit" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-file-pen">&nbsp;</i>
+                                <span>Edit</span>
+                            </a>
+                            <a class="button" asp-controller="products" asp-action="delete" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-trash-can">&nbsp;</i>
+                                <span>Delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" align="center">
+                        @for (int pageIndex = 1; pageIndex <= Model.PageCount; pageIndex++)
+                        {
+                            <a class="button @(Model.PageIndex.Equals(pageIndex) ? "active": "")" asp-controller="products" asp-action="index" asp-route-page="@pageIndex">@pageIndex</a>
+                        }
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </tfoot>
+        </table>
+    }
 </div>
