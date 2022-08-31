@@ -4,6 +4,8 @@ namespace Marketplace.Web.Contracts.Requests
 {
     public class CreateProductRequest
     {
+        public Guid Id { get; set; }
+
         [Required]
         [MinLength(3)]
         [MaxLength(255)]
@@ -27,7 +29,11 @@ namespace Marketplace.Web.Contracts.Requests
         [Required]
         public ushort? CategoryId { get; set; }
 
-
         public IFormFileCollection? Images { get; set; }
+
+        public CreateProductRequest()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

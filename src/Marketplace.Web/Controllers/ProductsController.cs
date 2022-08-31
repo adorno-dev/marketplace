@@ -66,7 +66,18 @@ namespace Marketplace.Web.Controllers
             bool success = false;
 
             if (ModelState.IsValid)
+            {
+                var info = Directory.CreateDirectory($"wwwroot/uploads/products/{request.Id}".Replace('/', Path.DirectorySeparatorChar));
+
+                if (request.Images is not null)
+                    foreach (var item in request.Images)
+                    {
+                        using (var fs = new FileStream(info.FullName + Path.DirectorySeparatorChar + item.FileName, FileMode.Create))
+                            await item.CopyToAsync(fs);
+                    }
+
                 success = await productService.CreateProduct(request);
+            }
 
             return success ?
                 RedirectToAction(nameof(Index)):
@@ -94,6 +105,15 @@ namespace Marketplace.Web.Controllers
                 updateProductRequest.Description = product.Description;
                 updateProductRequest.Stock = product.Stock;
                 updateProductRequest.Price = product.Price;
+
+
+
+
+                // var root = $"wwwroot/uploads/products/{updateProductRequest.Id}";
+
+                // if (Directory.Exists(root))
+                //     ViewBag.Images = Directory.GetFiles(root).Select(s => s.Replace("wwwroot", "")).ToArray();
+
             }
             
             ViewBag.SelectViewComponent = await GetSelectViewComponent(updateProductRequest.CategoryId.ToString());
@@ -109,10 +129,13 @@ namespace Marketplace.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                var info = Directory.CreateDirectory($"wwwroot/uploads/products/{request.Id}".Replace('/', Path.DirectorySeparatorChar));
+
                 if (request.Images is not null)
                     foreach (var item in request.Images)
                     {
-                        Console.WriteLine(item.FileName);
+                        using (var fs = new FileStream(info.FullName + Path.DirectorySeparatorChar + item.FileName, FileMode.Create))
+                            await item.CopyToAsync(fs);
                     }
 
                 success = await productService.UpdateProduct(request);

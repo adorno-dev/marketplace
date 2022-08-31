@@ -1,0 +1,59 @@
+@model string[]
+
+<input type="file" name="images" id="images" multiple />
+
+@if (Model is not null && Model.Any())
+{
+    <div class="image-browser">
+        @for (int i = 0; i < Model.Length; i++)
+        {
+            <img src="@Model[i]" id="img_@i" />
+        }
+    </div>
+}
+else
+{
+    <div class="image-browser">
+
+    </div>
+}
+
+@*  *@
+
+@* <vc:image-viewer /> *@
+
+@*  *@
+
+<script type="text/javascript">
+
+    const imageBrowser = document.querySelector(".image-browser");
+
+    const inputFiles = document.querySelector("#images");
+
+    inputFiles.addEventListener("change", (e) =>
+    {
+        const files = e.srcElement.files;
+
+        imageBrowser.querySelectorAll("img")
+                    .forEach(img => imageBrowser.removeChild(img));
+
+        for (let i = 0; i < files.length; i++)
+        {
+            let read = new FileReader();
+            let file = files[i];
+            let view = document.createElement("img");
+
+            view.setAttribute("data-file", file.name);
+            imageBrowser.appendChild(view);
+            read.onloadend = () => view.src = read.result;
+            read.readAsDataURL(file);
+        }
+    });
+
+    imageBrowser.querySelectorAll("img")
+                .forEach(f => f.addEventListener("click", (e) =>
+                {
+                    console.log("Not implemented yet.");
+                }));
+
+</script>

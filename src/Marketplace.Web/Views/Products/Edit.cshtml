@@ -2,7 +2,7 @@
 
 <div class="page">
     <form method="post" enctype="multipart/form-data">
-        <div class="title">Create Product</div>
+        <div class="title">Edit Product</div>
         <vc:select model=@ViewBag.SelectViewComponent />
         <input type="hidden" name="id" value="@Model.Id" />
         <input type="hidden" name="storeId" value="@Model.StoreId" />
@@ -12,7 +12,7 @@
             <input type="number" name="price" placeholder="Price" value="@Model.Price" />
             <input type="number" name="stock" placeholder="Stock" value="@Model.Stock" />
         </div>
-        <input type="file" name="images" multiple />
+        <vc:image-browser path="wwwroot/uploads/products/@Model.Id" />
         <input type="submit" value="SAVE" />
     </form>
 </div>
