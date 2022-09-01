@@ -19,35 +19,40 @@
 
 <script type="text/javascript">
 
-    const control = document.querySelector(".select-checkbox");
-    const label = control.querySelector("label");
-    const list = control.querySelector("ul");
-    const items = list.querySelectorAll("li");
+    function SelectCheckboxInit()
+    {
+        const control = document.querySelector(".select-checkbox");
+        const label = control.querySelector("label");
+        const list = control.querySelector("ul");
+        const items = list.querySelectorAll("li");
 
-    control.addEventListener("click", (event) => {
-        event.stopPropagation();
-        document.querySelectorAll(".active").forEach(activeControl => {
-            if (!activeControl.contains(control))
-                activeControl.classList.remove("active");
-        });
-        window.onclick = () => {
-            window.onclick = null;
-            control.classList.remove("active");
-        }
-        control.classList.toggle("active");
-    });
-
-    items.forEach(item => {
-        item.addEventListener("click", (event) => {
-            let values = list.querySelectorAll("input[type=checkbox]:checked");
-            if (label !== null && values !== undefined) {
-                label.innerText = values.length > 0 ?
-                    `@Html.Raw(@Model.text) (${values.length})`:
-                    `@Html.Raw(@Model.text)`;
+        control.addEventListener("click", (event) => {
+            event.stopPropagation();
+            document.querySelectorAll(".active").forEach(activeControl => {
+                if (!activeControl.contains(control))
+                    activeControl.classList.remove("active");
+            });
+            window.onclick = () => {
+                window.onclick = null;
+                control.classList.remove("active");
             }
-        })
-    })
+            control.classList.toggle("active");
+        });
 
-    label.innerText = `@Html.Raw(@Model.text) (@Model.values.Length)`;
+        items.forEach(item => {
+            item.addEventListener("click", (event) => {
+                let values = list.querySelectorAll("input[type=checkbox]:checked");
+                if (label !== null && values !== undefined) {
+                    label.innerText = values.length > 0 ?
+                        `@Html.Raw(@Model.text) (${values.length})`:
+                        `@Html.Raw(@Model.text)`;
+                }
+            })
+        })
+
+        label.innerText = `@Html.Raw(@Model.text) (@Model.values.Length)`;
+    }
+
+    SelectCheckboxInit();
 
 </script>

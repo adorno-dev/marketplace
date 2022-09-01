@@ -1,6 +1,17 @@
+@model IPagination<Product>
+
 <div class="page">
     <div class="title">Marketplace</div>
     <div class="header">
         <p class="hints">Welcome to the marketplace.</p>
     </div>
+    <ul>
+        @if (Model.Items is not null)
+        {
+            @foreach (var product in Model.Items)
+            {
+                <li>@product.Name</li>
+            }
+        }
+    </ul>
 </div>

@@ -13,47 +13,47 @@
 }
 else
 {
-    <div class="image-browser">
-
-    </div>
+    <div class="image-browser"></div>
 }
-
-@*  *@
-
-@* <vc:image-viewer /> *@
-
-@*  *@
 
 <script type="text/javascript">
 
-    const imageBrowser = document.querySelector(".image-browser");
-
-    const inputFiles = document.querySelector("#images");
-
-    inputFiles.addEventListener("change", (e) =>
+    function ImageBrowserInit()
     {
-        const files = e.srcElement.files;
+        const imageBrowser = document.querySelector(".image-browser");
+        const imageViewer = document.querySelector(".image-viewer");
+        const inputFiles = document.querySelector("#images");
+
+        inputFiles.addEventListener("change", (e) =>
+        {
+            const files = e.srcElement.files;
+
+            imageBrowser.querySelectorAll("img")
+                        .forEach(img => imageBrowser.removeChild(img));
+
+            for (let i = 0; i < files.length; i++)
+            {
+                let read = new FileReader();
+                let file = files[i];
+                let view = document.createElement("img");
+
+                view.setAttribute("data-file", file.name);
+                imageBrowser.appendChild(view);
+                read.onloadend = () => view.src = read.result;
+                read.readAsDataURL(file);
+            }
+        });
 
         imageBrowser.querySelectorAll("img")
-                    .forEach(img => imageBrowser.removeChild(img));
+                    .forEach(f => f.addEventListener("click", (e) =>
+                    {
+                        console.log(e.target.src);
+                        imageViewer.classList.add("active");
+                        imageViewer.querySelector("img").src = e.target.src;
+                    }));
+    }
 
-        for (let i = 0; i < files.length; i++)
-        {
-            let read = new FileReader();
-            let file = files[i];
-            let view = document.createElement("img");
-
-            view.setAttribute("data-file", file.name);
-            imageBrowser.appendChild(view);
-            read.onloadend = () => view.src = read.result;
-            read.readAsDataURL(file);
-        }
-    });
-
-    imageBrowser.querySelectorAll("img")
-                .forEach(f => f.addEventListener("click", (e) =>
-                {
-                    console.log("Not implemented yet.");
-                }));
+    ImageBrowserInit();
 
 </script>
+

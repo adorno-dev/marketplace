@@ -6,8 +6,15 @@
 </div>
 
 <script type="text/javascript">
-    const root = document.querySelector(".checkbox > input");
-    root.onchange = () => {
-        root.setAttribute("value", root.checked);
+
+    function CheckboxInit()
+    {
+        const root = document.querySelector(".checkbox > input");
+        root.onchange = () => {
+            root.setAttribute("value", root.checked);
+        }
     }
+
+    CheckboxInit();
+
 </script>

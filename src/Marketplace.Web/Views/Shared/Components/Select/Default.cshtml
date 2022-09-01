@@ -40,42 +40,47 @@
 
 <script type="text/javascript">
 
-    const select = document.querySelector(".select");
-    const input = select.querySelector("input");
-    const label = select.querySelector("label");
-    const list = select.querySelector("ul");
-    const items = list.querySelectorAll("li");
+    function SelectInit()
+    {
+        const select = document.querySelector(".select");
+        const input = select.querySelector("input");
+        const label = select.querySelector("label");
+        const list = select.querySelector("ul");
+        const items = list.querySelectorAll("li");
 
-    select.addEventListener("click", (event) => {
-        event.stopPropagation();
-        if (select === null)
-            return;
-        document.querySelectorAll(".active").forEach(control => {
-            if (!control.contains(select))
-                control.classList.remove("active");
-        })
-        window.onclick = () => {
-            window.onclick = null;
-            select.classList.remove("active");
-        }
-        select.classList.toggle("active");
-    })
-
-    items.forEach(item => {
-        item.addEventListener("click", () => {
-            let value = item.getAttribute("value");
-            list.querySelectorAll("li.selected").forEach(selected => selected.classList.remove("selected"));
-            if (input === undefined || label === null)
+        select.addEventListener("click", (event) => {
+            event.stopPropagation();
+            if (select === null)
                 return;
-            if (value !== null) {
-                label.innerText = item.innerText;
-                item.className = "selected";
-                input.value = value;
-            } else {
-                label.innerText = "@Html.Raw(@Model.text)";
-                input.value = "";
+            document.querySelectorAll(".active").forEach(control => {
+                if (!control.contains(select))
+                    control.classList.remove("active");
+            })
+            window.onclick = () => {
+                window.onclick = null;
+                select.classList.remove("active");
             }
+            select.classList.toggle("active");
         })
-    })
+
+        items.forEach(item => {
+            item.addEventListener("click", () => {
+                let value = item.getAttribute("value");
+                list.querySelectorAll("li.selected").forEach(selected => selected.classList.remove("selected"));
+                if (input === undefined || label === null)
+                    return;
+                if (value !== null) {
+                    label.innerText = item.innerText;
+                    item.className = "selected";
+                    input.value = value;
+                } else {
+                    label.innerText = "@Html.Raw(@Model.text)";
+                    input.value = "";
+                }
+            })
+        })
+    }
+
+    SelectInit();
 
 </script>

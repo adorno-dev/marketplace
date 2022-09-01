@@ -1,21 +1,19 @@
-<div class="image-viewer active">
+<div class="image-viewer">
     <img src="\uploads\products\a9535a4a-8cfe-4e73-9c0c-719720db0853\10030000-01.png">
 </div>
 
 <script type="text/javascript">
 
-    function init()
+    function ImageViewerInit()
     {
         const root = document.querySelector(".image-viewer");
 
         window.onclick = (event) => {
-            // window.onclick = null;
-            // event.stopPropagation();
-            if (event.target !== root)
+            if (event.target.contains(root))
                 root.classList.remove("active");
         }    
     }
 
-    init();
+    ImageViewerInit();
 
 </script>

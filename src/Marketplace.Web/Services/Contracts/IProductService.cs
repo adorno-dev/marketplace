@@ -7,7 +7,7 @@ namespace Marketplace.Web.Services.Contracts
     public interface IProductService
     {
         Task<IEnumerable<Product>?> GetProducts();
-        Task<IPagination<Product>?> GetProductsPaginated(int? page = 1);
+        Task<IPagination<Product>?> GetProductsPaginated(int? page = 1, int? size = null);
         Task<Product?> GetProduct(Guid id);
         Task<bool> CreateProduct(CreateProductRequest request);
         Task<bool> UpdateProduct(UpdateProductRequest request);

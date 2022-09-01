@@ -36,11 +36,11 @@ namespace Marketplace.Web.Services
             return products;
         }
 
-        public async Task<IPagination<Product>?> GetProductsPaginated(int? page = 1)
+        public async Task<IPagination<Product>?> GetProductsPaginated(int? page = 1, int? size = null)
         {
             Pagination<Product>? products = null;
 
-            using (var response = await httpClient.GetAsync($"api/products/pages/{page}"))
+            using (var response = await httpClient.GetAsync($"api/products/pages/{page}" + (size.HasValue ? $"/{size}": "")))
             {
                 if (response.IsSuccessStatusCode)
                 {
