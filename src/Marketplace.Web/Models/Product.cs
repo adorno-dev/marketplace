@@ -17,9 +17,11 @@ namespace Marketplace.Web.Models
 
         private string[] GetImages()
         {
-            if (Directory.Exists("wwwroot/uploads/products"))
+            string productImagesPath = $"wwwroot/uploads/products/{Id.ToString()}";
+
+            if (Directory.Exists(productImagesPath))
             {
-                return Directory.GetFiles($"wwwroot/uploads/products/{Id.ToString()}")
+                return Directory.GetFiles(productImagesPath)
                                 .Select(s => s.Replace("wwwroot", ""))
                                 .ToArray();
             }
