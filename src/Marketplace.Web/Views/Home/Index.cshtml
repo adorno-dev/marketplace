@@ -5,13 +5,23 @@
     <div class="header">
         <p class="hints">Welcome to the marketplace.</p>
     </div>
-    <ul>
+    <div class="products">
         @if (Model.Items is not null)
         {
             @foreach (var product in Model.Items)
             {
-                <li>@product.Name</li>
+                <a asp-controller="products" asp-action="view" asp-route-id="@product.Id">
+                    <div class="product">
+                        <img src="@product.GetCover()" />
+                        <label class="name">@product.Name</label>
+                        <label class="store">@product.Store?.Name</label>
+                        <div class="columns">
+                            <label class="reviews">Reviews (0)</label>
+                            <label class="price">$ @product.Price</label>
+                        </div>
+                    </div>
+                </a>
             }
         }
-    </ul>
+    </div>
 </div>

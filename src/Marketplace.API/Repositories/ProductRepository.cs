@@ -30,8 +30,8 @@ namespace Marketplace.API.Repositories
             products.SetCount(await context.Products.AsNoTracking().CountAsync());
 
             products.Items = await context.Products
-                // .Include(c => c.Category)
-                // .Include(s => s.Store)
+                .Include(c => c.Category)
+                .Include(s => s.Store)
                 .Skip((products.PageIndex - 1) * products.PageSize)
                 .Take(products.PageSize)
                 .ToListAsync();

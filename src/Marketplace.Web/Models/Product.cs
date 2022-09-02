@@ -13,5 +13,16 @@ namespace Marketplace.Web.Models
 
         public Store? Store { get; set; }
         public Category? Category { get; set; }
+
+        public string[] Images
+        {
+            get => Directory.GetFiles($"wwwroot/uploads/products/{Id.ToString()}")
+                            .Select(s => s.Replace("wwwroot", "")).ToArray();
+        }
+
+        public string GetCover()
+        {
+            return Images.Any() ? Images.First() : string.Empty;
+        }
     }
 }

@@ -1,0 +1,65 @@
+.view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.view div:first-child {
+    max-width: 900px;
+    width: 80%;
+}
+
+.view div:last-child {
+    width: 20%;
+    text-align: center;
+}
+
+.view div:last-child .button {
+    width: 100%;
+}
+
+.view .price {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.store {
+    display: inline-block;
+    width: 100% !important;
+    margin: 20px 0;
+}
+
+.store label {
+    font-size: 1.2em;
+}
+
+.images {
+    display: flex;
+    margin: 10px 0;
+}
+
+.images .side {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.images .side img {
+    object-fit: cover;
+    background-size: cover;
+    height: 64px;
+    width: 64px;
+    border-radius: 5px;
+    margin: 0 0 5px 0;
+    cursor: pointer;
+}
+
+.images .cover {
+    object-fit: cover;
+    width: 800px;
+    height: 500px;
+    border-radius: 10px;
+}

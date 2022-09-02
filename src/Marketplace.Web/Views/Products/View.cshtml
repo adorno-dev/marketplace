@@ -1,0 +1,54 @@
+@model Product
+
+<div class="page">
+    <div class="view">
+        <div>
+            <div class="title">@Model.Name</div>
+            <div class="images">
+                <img class="cover" src="@Model.GetCover()">
+                <div class="side">
+                    @foreach (var image in Model.Images)
+                    {
+                        <img src="@image" />
+                    }
+                </div>
+            </div>
+            <p class="hints">@Model.Description</p>
+        </div>
+        <div>
+            <span class="price">@Html.Raw($"$ {Model.Price}")</span>
+            <a class="button" href="#">Add To Cart</a>
+            <a class="button" href="#">Add To Cart As Gift</a>
+            <a class="button" href="#">Buy Now</a>
+            <div class="store">
+                <br>
+                <br>
+                <label>@Model.Store?.Name</label>
+                <a class="button" href="#">Visite the Store</a>
+                <br>
+                <br>
+                <br>
+                <label>More options...</label>
+                <a class="button" href="#">Add To Favorites</a>
+                <a class="button" href="#">Add To Whishlist</a>
+                <a class="button" href="#">Flag This Listing</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function productViewInit()
+        {
+            var images = document.querySelectorAll(".side img");
+            var coverImage = document.querySelector(".cover");
+            
+            images.forEach(img => img.addEventListener("click", (e) => {
+                coverImage.src = e.target.src;
+            }));  
+        }
+
+        productViewInit();
+    </script>
+}

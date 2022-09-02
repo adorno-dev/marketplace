@@ -41,13 +41,17 @@ else
                 imageBrowser.appendChild(view);
                 read.onloadend = () => view.src = read.result;
                 read.readAsDataURL(file);
+
+                view.onclick = (e) => {
+                    imageViewer.classList.add("active");
+                    imageViewer.querySelector("img").src = e.target.src;
+                }
             }
         });
 
         imageBrowser.querySelectorAll("img")
                     .forEach(f => f.addEventListener("click", (e) =>
                     {
-                        console.log(e.target.src);
                         imageViewer.classList.add("active");
                         imageViewer.querySelector("img").src = e.target.src;
                     }));

@@ -105,15 +105,6 @@ namespace Marketplace.Web.Controllers
                 updateProductRequest.Description = product.Description;
                 updateProductRequest.Stock = product.Stock;
                 updateProductRequest.Price = product.Price;
-
-
-
-
-                // var root = $"wwwroot/uploads/products/{updateProductRequest.Id}";
-
-                // if (Directory.Exists(root))
-                //     ViewBag.Images = Directory.GetFiles(root).Select(s => s.Replace("wwwroot", "")).ToArray();
-
             }
             
             ViewBag.SelectViewComponent = await GetSelectViewComponent(updateProductRequest.CategoryId.ToString());
@@ -155,6 +146,18 @@ namespace Marketplace.Web.Controllers
             var success = await productService.DeleteProduct(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // 
+
+        [AllowAnonymous]
+        [Route("view/{id}")]
+        [ActionName("View")]
+        public async Task<IActionResult> ViewProduct(Guid id)
+        {
+            var product = await productService.GetProduct(id);
+
+            return View(product);
         }
     }
 }
