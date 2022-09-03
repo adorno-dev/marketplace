@@ -5,7 +5,7 @@
 }
 
 .view div:first-child {
-    max-width: 900px;
+    margin-right: 2%;
     width: 80%;
 }
 
@@ -23,5 +23,5 @@
 }
 
 .view table {
-    width: 100%;
+    width: 100% !important;
 }

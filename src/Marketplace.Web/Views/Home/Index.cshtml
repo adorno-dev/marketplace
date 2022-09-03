@@ -6,7 +6,7 @@
         <p class="hints">Welcome to the marketplace.</p>
     </div>
     <div class="products">
-        @if (Model.Items is not null)
+        @if (Model is not null && Model.Items is not null)
         {
             @foreach (var product in Model.Items)
             {

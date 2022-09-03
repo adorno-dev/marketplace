@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using Marketplace.Web.Components;
 using Marketplace.Web.Contracts.Requests;
+using Marketplace.Web.Models;
 using Marketplace.Web.Services.Contracts;
+using Marketplace.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,15 @@ namespace Marketplace.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index() => View(await productService.GetProductsPaginated());
+        public async Task<IActionResult> Index()
+        {
+            var products = await productService.GetProductsPaginated();
+
+            if (products is null)
+                products = new Pagination<Product>() { Items = Array.Empty<Product>() };
+
+            return View(products);
+        }
 
         [Route("pages/{page:int}")]
         public async Task<IActionResult> Index(int page = 1) => View(await productService.GetProductsPaginated(page));
