@@ -7,6 +7,9 @@ namespace Marketplace.API.Models
         public ICollection<Review>? Reviews { get; set; }
 
         public Guid? StoreId { get; set; }
+        public Guid? CartId { get; set; }
+
         public Store? Store { get; set; }
+        public Cart? Cart { get; set; }
     }
 }

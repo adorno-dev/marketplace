@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.view .button {
+    width: 100% !important;
+}
+
 .view .price {
     display: block;
     font-size: 1.8em;

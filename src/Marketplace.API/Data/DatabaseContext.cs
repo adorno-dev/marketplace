@@ -18,6 +18,10 @@ namespace Marketplace.API.Data
 
         public DbSet<Review> Reviews => Set<Review>();
 
+        public DbSet<Cart> Carts => Set<Cart>();
+
+        public DbSet<CartItem> CartItems => Set<CartItem>();
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.ConfigureCategory()
@@ -29,6 +33,8 @@ namespace Marketplace.API.Data
             mb.ConfigureProduct();
             mb.ConfigureUser();
             mb.ConfigureReview();
+            mb.ConfigureCart();
+            mb.ConfigureCartItem();
 
             base.OnModelCreating(mb);
         }
