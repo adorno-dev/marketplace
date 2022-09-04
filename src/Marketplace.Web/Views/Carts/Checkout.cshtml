@@ -1,0 +1,63 @@
+﻿@model Checkout
+<div class="page">
+    <form class="checkout" method="post">
+        <div>
+            <div class="title">Billing information</div>
+            <p class="hints">Please fill all required fields to complete place order.</p>
+            <div class="space-between">
+                <input type="text" name="firstName" placeholder="First Name" value="@Model.BillingInfo?.FirstName" />
+                <input type="text" name="lastName" placeholder="Last Name" value="@Model.BillingInfo?.LastName" />
+            </div>
+            <input type="email" name="email" placeholder="Email" value="@Model.BillingInfo?.Email" />
+            <input type="text" name="phoneNumber" placeholder="Phone Number" value="@Model.BillingInfo?.PhoneNumber" />
+            <div class="space-between">
+                <input type="text" name="cardNumber" placeholder="Card Number" value="@Model.BillingInfo?.CardNumber" />
+                <input type="text" name="nameOnCard" placeholder="Name On Card" value="@Model.BillingInfo?.NameOnCard" />
+            </div>
+            <div class="space-between">
+                <input type="text" name="cvv" placeholder="CVV" value="@Model.BillingInfo?.CVV" />
+                <input type="text" name="expireDate" placeholder="MMYY" value="@Model.BillingInfo?.ExpireDate" />
+            </div>
+        </div>
+        <div>
+            <div class="title">Your cart</div>
+            <p class="hints">There are <b>@Model.Cart?.Items?.Count</b> items in your cart.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Cart?.Items is not null)
+                    {
+                        @foreach (var item in Model.Cart.Items)
+                        {
+                            <tr>
+                                <td>@item.Description</td>
+                                <td>@item.Quantity</td>
+                                <td>$ @item.Price</td>
+                            </tr>   
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <span>Total:</span>
+                        </td>
+                        <td>$ @Model.Cart?.Items?.Sum(s => s.Price * s.Quantity)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <a href="#" class="button">Continue to checkout</a>
+                            <a asp-controller="carts" asp-action="index" class="button">Go back to my cart</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

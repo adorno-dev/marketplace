@@ -1,7 +1,7 @@
 @model CreateCategoryRequest
 
 <div class="page">
-    <form method="post">
+    <form class="content" method="post">
         <div class="title">Create Category</div>
         <vc:select model=@ViewBag.SelectViewComponent />
         <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />

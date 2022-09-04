@@ -1,0 +1,30 @@
+.image-viewer {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border-radius: 10px;
+    height: 600px;
+    width: 900px;
+  
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  
+  .image-viewer.active {
+    display: block;
+  }
+  
+  .image-viewer img {
+    display: inline-block;
+    border-radius: 10px;
+    object-fit: cover;
+    width: 900px;
+    height: 600px;
+  }

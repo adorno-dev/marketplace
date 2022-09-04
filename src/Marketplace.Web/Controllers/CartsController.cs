@@ -56,5 +56,17 @@ namespace Marketplace.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [Route("checkout")]
+        [ActionName("checkout")]
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var checkout = new Checkout();
+            checkout.BillingInfo = new BillingInfo();
+            checkout.Cart = await cartService.GetCart(userId);
+
+            return View(checkout);
+        }
     }
 }

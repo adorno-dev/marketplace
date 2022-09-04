@@ -53,7 +53,7 @@ builder.Services.ConfigureApplicationCookie(o =>
 {
     o.Cookie.Name = "IdentitySample";
     o.Cookie.HttpOnly = true;
-    o.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+    o.ExpireTimeSpan = TimeSpan.FromHours(8);
     o.LoginPath = "/account/signin";
     o.LogoutPath = "/account/signout";
     o.AccessDeniedPath = "/app/access-denied";

@@ -1,7 +1,7 @@
 @model CreateProductRequest
 
 <div class="page">
-    <form method="post" enctype="multipart/form-data">
+    <form class="content" method="post" enctype="multipart/form-data">
         <div class="title">Create Product</div>
         <vc:select model=@ViewBag.SelectViewComponent />
         <input type="hidden" name="id" value="@Model.Id" />

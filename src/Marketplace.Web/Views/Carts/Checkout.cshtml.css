@@ -1,0 +1,26 @@
+.page .checkout table {
+    width: 100%;
+}
+
+.page .checkout table th,
+.page .checkout table td {
+    padding: 10px;
+}
+
+.page .checkout table thead th:last-child,
+.page .checkout table tbody td:last-child {
+    text-align: center;
+}
+
+.page .checkout table tfoot {
+    padding: 20px 0;
+    font-weight: bold;
+}
+
+.page .checkout table tfoot td {
+    border-top: 1px solid #fff !important;
+}
+
+.page .checkout table tfoot td:last-child {
+    text-align: center;
+}

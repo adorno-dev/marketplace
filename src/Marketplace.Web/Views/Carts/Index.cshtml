@@ -48,7 +48,8 @@
         </div>
         <div>
             <div class="title">Total: <span><b>$ @Model.Items?.Sum(s => s.Price)</b></span></div>
-            <a class="button" href="#">Check out</a>
+            <br>
+            <a class="button" asp-controller="carts" asp-action="checkout">Check out</a>
             <a class="button" asp-controller="home" asp-action="index">Return to marketplace</a>
         </div>
     </div>
