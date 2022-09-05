@@ -3,9 +3,9 @@
 <div class="page">
     <form class="content" method="post">
         <div class="title">Edit Category</div>
-        <vc:select model=@ViewBag.SelectViewComponent />
+        @await Component.InvokeAsync("Select", new { model = ViewBag.SelectViewComponent })
         <input type="hidden" name="id" value="@Model.Id">
-        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
+        <input asp-for="Name" placeholder="Name" />
         <input type="submit" value="SAVE" />
     </form>
 </div>

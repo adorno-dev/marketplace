@@ -3,8 +3,8 @@
 <div class="page">
     <form class="content" method="post">
         <div class="title">Create Category</div>
-        <vc:select model=@ViewBag.SelectViewComponent />
-        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
+        @await Component.InvokeAsync("Select", new { model = ViewBag.SelectViewComponent })
+        <input asp-for="Name" placeholder="Name" />
         <input type="submit" value="SAVE" />
     </form>
 </div>

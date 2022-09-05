@@ -1,4 +1,3 @@
-using System;
 using System.Security.Claims;
 using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Models;
@@ -62,11 +61,38 @@ namespace Marketplace.Web.Controllers
         public async Task<IActionResult> Checkout()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var checkout = new Checkout();
-            checkout.BillingInfo = new BillingInfo();
-            checkout.Cart = await cartService.GetCart(userId);
 
-            return View(checkout);
+            this.ViewBag.Cart = await cartService.GetCart(userId);
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("checkout")]
+        [ActionName("checkout")]
+        public async Task<IActionResult> Checkout(PlaceOrderRequest request)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (ModelState.IsValid)
+            {
+                await Task.CompletedTask;
+
+                return RedirectToAction("placeorder");
+            }
+
+            this.ViewBag.Cart = await cartService.GetCart(userId);
+
+            return View(request);
+        }
+
+        [Route("placeorder")]
+        [ActionName("placeorder")]
+        public async Task<IActionResult> PlaceOrder()
+        {
+            await Task.CompletedTask;
+
+            return View("Placeorder", Random.Shared.Next(1000, 9999).ToString("D6"));
         }
     }
 }

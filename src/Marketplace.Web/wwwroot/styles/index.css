@@ -43,6 +43,7 @@
     margin: 5px 0px;
     padding: 10px 25px;
     transition: 0.2s;
+    font-weight: normal;
   }
   
   a.button:hover {
@@ -58,7 +59,7 @@
     outline: none;
     width: 100%;
     margin: 5px 0;
-    padding: 10px 25px;
+    padding: 11px 25px;
     font-size: 1em;
   }
   
@@ -76,11 +77,12 @@
     display: inline-block;
     border: none;
     outline: none;
-    padding: 10px 40px;
+    padding: 11px 40px;
     font-size: 1em;
     margin: 5px 0;
     border-radius: 50px;
     cursor: pointer;
+    font-weight: normal;
   }
   
   input[type=button]:hover,
@@ -128,7 +130,7 @@
     background: rgba(0, 0, 0, .2);
     color: rgba(255, 255, 255, 0.87);
   }
-
+  
   /*  */
 
   #placeholder {
@@ -161,6 +163,20 @@
 }
 
 /*  */
+
+.image-browser img {
+  display: inline-block;
+  object-fit: cover;
+  background-size: cover;
+  height: 64px;
+  width: 64px;
+  margin: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+/*  */
   
 .page {
   display: flex;
@@ -182,7 +198,8 @@
 .page .content {
   display: flex;
   flex-direction: column;
-  min-width: 500px;
+  /* min-width: 500px; */
+  width: 500px;
   text-align: center;
   align-self: center;  
   margin: calc(70px) 0;
@@ -206,8 +223,12 @@
 .page form .space-between {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  /* margin: 10px 0; */
   column-gap: 20px;
+}
+
+.page form .space-between > * {
+  margin: 10px 0;
 }
 
 .page .content p,

@@ -5,10 +5,10 @@
         <div class="title">Sign In</div>
         <p class="hints">Please enter your email and password.</p>
 
-        <input type="email" name="email" placeholder="Email" autocomplete="off" value="@Model.Email" />
-        <input type="password" name="password" placeholder="Password" autocomplete="off" value="@Model.Password" />
+        <input asp-for="Email" placeholder="Email" />
+        <input asp-for="Password" placeholder="Password" />
         <div class="space-between">
-            <vc:checkbox name="remember" text="Remember Account?" value="@Model.Remember" />
+            @await Component.InvokeAsync("Checkbox", new { name="remember", text="Remember Account?", value=Model.Remember })
             <a asp-controller="account" asp-action="forgotpassword">Forgot your password?</a>
         </div>
         <input type="submit" value="SIGN IN" />

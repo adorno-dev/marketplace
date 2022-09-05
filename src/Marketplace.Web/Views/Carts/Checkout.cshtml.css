@@ -17,7 +17,7 @@
     font-weight: bold;
 }
 
-.page .checkout table tfoot td {
+.page .checkout table tfoot tr:last-child td {
     border-top: 1px solid #fff !important;
 }
 

@@ -1,0 +1,17 @@
+.page .content i {
+    font-size: 7em;
+    color: rgb(156, 187, 109);
+    margin: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    line-height: 35px;
+    gap: 5px;
+}
+
+#order-number {
+    font-size: 1.5em;
+}

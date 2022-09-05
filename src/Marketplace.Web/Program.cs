@@ -58,7 +58,6 @@ builder.Services.ConfigureApplicationCookie(o =>
     o.LogoutPath = "/account/signout";
     o.AccessDeniedPath = "/app/access-denied";
     o.SlidingExpiration = true;
-    o.SlidingExpiration = true;
     o.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
 });
 

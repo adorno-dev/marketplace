@@ -2,5 +2,5 @@
 
 @if (User.Identity is not null && User.Identity.IsAuthenticated)
 {
-    <a asp-controller="@Model.aspController" asp-action="@Model.aspAction">@Model.text</a>
+    <a asp-controller="@Model.controller" asp-action="@Model.action">@Model.text</a>
 }

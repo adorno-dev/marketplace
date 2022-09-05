@@ -81,5 +81,16 @@ namespace Marketplace.Web.Controllers
 
         [HttpGet]
         public IActionResult ForgotPassword() => View();
+
+        [HttpPost]
+        public IActionResult ForgotPassword(ForgotPasswordRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("index", "home");
+            }
+
+            return View(request);
+        }
     }
 }

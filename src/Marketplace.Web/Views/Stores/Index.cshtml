@@ -5,8 +5,8 @@
         <div class="title">My Store</div>
         <input type="hidden" name="id" value="@Model.Id" />
         <input type="hidden" name="userId" value="@Model.UserId" />
-        <vc:select-checkbox model=@ViewBag.SelectCheckboxViewComponent />
-        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
+        @await Component.InvokeAsync("SelectCheckbox", new { model = ViewBag.SelectCheckboxViewComponent })
+        <input asp-for="Name" placeholder="Name" />
         <input type="submit" value="SAVE" />
     </form>
 </div>

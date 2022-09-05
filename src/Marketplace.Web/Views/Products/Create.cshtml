@@ -3,17 +3,17 @@
 <div class="page">
     <form class="content" method="post" enctype="multipart/form-data">
         <div class="title">Create Product</div>
-        <vc:select model=@ViewBag.SelectViewComponent />
+        @await Component.InvokeAsync("Select", new { model = ViewBag.SelectViewComponent })
         <input type="hidden" name="id" value="@Model.Id" />
         <input type="hidden" name="storeId" value="@Model.StoreId" />
-        <input type="text" name="name" placeholder="Name" autoComplete="off" value="@Model.Name" />
-        <input type="text" name="description" placeholder="Description" autoComplete="off" value="@Model.Description" />
+        <input asp-for="Name" placeholder="Name" />
+        <input asp-for="Description" placeholder="Description" />
         <div class="space-between">
-            <input type="number" name="price" placeholder="Price" value="@Model.Price" />
-            <input type="number" name="stock" placeholder="Stock" value="@Model.Stock" />
+            <input asp-for="Price" placeholder="Price" />
+            <input type="number" asp-for="Stock" placeholder="Stock" />
         </div>
-        <vc:image-viewer />
-        <vc:image-browser path="wwwroot/uploads/products/@Model.Id" />
+        @await Component.InvokeAsync("ImageViewer")
+        @await Component.InvokeAsync("ImageBrowser", new { path = $"wwwroot/uploads/products/{@Model.Id}" })
         <input type="submit" value="SAVE" />
     </form>
 </div>

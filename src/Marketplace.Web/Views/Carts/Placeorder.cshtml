@@ -1,0 +1,12 @@
+@model string
+
+<div class="page">
+    <div class="content">
+        <div class="title">Congratulations</div>
+        <div class="hints">Thanks for your payment</div>
+        <i class="fa-regular fa-circle-check"></i>
+        <div class="row"><span>Your order number is: </span><b id="order-number">#@Model</b></div>
+        <a class="button" asp-controller="home" asp-action="index">Return To Marketplace</a>
+    </div>
+</div>
+

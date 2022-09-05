@@ -17,6 +17,7 @@ namespace Marketplace.Web.Contracts.Requests
         public string? Description { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public decimal? Price { get; set; }
 
         [Required]
