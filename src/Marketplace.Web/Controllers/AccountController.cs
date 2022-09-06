@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Hanssens.Net;
 using Marketplace.Web.Contracts.Requests;
 using Marketplace.Web.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
@@ -8,12 +9,18 @@ namespace Marketplace.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly LocalStorage localStorage;
         private readonly SignInManager<IdentityUser<Guid>> signInManager;
         private readonly IAccountService accountService;
         private readonly ITokenService tokenService;
 
-        public AccountController(SignInManager<IdentityUser<Guid>> signInManager, IAccountService accountService, ITokenService tokenService)
+        public AccountController(
+            LocalStorage localStorage,
+            SignInManager<IdentityUser<Guid>> signInManager, 
+            IAccountService accountService, 
+            ITokenService tokenService)
         {
+            this.localStorage = localStorage;
             this.signInManager = signInManager;
             this.accountService = accountService;
             this.tokenService = tokenService;
@@ -29,7 +36,7 @@ namespace Marketplace.Web.Controllers
 
             if (response?.Token is not null)
             {
-                var claimsPrincipal = tokenService.GetClaimsPrincipalFromExpiredToken(response.Token);
+                var claimsPrincipal = tokenService.GetClaimsPrincipalFromToken(response.Token);
 
                 var identifier = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -44,6 +51,9 @@ namespace Marketplace.Web.Controllers
                     };
 
                     await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal?.Claims);
+
+                    localStorage.Store<string>("t", response.Token);
+                    localStorage.Persist();
 
                     if (request.returnUrl is not null)
                         return Redirect(request.returnUrl);
@@ -75,6 +85,8 @@ namespace Marketplace.Web.Controllers
         public new async Task<IActionResult> SignOut()
         {
             await signInManager.SignOutAsync();
+
+            localStorage.Remove("t");
 
             return RedirectToAction("index", "home");
         }

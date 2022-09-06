@@ -18,10 +18,9 @@
         <div>
             <span class="price">@Html.Raw($"$ {Model.Price}")</span>
             <a class="button" asp-controller="carts" asp-action="add-item" asp-route-id="@Model.Id">Add To Cart</a>
-            <a class="button" href="#">Add To Cart As Gift</a>
+            @* <a class="button" href="#">Add To Cart As Gift</a> *@
             <a class="button" href="#">Buy Now</a>
             <div class="store">
-                <br>
                 <br>
                 <label>@Model.Store?.Name</label>
                 <a class="button" href="#">Visite the Store</a>
@@ -29,7 +28,7 @@
                 <br>
                 <br>
                 <label>More options...</label>
-                <a class="button" href="#">Add To Favorites</a>
+                <a class="button" asp-controller="products" asp-action="favorite" asp-route-id="@Model.Id">Add To Favorites</a>
                 <a class="button" href="#">Add To Whishlist</a>
                 <a class="button" href="#">Flag This Listing</a>
             </div>

@@ -1,4 +1,4 @@
-.page .content i {
+.page .content > i {
     font-size: 7em;
     color: rgb(156, 187, 109);
     margin: 20px;

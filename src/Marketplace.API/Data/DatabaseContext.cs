@@ -22,6 +22,8 @@ namespace Marketplace.API.Data
 
         public DbSet<CartItem> CartItems => Set<CartItem>();
 
+        public DbSet<Favorite> Favorites => Set<Favorite>();
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.ConfigureCategory()
@@ -35,6 +37,7 @@ namespace Marketplace.API.Data
             mb.ConfigureReview();
             mb.ConfigureCart();
             mb.ConfigureCartItem();
+            mb.ConfigureFavorite();
 
             base.OnModelCreating(mb);
         }

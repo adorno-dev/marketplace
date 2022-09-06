@@ -16,6 +16,7 @@ namespace Marketplace.API.Repositories
         public async Task<IEnumerable<Product>?> GetProducts()
         {
             return await context.Products
+                .AsNoTracking()
                 // .Include(c => c.Category)
                 // .Include(s => s.Store)
                 .ToListAsync();
@@ -30,6 +31,7 @@ namespace Marketplace.API.Repositories
             products.SetCount(await context.Products.AsNoTracking().CountAsync());
 
             products.Items = await context.Products
+                .AsNoTracking()
                 .Include(c => c.Category)
                 .Include(s => s.Store)
                 .Skip((products.PageIndex - 1) * products.PageSize)

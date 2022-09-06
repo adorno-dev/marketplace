@@ -16,6 +16,7 @@ namespace Marketplace.Web.Controllers
         private readonly ICategoryService categoryService;
         private readonly IStoreService storeService;
         private readonly IProductService productService;
+        private readonly IFavoriteService favoriteService;
 
         private async Task<Select> GetSelectViewComponent(string? value = "")
         {
@@ -26,11 +27,12 @@ namespace Marketplace.Web.Controllers
             return new Select("categoryId", "Empty Category", value ?? "", selectItems);
         }
 
-        public ProductsController(ICategoryService categoryService, IStoreService storeService, IProductService productService)
+        public ProductsController(ICategoryService categoryService, IStoreService storeService, IProductService productService, IFavoriteService favoriteService)
         {
             this.categoryService = categoryService;
             this.storeService = storeService;
             this.productService = productService;
+            this.favoriteService = favoriteService;
         }
 
         [HttpGet]
@@ -162,12 +164,32 @@ namespace Marketplace.Web.Controllers
 
         [AllowAnonymous]
         [Route("view/{id}")]
-        [ActionName("View")]
+        [ActionName("view")]
         public async Task<IActionResult> ViewProduct(Guid id)
         {
             var product = await productService.GetProduct(id);
 
             return View(product);
+        }
+
+        // 
+
+        [Route("favorite/{productId}")]
+        [ActionName("favorite")]
+        public async Task<IActionResult> Favorite(Guid productId)
+        {
+            await favoriteService.Favorite(productId);
+
+            return RedirectToAction("view", new { id = productId });
+        }
+
+        [Route("unfavorite/{productId}")]
+        [ActionName("unfavorite")]
+        public async Task<IActionResult> Unfavorite(Guid productId)
+        {
+            await favoriteService.UnFavorite(productId);
+
+            return RedirectToAction("view", new { id = productId });
         }
     }
 }

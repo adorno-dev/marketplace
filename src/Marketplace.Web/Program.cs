@@ -1,4 +1,6 @@
+using Hanssens.Net;
 using Marketplace.Web.Data;
+using Marketplace.Web.Handlers;
 using Marketplace.Web.Services;
 using Marketplace.Web.Services.Contracts;
 using Marketplace.Web.Settings;
@@ -14,6 +16,7 @@ builder.Services.AddHttpClient("Marketplace.API", configure =>
 {
     configure.BaseAddress = new Uri("https://localhost:5000");
 })
+.AddHttpMessageHandler<TokenHandler>()
 .ConfigurePrimaryHttpMessageHandler(() => {
     var handler = new HttpClientHandler();
     if (builder.Environment.IsDevelopment())
@@ -93,13 +96,23 @@ builder.Services.AddScoped<ITokenService>(options =>
         // scope.ServiceProvider.GetRequiredService<UserManager<User>>());
 });
 
+builder.Services.AddScoped<LocalStorage>();
+builder.Services.AddScoped<TokenHandler>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddWebOptimizer(options => {
+    options.AddCssBundle("/styles/index.min.css", "**/*.css").UseContentRoot();
+    options.AddJavaScriptBundle("/scripts/index.min.js", "**/*.js").UseContentRoot();
+});
 
 var app = builder.Build();
 
@@ -110,6 +123,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseWebOptimizer();
 
 app.UseWebSockets();
 app.UseHttpsRedirection();

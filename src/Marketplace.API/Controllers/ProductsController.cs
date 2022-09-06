@@ -1,32 +1,42 @@
+using System.Security.Claims;
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
 using Marketplace.API.Utils.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductService service;
+        private readonly IProductService productService;
+        private readonly IFavoriteService favoriteService;
 
-        public ProductsController(IProductService service) => this.service = service;
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
+
+        public ProductsController(IProductService service, IFavoriteService favoriteService)
+        {
+            this.productService = service;
+            this.favoriteService = favoriteService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
         {
-            var categories = await service.GetProducts();
+            var categories = await productService.GetProducts();
 
             return Ok(categories);
         }
 
+        [AllowAnonymous]
         [HttpGet("pages/{skip:int?}/{take:int?}")]
         public async Task<ActionResult<IPagination<ProductResponse>>> GetProductsPaginated(int skip = 1, int take = 10)
         {
-            var products = await service.GetProductsPaginated(skip, take, includeParent: true);
+            var products = await productService.GetProductsPaginated(skip, take, includeParent: true);
 
             if (products is null)
                 return NotFound();
@@ -34,10 +44,11 @@ namespace Marketplace.API.Controllers
             return Ok(products);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse?>> GetProduct(Guid id)
         {
-            var category = await service.GetProduct(id);
+            var category = await productService.GetProduct(id);
 
             if (category is null)
                 return NotFound();
@@ -50,7 +61,7 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                return await service.CreateProduct(request) ?
+                return await productService.CreateProduct(request) ?
                     Ok():
                     BadRequest();
             }
@@ -63,7 +74,7 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                return await service.UpdateProduct(request) ?
+                return await productService.UpdateProduct(request) ?
                     Ok():
                     BadRequest();
             }
@@ -74,7 +85,23 @@ namespace Marketplace.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            return await service.DeleteProduct(id) ?
+            return await productService.DeleteProduct(id) ?
+                Ok():
+                NotFound();
+        }
+
+        [HttpPost("favorite/{productId}")]
+        public async Task<IActionResult> Favorite(Guid productId)
+        {
+            return await favoriteService.Favorite(UserId, productId) ?
+                Ok():
+                Conflict();
+        }
+
+        [HttpPost("unfavorite/{productId}")]
+        public async Task<IActionResult> Unfavorite(Guid productId)
+        {
+            return await favoriteService.Unfavorite(UserId, productId) ?
                 Ok():
                 NotFound();
         }

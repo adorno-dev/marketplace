@@ -16,7 +16,7 @@ namespace Marketplace.Web.Services
             this.tokenSettings = tokenSettings.Value;
         }
 
-        public ClaimsPrincipal GetClaimsPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetClaimsPrincipalFromToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
 
