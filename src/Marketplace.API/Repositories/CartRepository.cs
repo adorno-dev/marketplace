@@ -54,7 +54,7 @@ namespace Marketplace.API.Repositories
 
         public async Task<Cart?> GetCart(Guid userId)
         {
-            return await context.Carts.Include("Items").Include("Items.Product").AsNoTracking().FirstOrDefaultAsync();
+            return await context.Carts.Include("Items").Include("Items.Product").AsNoTracking().FirstOrDefaultAsync(c => c.UserId.Equals(userId));
         }
 
         public async Task<CartItem?> GetCartItem(Guid cartItemId)

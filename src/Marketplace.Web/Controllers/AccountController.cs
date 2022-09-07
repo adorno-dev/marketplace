@@ -40,6 +40,8 @@ namespace Marketplace.Web.Controllers
 
                 var identifier = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+                localStorage.Store("t", response.Token);
+
                 if (identifier is not null)
                 {
                     var user = new IdentityUser<Guid> 
@@ -51,9 +53,6 @@ namespace Marketplace.Web.Controllers
                     };
 
                     await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal?.Claims);
-
-                    localStorage.Store<string>("t", response.Token);
-                    localStorage.Persist();
 
                     if (request.returnUrl is not null)
                         return Redirect(request.returnUrl);
@@ -86,7 +85,8 @@ namespace Marketplace.Web.Controllers
         {
             await signInManager.SignOutAsync();
 
-            localStorage.Remove("t");
+            localStorage.Clear();
+            localStorage.Destroy();
 
             return RedirectToAction("index", "home");
         }

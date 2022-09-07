@@ -5,8 +5,8 @@ namespace Marketplace.Web.Services
 {
     public abstract class ApiBaseService
     {
-        private readonly JsonSerializerOptions serializerOptions;
-        private readonly HttpClient httpClient;
+        protected readonly JsonSerializerOptions serializerOptions;
+        protected readonly HttpClient httpClient;
 
         protected ApiBaseService(IHttpClientFactory httpClientFactory)
         {
@@ -19,7 +19,5 @@ namespace Marketplace.Web.Services
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull 
             };
         }
-
-        public HttpClient Api { get => httpClient; }
     }
 }

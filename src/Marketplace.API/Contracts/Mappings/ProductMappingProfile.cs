@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;

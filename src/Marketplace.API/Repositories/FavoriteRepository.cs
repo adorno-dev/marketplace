@@ -31,6 +31,9 @@ namespace Marketplace.API.Repositories
 
             favorites.Items = await context.Favorites
                 .AsNoTracking()
+                .Include("Product")
+                .Include("Product.Store")
+                .Where(f => f.UserId.Equals(userId))
                 .Skip((favorites.PageIndex - 1) * favorites.PageSize)
                 .Take(favorites.PageSize)
                 .ToListAsync();

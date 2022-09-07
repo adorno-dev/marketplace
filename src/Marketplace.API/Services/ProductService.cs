@@ -20,23 +20,23 @@ namespace Marketplace.API.Services
             this.repository = repository;
         }
         
-        public async Task<IEnumerable<ProductResponse>?> GetProducts()
+        public async Task<IEnumerable<ProductResponse>?> GetProducts(Guid userId)
         {
-            var products = await repository.GetProducts();
+            var products = await repository.GetProducts(userId);
 
             return mapper.Map<IEnumerable<ProductResponse>?>(products);
         }
 
-        public async Task<IPagination<ProductResponse>?> GetProductsPaginated(int skip, int take, bool includeParent = false)
+        public async Task<IPagination<ProductResponse>?> GetProductsPaginated(Guid userId, int skip, int take, bool includeParent = false)
         {
-            var products = await repository.GetProductsPaginated(skip, take, includeParent);
+            var products = await repository.GetProductsPaginated(userId, skip, take, includeParent);
 
             return mapper.Map<Pagination<ProductResponse>?>(products);
         }
 
-        public async Task<ProductResponse?> GetProduct(Guid id)
+        public async Task<ProductResponse?> GetProduct(Guid userId, Guid id)
         {
-            var product = await repository.GetProduct(id);
+            var product = await repository.GetProduct(userId, id);
 
             return mapper.Map<ProductResponse>(product);
         }

@@ -1,0 +1,52 @@
+@model IPagination<Favorite>
+
+<div class='page'>
+    <div class="title">Favorites</div>
+    <div class="header">
+        <p class='hints'>We found @Model.TotalItems favorite products.</p>
+    </div>
+    <div>
+        <br />
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Store</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items is not null)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.Store</td>
+                        <td>@item.Price</td>
+                        <td>
+                            <a class="button" asp-controller="products" asp-action="unfavorite" asp-route-id="@item.Id">
+                                <i class="fa-regular fa-heart">&nbsp;</i>
+                                <span>Unfavorite</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" align="center">
+                    @for (int pageIndex = 1; pageIndex <= Model.PageCount; pageIndex++)
+                    {
+                        <a class="button @(Model.PageIndex.Equals(pageIndex) ? "active": "")" asp-controller="categories" asp-action="index" asp-route-page="@pageIndex">@pageIndex</a>
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

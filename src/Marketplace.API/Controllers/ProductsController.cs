@@ -27,7 +27,9 @@ namespace Marketplace.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProducts()
         {
-            var categories = await productService.GetProducts();
+            Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId);
+
+            var categories = await productService.GetProducts(UserId);
 
             return Ok(categories);
         }
@@ -36,7 +38,9 @@ namespace Marketplace.API.Controllers
         [HttpGet("pages/{skip:int?}/{take:int?}")]
         public async Task<ActionResult<IPagination<ProductResponse>>> GetProductsPaginated(int skip = 1, int take = 10)
         {
-            var products = await productService.GetProductsPaginated(skip, take, includeParent: true);
+            Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId);
+
+            var products = await productService.GetProductsPaginated(UserId, skip, take, includeParent: true);
 
             if (products is null)
                 return NotFound();
@@ -48,7 +52,9 @@ namespace Marketplace.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse?>> GetProduct(Guid id)
         {
-            var category = await productService.GetProduct(id);
+            Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId);
+
+            var category = await productService.GetProduct(UserId, id);
 
             if (category is null)
                 return NotFound();

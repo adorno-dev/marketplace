@@ -4,6 +4,7 @@ using Marketplace.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220906162941_ProductFavorite")]
+    partial class ProductFavorite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,7 +294,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 22, 31, 51, 319, DateTimeKind.Utc).AddTicks(3308));
+                        .HasDefaultValue(new DateTime(2022, 9, 6, 16, 29, 40, 902, DateTimeKind.Utc).AddTicks(6613));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -587,8 +589,8 @@ namespace Marketplace.API.Migrations
             modelBuilder.Entity("Marketplace.API.Models.Favorite", b =>
                 {
                     b.HasOne("Marketplace.API.Models.Product", "Product")
-                        .WithOne("Favorite")
-                        .HasForeignKey("Marketplace.API.Models.Favorite", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -711,8 +713,6 @@ namespace Marketplace.API.Migrations
 
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
-                    b.Navigation("Favorite");
-
                     b.Navigation("Reviews");
                 });
 

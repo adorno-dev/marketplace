@@ -15,6 +15,10 @@ namespace Marketplace.API.Data.Configurations
               .IsUnique(false);
 
             mb.Entity<Favorite>()
+              .HasIndex(f => f.ProductId)
+              .IsUnique(false);
+
+            mb.Entity<Favorite>()
               .HasKey(f => new { f.UserId, f.ProductId });
             
             mb.Entity<Favorite>()

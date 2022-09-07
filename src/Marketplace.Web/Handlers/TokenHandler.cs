@@ -16,7 +16,11 @@ namespace Marketplace.Web.Handlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (httpContextAccessor.HttpContext is not null && localStorage.Exists("t"))
+            var isAuthenticated = httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated;
+
+            localStorage.Load();
+
+            if (isAuthenticated == true && localStorage.Exists("t"))
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", localStorage.Get<string>("t"));
 
             return await base.SendAsync(request, cancellationToken);

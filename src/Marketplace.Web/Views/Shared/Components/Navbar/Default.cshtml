@@ -4,6 +4,7 @@
         @await Component.InvokeAsync("Link", new { controller = "carts", action = "index", text = "My Cart" })
         @await Component.InvokeAsync("Link", new { controller = "stores", action = "index", text = "My Store" })
         <a href="/categories">Categories</a>
+        @await Component.InvokeAsync("Link", new { controller = "favorites", action = "index", text = "Favorites" })
         @await Component.InvokeAsync("Link", new { controller = "products", action = "index", text = "Products" })
     </div>
     <div>

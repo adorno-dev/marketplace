@@ -54,7 +54,7 @@ builder.Services
 
 builder.Services.ConfigureApplicationCookie(o =>
 {
-    o.Cookie.Name = "IdentitySample";
+    o.Cookie.Name = "MarketplaceCookie";
     o.Cookie.HttpOnly = true;
     o.ExpireTimeSpan = TimeSpan.FromHours(8);
     o.LoginPath = "/account/signin";

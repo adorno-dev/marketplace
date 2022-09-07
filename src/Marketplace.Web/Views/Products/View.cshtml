@@ -28,7 +28,20 @@
                 <br>
                 <br>
                 <label>More options...</label>
-                <a class="button" asp-controller="products" asp-action="favorite" asp-route-id="@Model.Id">Add To Favorites</a>
+                @if (Model.Favorite)
+                {
+                    <a class="button" asp-controller="products" asp-action="unfavorite" asp-route-id="@Model.Id">
+                        <i class="fa-regular fa-heart">&nbsp;</i>
+                        <span>Unfavorite</span>
+                    </a>
+                }
+                else
+                {
+                    <a class="button" asp-controller="products" asp-action="favorite" asp-route-id="@Model.Id">
+                        <i class="fa-solid fa-heart">&nbsp;</i>
+                        <span>Favorite</span>
+                    </a>
+                }
                 <a class="button" href="#">Add To Whishlist</a>
                 <a class="button" href="#">Flag This Listing</a>
             </div>

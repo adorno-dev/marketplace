@@ -36,6 +36,9 @@ namespace Marketplace.API.Data.Configurations
               .IsRequired();
             
             mb.Entity<Product>()
+              .Ignore(p => p.Favorite);
+            
+            mb.Entity<Product>()
               .HasOne<Category>(c => c.Category);
             
             mb.Entity<Product>()

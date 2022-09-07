@@ -13,7 +13,7 @@ namespace Marketplace.API.Repositories
 
         public ProductRepository(DatabaseContext context) => this.context = context;
 
-        public async Task<IEnumerable<Product>?> GetProducts()
+        public async Task<IEnumerable<Product>?> GetProducts(Guid userId)
         {
             return await context.Products
                 .AsNoTracking()
@@ -22,7 +22,7 @@ namespace Marketplace.API.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IPagination<Product>?> GetProductsPaginated(int skip, int take, bool includeParent = false)
+        public async Task<IPagination<Product>?> GetProductsPaginated(Guid userId, int skip, int take, bool includeParent = false)
         {
             var products = new Pagination<Product>();
 
@@ -34,6 +34,16 @@ namespace Marketplace.API.Repositories
                 .AsNoTracking()
                 .Include(c => c.Category)
                 .Include(s => s.Store)
+                .Select(s => new Product {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Price = s.Price,
+                    Stock = s.Stock,
+                    Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
+                    Category = s.Category,
+                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name, Categories = null } : null
+                })
                 .Skip((products.PageIndex - 1) * products.PageSize)
                 .Take(products.PageSize)
                 .ToListAsync();
@@ -41,11 +51,21 @@ namespace Marketplace.API.Repositories
             return products.Items.Any() ? products : null;
         }
 
-        public async Task<Product?> GetProduct(Guid id)
+        public async Task<Product?> GetProduct(Guid userId, Guid id)
         {
             return await context.Products
                 .Include(c => c.Category)
                 .Include(s => s.Store)
+                .Select(s => new Product {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Price = s.Price,
+                    Stock = s.Stock,
+                    Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
+                    Category = s.Category,
+                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name, Categories = null } : null
+                })
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
