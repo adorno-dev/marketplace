@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220906163325_ProductFavorite2")]
-    partial class ProductFavorite2
+    [Migration("20220907194645_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,8 +240,7 @@ namespace Marketplace.API.Migrations
 
                     b.HasKey("UserId", "ProductId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -295,7 +294,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 16, 33, 25, 397, DateTimeKind.Utc).AddTicks(4561));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 19, 46, 45, 289, DateTimeKind.Utc).AddTicks(3375));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -590,8 +589,8 @@ namespace Marketplace.API.Migrations
             modelBuilder.Entity("Marketplace.API.Models.Favorite", b =>
                 {
                     b.HasOne("Marketplace.API.Models.Product", "Product")
-                        .WithOne("Favorite")
-                        .HasForeignKey("Marketplace.API.Models.Favorite", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -714,8 +713,6 @@ namespace Marketplace.API.Migrations
 
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
-                    b.Navigation("Favorite");
-
                     b.Navigation("Reviews");
                 });
 

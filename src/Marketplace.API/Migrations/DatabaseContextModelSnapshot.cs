@@ -292,7 +292,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 9, 6, 22, 31, 51, 319, DateTimeKind.Utc).AddTicks(3308));
+                        .HasDefaultValue(new DateTime(2022, 9, 7, 19, 46, 45, 289, DateTimeKind.Utc).AddTicks(3375));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -587,8 +587,8 @@ namespace Marketplace.API.Migrations
             modelBuilder.Entity("Marketplace.API.Models.Favorite", b =>
                 {
                     b.HasOne("Marketplace.API.Models.Product", "Product")
-                        .WithOne("Favorite")
-                        .HasForeignKey("Marketplace.API.Models.Favorite", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -711,8 +711,6 @@ namespace Marketplace.API.Migrations
 
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
-                    b.Navigation("Favorite");
-
                     b.Navigation("Reviews");
                 });
 

@@ -6,6 +6,10 @@
     margin-top: 15px;
 }
 
+.products * {
+    cursor: pointer;
+}
+
 .product {
     background: rgba(0, 0, 0, .05);
     border-radius: 10px;
@@ -28,6 +32,8 @@
     object-fit: cover;
     width: 210px;
     height: 165px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none;
 }
 
 .product label {

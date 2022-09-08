@@ -97,7 +97,7 @@
   table tbody tr td {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 600px;
+    max-width: 440px;
     white-space: nowrap;
   }
   

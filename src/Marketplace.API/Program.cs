@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using Marketplace.API.Data;
+using Marketplace.API.Data.Contracts;
+using Marketplace.API.Data.Extensions;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories;
 using Marketplace.API.Repositories.Contracts;
@@ -62,6 +64,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
+
 builder.Services.AddScoped<ITokenService>(options =>
 {
     var scope = options.CreateScope();
@@ -91,6 +95,8 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 });
 
 var app = builder.Build();
+
+app.DatabaseInitialize();
 
 if (app.Environment.IsDevelopment())
 {

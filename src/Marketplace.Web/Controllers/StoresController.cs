@@ -64,7 +64,7 @@ namespace Marketplace.Web.Controllers
             
             return result ?
                 RedirectToAction("index", "stores"):
-                View(request);
+                RedirectToAction(nameof(Index));
         }
     }
 }
