@@ -42,7 +42,7 @@ namespace Marketplace.API.Repositories
                     Stock = s.Stock,
                     Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
                     Category = s.Category,
-                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name, Categories = null } : null
+                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name } : null
                 })
                 .Skip((products.PageIndex - 1) * products.PageSize)
                 .Take(products.PageSize)
@@ -64,7 +64,7 @@ namespace Marketplace.API.Repositories
                     Stock = s.Stock,
                     Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
                     Category = s.Category,
-                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name, Categories = null } : null
+                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name } : null
                 })
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }

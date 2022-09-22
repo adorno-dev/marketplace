@@ -16,12 +16,20 @@ namespace Marketplace.API.Data.Configurations
               .Property(c => c.Name)
               .HasMaxLength(255)
               .IsRequired();
+
+            mb.Entity<Store>()
+              .Property(c => c.Url)
+              .HasMaxLength(255);
+
+            mb.Entity<Store>()
+              .Property(c => c.Profile)
+              .HasMaxLength(512);
             
             mb.Entity<Store>()
-              .Property(c => c.Categories)
-              .HasMaxLength(255)
+              .Property(c => c.Politics)
+              .HasMaxLength(512)
               .IsRequired();
-            
+
             mb.Entity<Store>()
               .HasOne(u => u.User)
               .WithOne(s => s.Store)

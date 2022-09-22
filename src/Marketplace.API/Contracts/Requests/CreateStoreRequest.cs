@@ -8,11 +8,11 @@ namespace Marketplace.API.Contracts.Requests
         [MinLength(3)]
         [MaxLength(255)]
         public string? Name { get; set; }
+        public string? Url { get; set; }
+        public string? Profile { get; set; }
+        public string? Politics { get; set; }
 
         [Required]
         public Guid UserId { get; set; }
-
-        [Required]
-        public IEnumerable<ushort>? Categories { get; set; }
     }
 }

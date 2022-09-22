@@ -53,7 +53,7 @@ namespace Marketplace.API.Data
 
             if (store is null)
             {
-              store = new Store { UserId = user.Id, Categories = "1026", Name = "A4U Weapons" };
+              store = new Store { UserId = user.Id, Name = "A4U Weapons" };
               context.Stores.Add(store);
               context.SaveChanges();
             }
