@@ -27,7 +27,7 @@ namespace Marketplace.API.Repositories
 
             favorites.PageIndex = skip <= 0 ? 1 : skip;
             favorites.PageSize = take;
-            favorites.SetCount(await context.Favorites.AsNoTracking().CountAsync());
+            favorites.SetCount(await context.Favorites.Where(f => f.UserId.Equals(userId)).AsNoTracking().CountAsync());
 
             favorites.Items = await context.Favorites
                 .AsNoTracking()
@@ -38,7 +38,7 @@ namespace Marketplace.API.Repositories
                 .Take(favorites.PageSize)
                 .ToListAsync();
 
-            return favorites.Items.Any() ? favorites : null;
+            return favorites;
         }
 
         public async Task<Favorite?> GetFavorite(Guid userId, Guid productId)

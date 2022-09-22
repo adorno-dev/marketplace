@@ -44,7 +44,7 @@ namespace Marketplace.API.Controllers
                     result = await userManager.AddClaimsAsync(user, claims);
 
                     return result.Succeeded ?
-                        Ok(user):
+                        Ok():
                         BadRequest(result.Errors);
                 }
             }
@@ -71,6 +71,24 @@ namespace Marketplace.API.Controllers
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost]
+        [Route("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(request.Email);
+
+                // TODO: implementar rotina de recuperacao de senha
+
+                return user is not null ?
+                    Ok():
+                    BadRequest();
+            }
+
+            return BadRequest();
         }
     }
 }

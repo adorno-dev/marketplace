@@ -43,6 +43,13 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
 .AddEntityFrameworkStores<DatabaseContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddCors(cors => cors
+                .AddPolicy("marketplace.react", policy => policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -95,6 +102,8 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 });
 
 var app = builder.Build();
+
+app.UseCors("marketplace.react");
 
 app.DatabaseInitialize();
 
