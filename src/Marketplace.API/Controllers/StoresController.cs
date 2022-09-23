@@ -1,17 +1,21 @@
+using System.Security.Claims;
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
+using Marketplace.API.Utils.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class StoresController : ControllerBase
+    public sealed class StoresController : ControllerBase
     {
         private readonly IStoreService service;
+
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
 
         public StoresController(IStoreService service) => this.service = service;
 
@@ -22,6 +26,17 @@ namespace Marketplace.API.Controllers
 
             return Ok(categories);
         }
+
+        [HttpGet("pages/{skip:int?}/{take:int?}")]
+        public async Task<ActionResult<IPagination<FavoriteResponse>>> GetStores(int skip = 1, int take = 12)
+        {
+            var stores = await service.GetStoresPaginated(skip, take);
+
+            if (stores is null)
+                return NotFound();
+
+            return Ok(stores);
+        } 
 
         [HttpGet("{id}")]
         public async Task<ActionResult<StoreResponse?>> GetStore(Guid id)
@@ -46,10 +61,12 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateStore([FromBody] CreateStoreRequest request)
+        public async Task<IActionResult> CreateStore([FromForm] CreateStoreRequest request)
         {
             if (ModelState.IsValid)                
             {
+                request.UserId = UserId;
+                
                 return await service.CreateStore(request) ?
                     Ok():
                     BadRequest();

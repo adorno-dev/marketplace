@@ -27,8 +27,7 @@ namespace Marketplace.API.Data.Configurations
             
             mb.Entity<Store>()
               .Property(c => c.Politics)
-              .HasMaxLength(512)
-              .IsRequired();
+              .HasMaxLength(512);
 
             mb.Entity<Store>()
               .HasOne(u => u.User)

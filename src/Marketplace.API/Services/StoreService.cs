@@ -4,10 +4,12 @@ using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.Services.Contracts;
+using Marketplace.API.Utils;
+using Marketplace.API.Utils.Contracts;
 
 namespace Marketplace.API.Services
 {
-    public class StoreService : IStoreService
+    public sealed class StoreService : IStoreService
     {
         private readonly IMapper mapper;
         private readonly IStoreRepository repository;
@@ -23,6 +25,13 @@ namespace Marketplace.API.Services
             var stores = await repository.GetStores();
 
             return mapper.Map<IEnumerable<StoreResponse>?>(stores);
+        }
+
+        public async Task<IPagination<StoreResponse>?> GetStoresPaginated(int skip, int take)
+        {
+            var stores = await repository.GetStoresPaginated(skip, take);
+
+            return mapper.Map<Pagination<StoreResponse>?>(stores);
         }
 
         public async Task<StoreResponse?> GetStore(Guid id)

@@ -4,6 +4,7 @@ using Marketplace.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220922172717_StoreUpdatedV2")]
+    partial class StoreUpdatedV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,7 +294,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 9, 23, 10, 14, 2, 196, DateTimeKind.Utc).AddTicks(1813));
+                        .HasDefaultValue(new DateTime(2022, 9, 22, 17, 27, 16, 740, DateTimeKind.Utc).AddTicks(5292));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -347,8 +349,6 @@ namespace Marketplace.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Stores");
-
-                    b.ToSqlQuery("\n              SELECT \n                s.Id, \n                s.Name, \n                s.Url, \n                s.Profile, \n                s.Politics, \n                u.Id, \n                u.UserName, \n                u.Email \n              FROM \n                Stores s INNER JOIN AspNetUsers u \n              ON \n                s.UserId = u.Id");
                 });
 
             modelBuilder.Entity("Marketplace.API.Models.User", b =>
@@ -359,6 +359,9 @@ namespace Marketplace.API.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("CartId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -396,6 +399,9 @@ namespace Marketplace.API.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

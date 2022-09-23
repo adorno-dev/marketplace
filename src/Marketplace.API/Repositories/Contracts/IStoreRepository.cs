@@ -1,4 +1,5 @@
 using Marketplace.API.Models;
+using Marketplace.API.Utils.Contracts;
 
 namespace Marketplace.API.Repositories.Contracts
 {
@@ -6,6 +7,7 @@ namespace Marketplace.API.Repositories.Contracts
     {
         Task<IEnumerable<Store>?> GetStores();
         Task<Store?> GetStore(Guid id);
+        Task<IPagination<Store>?> GetStoresPaginated(int skip, int take);
         Task<Store?> GetStoreByUserId(Guid userId);
         Task<bool> CreateStore(Store store);
         Task<bool> UpdateStore(Store store);

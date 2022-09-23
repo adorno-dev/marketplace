@@ -1,6 +1,6 @@
 namespace Marketplace.API.Contracts.Responses
 {
-    public class StoreResponse
+    public sealed class StoreResponse
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
