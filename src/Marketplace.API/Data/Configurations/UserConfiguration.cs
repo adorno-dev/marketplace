@@ -27,7 +27,6 @@ namespace Marketplace.API.Data.Configurations
             mb.Entity<User>()
               .HasOne(u => u.Cart)
               .WithOne(u => u.User);
-              // .HasForeignKey<User>(u => u.CartId);
         }
     }
 }

@@ -24,33 +24,28 @@ namespace Marketplace.API.Repositories
 
             stores.PageIndex = skip <= 0 ? 1 : skip;
             stores.PageSize = take;
-            stores.SetCount(await context.Stores.AsNoTracking().CountAsync());
-
-            stores.Items = await context.Stores.FromSqlRaw(@"
-                SELECT 
-                    s.Id, 
-                    s.Name, 
-                    s.Url, 
-                    s.Profile, 
-                    s.Politics, 
-                    s.UserId,
-                    u.UserName, 
-                    u.Email 
-                FROM 
-                    Stores s INNER JOIN AspNetUsers u
-                ON 
-                    s.UserId = u.Id")
-                // .Skip((stores.PageIndex - 1) * stores.PageSize)
-                // .Take(stores.PageSize)
+            stores.SetCount(await context.Stores.Select(s => s.Id).CountAsync());
+            stores.Items = await context.Stores
+                .Include("User")
+                .AsNoTracking()
+                .Select(s => new Store
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Url = s.Url,
+                    Profile = s.Profile,
+                    Politics = s.Politics,
+                    UserId = s.UserId,
+                    User = s.User != null ? new () { 
+                         
+                        UserName = s.User.UserName, 
+                        Email = s.User.Email 
+                    } : null
+                })
+                .OrderBy(o => o.Name)
+                .Skip((stores.PageIndex - 1) * stores.PageSize)
+                .Take(stores.PageSize)
                 .ToListAsync();
-
-
-            // stores.Items = await context.Stores
-            //     .Include("User")
-            //     .AsNoTracking()
-            //     .Skip((stores.PageIndex - 1) * stores.PageSize)
-            //     .Take(stores.PageSize)
-            //     .ToListAsync();
 
             return stores;
         }

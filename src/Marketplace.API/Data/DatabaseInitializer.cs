@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Marketplace.API.Data.Contracts;
 using Marketplace.API.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Data
 {
@@ -18,7 +19,19 @@ namespace Marketplace.API.Data
 
         public void InitializeSeedUsersAuthentication(out User? user)
         {
-            user = userManager.FindByEmailAsync("developer@marketplace.com").Result;
+            // user = userManager.FindByEmailAsync("developer@marketplace.com").Result;
+
+            user = context.Users.AsNoTracking().Select(s => new User 
+            {
+                Id = s.Id,
+                SecurityStamp = s.SecurityStamp,
+                NormalizedEmail = s.NormalizedEmail,
+                UserName = s.UserName,
+                Email = s.Email,
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                PhoneNumber = "+55 (11) 12345-6789"
+            }).FirstOrDefault(u => u.Email.Equals("developer@marketplace.com"));
 
             if (user is null)
             {

@@ -28,12 +28,12 @@ namespace Marketplace.API.Repositories
 
             products.PageIndex = skip <= 0 ? 1 : skip;
             products.PageSize = take;
-            products.SetCount(await context.Products.AsNoTracking().CountAsync());
+            products.SetCount(await context.Products.AsNoTracking().Select(p => p.Id).CountAsync());
 
             products.Items = await context.Products
-                .AsNoTracking()
                 .Include(c => c.Category)
                 .Include(s => s.Store)
+                .AsNoTracking()
                 .Select(s => new Product {
                     Id = s.Id,
                     Name = s.Name,
@@ -42,7 +42,12 @@ namespace Marketplace.API.Repositories
                     Stock = s.Stock,
                     Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
                     Category = s.Category,
-                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name } : null
+                    Store = s.Store != null ? new Store 
+                    { 
+                        Id = s.Store.Id, 
+                        Name = s.Store.Name,
+                    } : null,
+                    
                 })
                 .Skip((products.PageIndex - 1) * products.PageSize)
                 .Take(products.PageSize)
@@ -56,6 +61,7 @@ namespace Marketplace.API.Repositories
             return await context.Products
                 .Include(c => c.Category)
                 .Include(s => s.Store)
+                .AsNoTracking()
                 .Select(s => new Product {
                     Id = s.Id,
                     Name = s.Name,

@@ -8,7 +8,7 @@ namespace Marketplace.API.Models
         public string? Profile { get; set; }
         public string? Politics { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public User? User { get; set; }
     }
 }
