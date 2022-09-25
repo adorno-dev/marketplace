@@ -36,7 +36,7 @@ namespace Marketplace.API.Repositories
 
             categories.Items = includeParent ? 
                 await context.Categories
-                    // .Include(c => c.Parent)
+                    .Include(c => c.Parent)
                     // .Include("Parent.Parent")
                     .Skip((categories.PageIndex - 1) * categories.PageSize)
                     .Take(categories.PageSize)
