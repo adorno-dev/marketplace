@@ -48,6 +48,11 @@ namespace Marketplace.API.Services
             return mapper.Map<StoreResponse?>(store);
         }
 
+        public async Task<Guid?> GetStoreIdByUserId(Guid userId)
+        {
+            return await repository.GetStoreIdByUserId(userId);
+        }
+
         public async Task<bool> CreateStore(CreateStoreRequest request)
         {
             var store = mapper.Map<Store>(request);

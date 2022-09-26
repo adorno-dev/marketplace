@@ -59,5 +59,15 @@ namespace Marketplace.API.Services
         {
             return await repository.DeleteProduct(id);
         }
+
+
+        public async Task<string[]> GetScreenshoots(Guid id)
+        {
+            var screenshoots = Directory.GetFiles($"Assets/uploads/products/{id}");
+
+            await Task.CompletedTask;
+
+            return screenshoots;
+        }
     }
 }

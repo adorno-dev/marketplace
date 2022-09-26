@@ -10,6 +10,7 @@ namespace Marketplace.API.Services.Contracts
         Task<IPagination<StoreResponse>?> GetStoresPaginated(int skip, int take);
         Task<StoreResponse?> GetStore(Guid id);
         Task<StoreResponse?> GetStoreByUserId(Guid userId);
+        Task<Guid?> GetStoreIdByUserId(Guid userId);
         Task<bool> CreateStore(CreateStoreRequest request);
         Task<bool> UpdateStore(UpdateStoreRequest request);
         Task<bool> DeleteStore(Guid id);

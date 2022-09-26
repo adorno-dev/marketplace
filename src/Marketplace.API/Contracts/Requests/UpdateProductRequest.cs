@@ -7,6 +7,8 @@ namespace Marketplace.API.Contracts.Requests
         [Required]
         public Guid Id { get; set; }
         
+        public IFormFileCollection? Screenshoots { get; set; }
+
         [Required]
         [MinLength(3)]
         [MaxLength(255)]

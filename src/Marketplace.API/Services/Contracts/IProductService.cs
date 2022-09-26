@@ -12,5 +12,7 @@ namespace Marketplace.API.Services.Contracts
         Task<bool> CreateProduct(CreateProductRequest request);
         Task<bool> UpdateProduct(UpdateProductRequest request);
         Task<bool> DeleteProduct(Guid id);
+
+        Task<string[]> GetScreenshoots(Guid id);
     }
 }

@@ -15,7 +15,7 @@ namespace Marketplace.API.Repositories
 
         public async Task<IEnumerable<Review>?> GetReviews()
         {
-            return await context.Reviews.ToListAsync();
+            return await context.Reviews.AsNoTracking().OrderByDescending(o => o.Posted).ToListAsync();
         }
 
         public async Task<IPagination<Review>?> GetReviewsPaginated(int skip, int take, bool includeParent = false)
@@ -27,6 +27,8 @@ namespace Marketplace.API.Repositories
             reviews.SetCount(await context.Reviews.AsNoTracking().CountAsync());
 
             reviews.Items = await context.Reviews
+                .AsNoTracking()
+                .OrderByDescending(o => o.Posted)
                 .Skip((reviews.PageIndex - 1) * reviews.PageSize)
                 .Take(reviews.PageSize)
                 .ToListAsync();
@@ -36,7 +38,9 @@ namespace Marketplace.API.Repositories
 
         public async Task<Review?> GetReview(Guid id)
         {
-            return await context.Reviews.FirstOrDefaultAsync(p => p.Id.Equals(id));
+            return await context.Reviews
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
         public async Task<bool> CreateReview(Review review)

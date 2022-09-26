@@ -18,7 +18,7 @@ namespace Marketplace.API.Repositories
 
         public async Task<IEnumerable<Favorite>?> GetFavorites(Guid userId)
         {
-            return await context.Favorites.AsNoTracking().Where(f => f.UserId.Equals(userId)).ToListAsync();
+            return await context.Favorites.AsNoTracking().OrderBy(o => o.Product).Where(f => f.UserId.Equals(userId)).ToListAsync();
         }
 
         public async Task<IPagination<Favorite>?> GetFavoritesPaginated(Guid userId, int skip, int take)
@@ -30,9 +30,10 @@ namespace Marketplace.API.Repositories
             favorites.SetCount(await context.Favorites.Where(f => f.UserId.Equals(userId)).AsNoTracking().CountAsync());
 
             favorites.Items = await context.Favorites
-                .AsNoTracking()
                 .Include("Product")
                 .Include("Product.Store")
+                .AsNoTracking()
+                .OrderBy(o => o.Product)
                 .Where(f => f.UserId.Equals(userId))
                 .Skip((favorites.PageIndex - 1) * favorites.PageSize)
                 .Take(favorites.PageSize)
@@ -45,6 +46,7 @@ namespace Marketplace.API.Repositories
         {
             return await context.Favorites
                 .AsNoTracking()
+                .OrderBy(o => o.Product)
                 .Where(f => f.UserId.Equals(userId) && f.ProductId.Equals(productId))
                 .FirstOrDefaultAsync();
         }

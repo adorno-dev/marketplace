@@ -52,12 +52,17 @@ namespace Marketplace.API.Repositories
 
         public async Task<Store?> GetStore(Guid id)
         {
-            return await context.Stores.Include("User").FirstOrDefaultAsync(s => s.Id.Equals(id));
+            return await context.Stores.Include("User").AsNoTracking().FirstOrDefaultAsync(s => s.Id.Equals(id));
         }
 
         public async Task<Store?> GetStoreByUserId(Guid userId)
         {
-            return await context.Stores.Include("User").FirstOrDefaultAsync(s => s.UserId.Equals(userId));
+            return await context.Stores.AsNoTracking().Include("User").FirstOrDefaultAsync(s => s.UserId.Equals(userId));
+        }
+
+        public async Task<Guid?> GetStoreIdByUserId(Guid userId)
+        {
+            return await context.Stores.AsNoTracking().Where(s => s.UserId.Equals(userId)).Select(s => s.Id).FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateStore(Store store)

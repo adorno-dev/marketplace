@@ -5,6 +5,8 @@ namespace Marketplace.API.Contracts.Requests
     public class CreateProductRequest
     {
         public Guid Id { get; set; }
+
+        public IFormFileCollection? Screenshoots { get; set; }
         
         [Required]
         [MinLength(3)]

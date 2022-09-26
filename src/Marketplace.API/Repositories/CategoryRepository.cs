@@ -20,9 +20,11 @@ namespace Marketplace.API.Repositories
                     // .Include(c => c.Parent)
                     // .Include("Parent.Parent")
                     .AsNoTracking()
+                    .OrderBy(o => o.Id)
                     .ToListAsync():
                 await context.Categories
                     .AsNoTracking()
+                    .OrderBy(o => o.Id)
                     .ToListAsync();
         }
 
@@ -38,14 +40,16 @@ namespace Marketplace.API.Repositories
                 await context.Categories
                     .Include(c => c.Parent)
                     // .Include("Parent.Parent")
+                    .AsNoTracking()
+                    .OrderBy(o => o.Id)
                     .Skip((categories.PageIndex - 1) * categories.PageSize)
                     .Take(categories.PageSize)
-                    .AsNoTracking()
                     .ToListAsync():
                 await context.Categories
                     .Skip((categories.PageIndex - 1) * categories.PageSize)
                     .Take(categories.PageSize)
                     .AsNoTracking()
+                    .OrderBy(o => o.Id)
                     .ToListAsync();
 
             return categories.Items.Any() ? categories : null;
@@ -53,7 +57,11 @@ namespace Marketplace.API.Repositories
 
         public async Task<IEnumerable<Category>?> GetCategories(params ushort[] ids)
         {
-            return await context.Categories.Where(c => ids.Any(w => w.Equals(c.Id))).ToListAsync();
+            return await context.Categories
+                .AsNoTracking()
+                .OrderBy(o => o.Id)
+                .Where(c => ids.Any(w => w.Equals(c.Id)))
+                .ToListAsync();
         }
 
         public async Task<Category?> GetCategory(ushort id, bool includeParent = false)

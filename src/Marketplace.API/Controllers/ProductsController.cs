@@ -15,13 +15,15 @@ namespace Marketplace.API.Controllers
     {
         private readonly IProductService productService;
         private readonly IFavoriteService favoriteService;
+        private readonly IStoreService storeService;
 
         public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
 
-        public ProductsController(IProductService service, IFavoriteService favoriteService)
+        public ProductsController(IProductService service, IFavoriteService favoriteService, IStoreService storeService)
         {
             this.productService = service;
             this.favoriteService = favoriteService;
+            this.storeService = storeService;
         }
 
         [HttpGet]
@@ -54,19 +56,28 @@ namespace Marketplace.API.Controllers
         {
             Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId);
 
-            var category = await productService.GetProduct(UserId, id);
+            var product = await productService.GetProduct(UserId, id);
 
-            if (category is null)
+            if (product is null)
                 return NotFound();
             
-            return Ok(category);
+            product.Screenshoots = await productService.GetScreenshoots(id);
+
+            return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request)
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductRequest request)
         {
             if (ModelState.IsValid)                
             {
+                var storeId = await storeService.GetStoreIdByUserId(UserId);
+
+                if (storeId is null)
+                    return BadRequest("Store required.");
+                
+                request.StoreId = storeId.Value;
+
                 return await productService.CreateProduct(request) ?
                     Ok():
                     BadRequest();
@@ -76,10 +87,17 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request)
+        public async Task<IActionResult> UpdateProduct([FromForm] UpdateProductRequest request)
         {
             if (ModelState.IsValid)                
             {
+                var storeId = await storeService.GetStoreIdByUserId(UserId);
+
+                if (storeId is null)
+                    return BadRequest("Store required.");
+                
+                request.StoreId = storeId.Value;
+
                 return await productService.UpdateProduct(request) ?
                     Ok():
                     BadRequest();

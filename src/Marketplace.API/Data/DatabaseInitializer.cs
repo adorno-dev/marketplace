@@ -19,19 +19,11 @@ namespace Marketplace.API.Data
 
         public void InitializeSeedUsersAuthentication(out User? user)
         {
-            // user = userManager.FindByEmailAsync("developer@marketplace.com").Result;
-
-            user = context.Users.AsNoTracking().Select(s => new User 
-            {
-                Id = s.Id,
-                SecurityStamp = s.SecurityStamp,
-                NormalizedEmail = s.NormalizedEmail,
-                UserName = s.UserName,
-                Email = s.Email,
-                EmailConfirmed = true,
-                LockoutEnabled = false,
-                PhoneNumber = "+55 (11) 12345-6789"
-            }).FirstOrDefault(u => u.Email.Equals("developer@marketplace.com"));
+            user = context.Users
+              .AsNoTracking()
+              .Where(u => u.Email.Equals("developer@marketplace.com"))
+              .Select(u => new User { Id = u.Id})
+              .FirstOrDefault();
 
             if (user is null)
             {
@@ -62,7 +54,11 @@ namespace Marketplace.API.Data
 
         public void InitializeSeedUserStores(User user, out Store? store)
         {
-            store = context.Stores.FirstOrDefault(s => s.UserId == user.Id);
+            store = context.Stores
+              .AsNoTracking()
+              .Where(s => s.UserId.Equals(user.Id))
+              .Select(s => new Store { Id = s.Id})
+              .FirstOrDefault();
 
             if (store is null)
             {
@@ -74,7 +70,9 @@ namespace Marketplace.API.Data
 
         public void InitializeSeedStoreProducts(Store store, out IList<Product> products)
         {
-            var empty = ! context.Products.Any();
+            var empty = ! context.Products
+              .AsNoTracking()
+              .Any();
 
             if (empty)
             {
