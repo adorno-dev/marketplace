@@ -4,6 +4,7 @@ namespace Marketplace.API.Contracts.Responses
     {
         public Guid Id { get; set; }
 
+        public string? Screenshoot { get; set; }
         public string[]? Screenshoots { get; set; }
 
         public string? Name { get; set; }

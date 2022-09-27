@@ -13,12 +13,25 @@ namespace Marketplace.API.Controllers
     public class FavoritesController : ControllerBase
     {
         private readonly IFavoriteService favoriteService;
+        private readonly IProductService productService;
 
         public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
 
-        public FavoritesController(IFavoriteService favoriteService)
+        public FavoritesController(IFavoriteService favoriteService, IProductService productService)
         {
             this.favoriteService = favoriteService;
+            this.productService = productService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<FavoriteResponse>> GetFavorites()
+        {
+            var favorites = await favoriteService.GetFavorites(UserId);
+
+            if (favorites is null)
+                return NotFound();
+            
+            return Ok(favorites);
         }
 
         [HttpGet("pages/{skip:int?}/{take:int?}")]
@@ -26,8 +39,11 @@ namespace Marketplace.API.Controllers
         {
             var favorites = await favoriteService.GetFavoritesPaginated(UserId, skip, take);
 
-            if (favorites is null)
+            if (favorites?.Items is null)
                 return NotFound();
+            
+            foreach (var item in favorites.Items)
+                item.Screenshoot = await productService.GetScreenshot(item.Id);
 
             return Ok(favorites);
         } 

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using Marketplace.API.Data;
 using Marketplace.API.Data.Contracts;
@@ -69,6 +70,14 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false
     };
+    
+    // Development only!!!
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        options.BackchannelHttpHandler = handler;
+    }
 });
 
 builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
@@ -116,6 +125,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
 app.Run();

@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using AutoMapper;
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
@@ -61,13 +62,52 @@ namespace Marketplace.API.Services
         }
 
 
-        public async Task<string[]> GetScreenshoots(Guid id)
+        public async Task<string[]?> GetScreenshoots(Guid id)
         {
-            var screenshoots = Directory.GetFiles($"Assets/uploads/products/{id}");
+            string[]? screenshoots = null;
 
+            try
+            {
+                screenshoots = Directory.GetFiles($"wwwroot/uploads/products/{id}")
+                                        .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+                                        .ToArray();
+            }
+            catch (IOException) {}
+                                                
             await Task.CompletedTask;
 
             return screenshoots;
+        }
+
+        public async Task<string?> GetScreenshot(Guid id)
+        {
+            string? screenshoot = null;
+
+            try
+            {
+                screenshoot = Directory.GetFiles($"wwwroot/uploads/products/{id}")
+                                       .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+                                       .FirstOrDefault();
+            }
+            catch (IOException) {}
+
+            await Task.CompletedTask;
+
+            return screenshoot;
+        }
+
+        public async Task SaveProductScreenshoots(Guid id, IFormFileCollection files)
+        {
+            string directory = $"wwwroot/uploads/products/{id}";
+
+            if (! Directory.Exists(directory))
+                  Directory.CreateDirectory(directory);
+            
+            foreach (var file in files)
+                using (var fs = new FileStream($"{directory}/{file.FileName}", FileMode.Create))
+                    await file.CopyToAsync(fs);
+
+            await Task.CompletedTask;
         }
     }
 }

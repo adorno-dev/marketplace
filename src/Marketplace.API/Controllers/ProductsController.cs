@@ -44,9 +44,12 @@ namespace Marketplace.API.Controllers
 
             var products = await productService.GetProductsPaginated(UserId, skip, take, includeParent: true);
 
-            if (products is null)
+            if (products?.Items is null)
                 return NotFound();
-
+            
+            foreach (var item in products.Items)
+                item.Screenshoot = await productService.GetScreenshot(item.Id);
+            
             return Ok(products);
         }
 
@@ -78,6 +81,9 @@ namespace Marketplace.API.Controllers
                 
                 request.StoreId = storeId.Value;
 
+                if (request.Screenshoots != null)
+                    await productService.SaveProductScreenshoots(request.Id, request.Screenshoots);
+
                 return await productService.CreateProduct(request) ?
                     Ok():
                     BadRequest();
@@ -97,6 +103,9 @@ namespace Marketplace.API.Controllers
                     return BadRequest("Store required.");
                 
                 request.StoreId = storeId.Value;
+
+                if (request.Screenshoots != null)
+                    await productService.SaveProductScreenshoots(request.Id, request.Screenshoots);
 
                 return await productService.UpdateProduct(request) ?
                     Ok():
