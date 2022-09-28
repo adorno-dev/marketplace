@@ -8,6 +8,7 @@ namespace Marketplace.API.Models
         public decimal Price { get; set; }
         public long Stock { get; set; }
         public bool Favorite { get; set; }
+        public bool Cart { get; set; }
         
         public Guid? StoreId { get; set; }
         public ushort? CategoryId { get; set; }

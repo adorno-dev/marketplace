@@ -12,6 +12,7 @@ namespace Marketplace.API.Contracts.Responses
         public decimal Price { get; set; }
         public long Stock { get; set; }
         public bool Favorite { get; set; }
+        public bool Cart { get; set; }
 
         public ushort? categoryId { get; set; }
         public Guid? StoreId { get; set; }

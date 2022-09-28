@@ -13,23 +13,29 @@ namespace Marketplace.API.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ICartService cartService;
+        private readonly IProductService productService;
         
         public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
 
-        public CartsController(ICartService cartService)
+        public CartsController(ICartService cartService, IProductService productService)
         {
             this.cartService = cartService;
+            this.productService = productService;
         }
 
         [HttpGet]
         [Route("{userId}")]
         public async Task<ActionResult<CartResponse>> GetCart(Guid userId)
         {
-            var cart = await cartService.GetCart(userId);
+            var cart = await cartService.GetCart(UserId);
 
-            return cart is not null ?
-                Ok(cart):
-                NotFound();
+            if (cart is null || cart.Items is null)
+                return BadRequest();
+
+            foreach (var item in cart.Items)
+                item.Screenshoot = await productService.GetScreenshot(item.ProductId);
+
+            return Ok(cart);
         }
 
         [HttpGet]
@@ -37,34 +43,45 @@ namespace Marketplace.API.Controllers
         {
             var cart = await cartService.GetCart(UserId);
 
-            return cart is not null ?
-                Ok(cart):
-                NotFound();
+            if (cart is null || cart.Items is null)
+                return BadRequest();
+
+            foreach (var item in cart.Items)
+                item.Screenshoot = await productService.GetScreenshot(item.ProductId);
+
+            return Ok(cart);
         }
 
         [HttpPost]
         [Route("add-item")]
         public async Task<IActionResult> AddCartItem(AddCartItemRequest request)
         {
-            if (request.UserId == Guid.Empty || request.ProductId == Guid.Empty)
-                return BadRequest();
+            bool success = false;
 
-            await cartService.AddCartItem(request);
+            request.UserId = UserId;
 
-            return RedirectToAction("index", "home");
+            if (ModelState.IsValid)
+                success = await cartService.AddCartItem(request);
+
+            return success ?
+                Ok():
+                BadRequest();
         }
 
         [HttpPost]
         [Route("remove-item")]
         public async Task<IActionResult> DeleteCartItem(DeleteCartItemRequest request)
         {
-            if (request.UserId == Guid.Empty || request.CartItemId == Guid.Empty)
-                return BadRequest();
-            
+            bool success = false;
 
-            await cartService.DeleteCartItem(request);
+            request.UserId = UserId;
 
-            return RedirectToAction(nameof(GetCart), new { userId = request.UserId });
+            if (ModelState.IsValid)
+                success = await cartService.DeleteCartItem(request);
+
+            return success ?
+                Ok():
+                BadRequest();
         }
     }
 }

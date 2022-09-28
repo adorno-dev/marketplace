@@ -10,6 +10,7 @@ namespace Marketplace.API.Contracts.Responses
         public ushort Quantity { get; set; }
         public decimal Price { get; set; }
 
+        public string? Screenshoot { get; set; }
         public CartResponse? Cart { get; set; }
         public ProductResponse? Product { get; set; }
     }

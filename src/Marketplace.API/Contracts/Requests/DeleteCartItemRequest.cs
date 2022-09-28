@@ -4,7 +4,6 @@ namespace Marketplace.API.Contracts.Requests
 {
     public class DeleteCartItemRequest
     {
-        [Required]
         public Guid UserId { get; set; }
         
         [Required]

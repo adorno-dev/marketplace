@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
@@ -18,15 +19,13 @@ namespace Marketplace.API.Repositories
         {
             var cart = await context.Carts
                 .Include("Items")
-                .AsNoTracking()
-                .OrderBy(o => o.Id)
                 .FirstOrDefaultAsync(c => c.UserId.Equals(userId));
 
             if (cart is null)
             {
                 cart = new Cart { Id = Guid.NewGuid(), UserId = userId };
                 cart.Items = new List<CartItem>();
-                cart.Items.Add(item);
+                cart.Items.Append(item);
 
                 context.Carts.Add(cart);
                 return await context.SaveChangesAsync() > 0;
@@ -44,13 +43,11 @@ namespace Marketplace.API.Repositories
             var cartItem = await context.CartItems
                     .Include("Cart")
                     .Include("Cart.Items")
-                    .AsNoTracking()
-                    .OrderBy(o => o.Id)
                     .FirstOrDefaultAsync(c => c.Id.Equals(item.Id));
 
             if (cartItem is not null)
             {
-                if (cartItem.Cart?.Items?.Count == 1)
+                if (cartItem.Cart?.Items?.Count() == 1)
                     context.Carts.Remove(cartItem.Cart);
                 else
                     context.CartItems.Remove(cartItem);

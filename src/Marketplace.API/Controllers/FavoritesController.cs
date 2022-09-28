@@ -46,6 +46,6 @@ namespace Marketplace.API.Controllers
                 item.Screenshoot = await productService.GetScreenshot(item.Id);
 
             return Ok(favorites);
-        } 
+        }
     }
 }

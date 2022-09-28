@@ -18,8 +18,6 @@ namespace Marketplace.API.Repositories
             return await context.Products
                 .AsNoTracking()
                 .OrderBy(o => o.Name)
-                // .Include(c => c.Category)
-                // .Include(s => s.Store)
                 .ToListAsync();
         }
 
@@ -70,9 +68,14 @@ namespace Marketplace.API.Repositories
                     Description = s.Description,
                     Price = s.Price,
                     Stock = s.Stock,
-                    Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
+                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name } : null,
                     Category = s.Category,
-                    Store = s.Store != null ? new Store { Id = s.Store.Id, Name = s.Store.Name } : null
+                    Favorite = context.Favorites.AsNoTracking().Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
+                    Cart = context.Carts
+                        .Include("Items")
+                        .AsNoTracking()
+                        .Where(w => w.UserId.Equals(userId) && w.Items != null && w.Items.Any(c => c.ProductId.Equals(s.Id)))
+                        .Any()
                 })
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
