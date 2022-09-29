@@ -13,7 +13,7 @@ namespace Marketplace.API.Contracts.Mappings
             CreateMap<FavoriteResponse, Product>().ReverseMap();
             CreateMap<FavoriteResponse, Favorite>()
                 .ForMember(m => m.Product, o => o.MapFrom(s => s))
-                .ForPath(m => m.Product.Store.Name, o => o.MapFrom(s => s.Store))
+                // .ForPath(m => m.Product.Store.Name, o => o.MapFrom(s => s.Store))
                 .ReverseMap();
 
             CreateMap(typeof(Pagination<FavoriteResponse>), typeof(Pagination<Favorite>)).ReverseMap();
