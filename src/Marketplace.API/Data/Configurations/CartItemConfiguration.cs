@@ -11,6 +11,10 @@ namespace Marketplace.API.Data.Configurations
               .HasKey(c => c.Id)
               .Metadata
               .IsPrimaryKey();
+            
+            mb.Entity<CartItem>()
+              .HasIndex(c => new {c.CartId, c.ProductId})
+              .IsUnique();
 
             // mb.Entity<CartItem>()
             //   .Property(p => p.Price)

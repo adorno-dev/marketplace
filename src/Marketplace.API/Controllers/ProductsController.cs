@@ -76,7 +76,7 @@ namespace Marketplace.API.Controllers
             {
                 var storeId = await storeService.GetStoreIdByUserId(UserId);
 
-                if (storeId is null)
+                if (storeId is null || storeId.Equals(Guid.Empty))
                     return BadRequest("Store required.");
                 
                 request.StoreId = storeId.Value;
@@ -97,13 +97,6 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
-                var storeId = await storeService.GetStoreIdByUserId(UserId);
-
-                if (storeId is null)
-                    return BadRequest("Store required.");
-                
-                request.StoreId = storeId.Value;
-
                 if (request.Screenshoots != null)
                     await productService.SaveProductScreenshoots(request.Id, request.Screenshoots);
 

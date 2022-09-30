@@ -44,7 +44,7 @@ namespace Marketplace.API.Controllers
             var cart = await cartService.GetCart(UserId);
 
             if (cart is null || cart.Items is null)
-                return BadRequest();
+                return Ok(new CartResponse { Id = Guid.NewGuid(), UserId = UserId });
 
             foreach (var item in cart.Items)
                 item.Screenshoot = await productService.GetScreenshot(item.ProductId);

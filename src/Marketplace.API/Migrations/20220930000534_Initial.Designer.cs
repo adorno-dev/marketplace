@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220922172438_StoreUpdated")]
-    partial class StoreUpdated
+    [Migration("20220930000534_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace Marketplace.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CartId")
+                    b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductId")
@@ -58,9 +58,11 @@ namespace Marketplace.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique()
+                        .HasFilter("[CartId] IS NOT NULL");
 
                     b.ToTable("CartItems");
                 });
@@ -294,7 +296,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 9, 22, 17, 24, 38, 145, DateTimeKind.Utc).AddTicks(5030));
+                        .HasDefaultValue(new DateTime(2022, 9, 30, 0, 5, 33, 939, DateTimeKind.Utc).AddTicks(7375));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -329,7 +331,6 @@ namespace Marketplace.API.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Politics")
-                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
@@ -341,13 +342,14 @@ namespace Marketplace.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Stores");
                 });
@@ -360,9 +362,6 @@ namespace Marketplace.API.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("CartId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -400,9 +399,6 @@ namespace Marketplace.API.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("StoreId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -570,9 +566,7 @@ namespace Marketplace.API.Migrations
                 {
                     b.HasOne("Marketplace.API.Models.Cart", "Cart")
                         .WithMany("Items")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CartId");
 
                     b.HasOne("Marketplace.API.Models.Product", "Product")
                         .WithMany()
@@ -651,9 +645,7 @@ namespace Marketplace.API.Migrations
                 {
                     b.HasOne("Marketplace.API.Models.User", "User")
                         .WithOne("Store")
-                        .HasForeignKey("Marketplace.API.Models.Store", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Marketplace.API.Models.Store", "UserId");
 
                     b.Navigation("User");
                 });
