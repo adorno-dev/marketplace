@@ -21,7 +21,7 @@ namespace Marketplace.API.Data
         {
             user = context.Users
               .AsNoTracking()
-              .Where(u => u.Email.Equals("developer@marketplace.com"))
+              .Where(u => ! string.IsNullOrEmpty(u.Email) && u.Email.Equals("developer@marketplace.com"))
               .Select(u => new User { Id = u.Id})
               .FirstOrDefault();
 
@@ -49,7 +49,6 @@ namespace Marketplace.API.Data
                     result = userManager.AddClaimsAsync(user, claims).Result;
                 }
             }
-
         }
 
         public void InitializeSeedUserStores(User user, out Store? store)

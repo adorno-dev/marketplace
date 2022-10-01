@@ -15,7 +15,7 @@ namespace Marketplace.API.Controllers
         private readonly IFavoriteService favoriteService;
         private readonly IProductService productService;
 
-        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
 
         public FavoritesController(IFavoriteService favoriteService, IProductService productService)
         {

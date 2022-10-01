@@ -42,7 +42,7 @@ namespace Marketplace.Web.Controllers
 
                 localStorage.Store("t", response.Token);
 
-                if (identifier is not null)
+                if (identifier != null && claimsPrincipal != null)
                 {
                     var user = new IdentityUser<Guid> 
                     { 
@@ -52,7 +52,7 @@ namespace Marketplace.Web.Controllers
                         SecurityStamp = Guid.NewGuid().ToString() 
                     };
 
-                    await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal?.Claims);
+                    await signInManager.SignInWithClaimsAsync(user, request.Remember, claimsPrincipal.Claims);
 
                     if (request.returnUrl is not null)
                         return Redirect(request.returnUrl);

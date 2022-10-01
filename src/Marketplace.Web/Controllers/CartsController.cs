@@ -13,6 +13,8 @@ namespace Marketplace.Web.Controllers
     {
         private readonly ICartService cartService;
 
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
+        
         public CartsController(ICartService cartService)
         {
             this.cartService = cartService;
@@ -20,12 +22,10 @@ namespace Marketplace.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
-
-            var cart = await cartService.GetCart(userId);
+            var cart = await cartService.GetCart(UserId);
 
             if (cart is null)
-                cart = new Cart { UserId = userId, Items = Array.Empty<CartItem>() };
+                cart = new Cart { UserId = UserId, Items = Array.Empty<CartItem>() };
             
             return View(cart);
         }
@@ -34,9 +34,7 @@ namespace Marketplace.Web.Controllers
         [ActionName("add-item")]
         public async Task<IActionResult> AddItemToCart(Guid productId)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
-
-            var request = new AddCartItemRequest { UserId = userId, ProductId = productId };
+            var request = new AddCartItemRequest { UserId = UserId, ProductId = productId };
 
             await cartService.AddCartItem(request);
 
@@ -47,9 +45,7 @@ namespace Marketplace.Web.Controllers
         [ActionName("delete-item")]
         public async Task<IActionResult> DeleteItemFromCart(Guid cartItemId)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var request = new DeleteCartItemRequest { UserId = userId, CartItemId = cartItemId };
+            var request = new DeleteCartItemRequest { UserId = UserId, CartItemId = cartItemId };
 
              await cartService.DeleteCartItem(request);
 
@@ -60,9 +56,7 @@ namespace Marketplace.Web.Controllers
         [ActionName("checkout")]
         public async Task<IActionResult> Checkout()
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            this.ViewBag.Cart = await cartService.GetCart(userId);
+            this.ViewBag.Cart = await cartService.GetCart(UserId);
 
             return View();
         }
@@ -72,8 +66,6 @@ namespace Marketplace.Web.Controllers
         [ActionName("checkout")]
         public async Task<IActionResult> Checkout(PlaceOrderRequest request)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
             if (ModelState.IsValid)
             {
                 await Task.CompletedTask;
@@ -81,7 +73,7 @@ namespace Marketplace.Web.Controllers
                 return RedirectToAction("placeorder");
             }
 
-            this.ViewBag.Cart = await cartService.GetCart(userId);
+            this.ViewBag.Cart = await cartService.GetCart(UserId);
 
             return View(request);
         }

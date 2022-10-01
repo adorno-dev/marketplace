@@ -15,7 +15,7 @@ namespace Marketplace.API.Controllers
     {
         private readonly IStoreService service;
 
-        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); }
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
 
         public StoresController(IStoreService service) => this.service = service;
 

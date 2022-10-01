@@ -8,6 +8,7 @@ namespace Marketplace.API.Contracts.Mappings
     {
         public CartMappingProfile()
         {
+            CreateMap<CartPaginatedResponse, Cart>().ReverseMap();
             CreateMap<CartResponse, Cart>().ReverseMap();
             CreateMap<CartItemResponse, CartItem>().ReverseMap();
         }

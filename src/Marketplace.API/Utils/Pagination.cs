@@ -10,7 +10,7 @@ namespace Marketplace.API.Utils
             PageSize = pageSize;
         }
 
-        public IEnumerable<T>? Items { get; set; }
+        public virtual IList<T>? Items { get; set; }
         public int TotalItems { get; set; }
         public int PageSize { get; set; }
         public int PageCount { get; set; }

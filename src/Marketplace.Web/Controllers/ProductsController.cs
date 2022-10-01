@@ -27,6 +27,8 @@ namespace Marketplace.Web.Controllers
             return new Select("categoryId", "Empty Category", value ?? "", selectItems);
         }
 
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
+
         public ProductsController(ICategoryService categoryService, IStoreService storeService, IProductService productService, IFavoriteService favoriteService)
         {
             this.categoryService = categoryService;
@@ -54,9 +56,7 @@ namespace Marketplace.Web.Controllers
         {
             var createProductRequest = new CreateProductRequest();
             
-            var uid = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var store = await storeService.GetStoreByUserId(uid);
+            var store = await storeService.GetStoreByUserId(UserId);
 
             if (store is null)
                 // Store is required to create products.

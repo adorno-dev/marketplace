@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
 var tokenSettings = builder.Configuration.GetSection(nameof(TokenSettings));
 
 builder.Services.Configure<TokenSettings>(tokenSettings);
@@ -65,7 +65,7 @@ builder.Services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        IssuerSigningKey = new SymmetricSecurityKey(settings.GetSecret()),
+        IssuerSigningKey = new SymmetricSecurityKey(settings?.GetSecret()),
         ValidateIssuerSigningKey = true,
         ValidateIssuer = false,
         ValidateAudience = false

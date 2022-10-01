@@ -22,6 +22,8 @@ namespace Marketplace.Web.Controllers
             return new SelectCheckbox("categories", "Categories", values, selectItems);
         }
 
+        public Guid UserId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
+
         public StoresController(ICategoryService categoryService, IStoreService storeService)
         {
             this.categoryService = categoryService;
@@ -32,18 +34,16 @@ namespace Marketplace.Web.Controllers
         {
             var saveStoreRequest = new SaveStoreRequest();
 
-            var uid = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
-
-            var store = await storeService.GetStoreByUserId(uid);
+            var store = await storeService.GetStoreByUserId(UserId);
 
             if (store is null)
             {
-                saveStoreRequest.UserId = uid;
+                saveStoreRequest.UserId = UserId;
             }
             else
             {
                 saveStoreRequest.Id = store.Id;
-                saveStoreRequest.UserId = uid;
+                saveStoreRequest.UserId = UserId;
                 saveStoreRequest.Name = store.Name;
                 saveStoreRequest.Categories = store.Categories;
             }

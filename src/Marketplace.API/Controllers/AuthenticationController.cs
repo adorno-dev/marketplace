@@ -39,7 +39,7 @@ namespace Marketplace.API.Controllers
                 if (result.Succeeded)
                 {
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-                    claims.Add(new Claim(ClaimTypes.Email, user.Email));
+                    claims.Add(new Claim(ClaimTypes.Email, user.Email ?? ""));
 
                     result = await userManager.AddClaimsAsync(user, claims);
 

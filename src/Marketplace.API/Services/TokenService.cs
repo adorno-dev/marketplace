@@ -84,11 +84,11 @@ namespace Marketplace.API.Services
 
         public string GetUserIdFromRequest(HttpContext context)
         {
-            var token = context.Request.Headers.Authorization.First().Split(" ")[1];
+            var token = context.Request.Headers.Authorization.First()?.Split(" ")[1] ?? "";
 
             var claims = GetClaimsPrincipalFromExpiredToken(token);
 
-            return claims.FindFirstValue(ClaimTypes.NameIdentifier);
+            return claims.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
         }
 
         public void GenerateToken(User user, out string token) => token = GenerateToken(user).Result;

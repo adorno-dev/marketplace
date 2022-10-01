@@ -84,10 +84,12 @@ namespace Marketplace.API.Repositories
             ", new { userId, pageIndex = favorites.PageIndex, pageSize = favorites.PageSize });
 
             favorites.SetCount(items.Read<int>().Single());
+
+
             favorites.Items = items.Read<Favorite, Product, Favorite>((favorite, product) => {
                 favorite.Product = product;
                 return favorite;
-            });
+            }).ToList();
 
             return favorites;
         }

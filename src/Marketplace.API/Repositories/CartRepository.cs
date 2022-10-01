@@ -62,41 +62,55 @@ namespace Marketplace.API.Repositories
             return false;
         }
 
+        public async Task<Cart?> GetCartPaginated(Guid userId, int skip, int take, bool includeParent = false)
+        {
+            var cart = new Cart();
+
+            cart.PageIndex = skip <= 0 ? 1 : skip;
+            cart.PageSize = take;
+
+            var items = await context.Database.GetDbConnection().QueryMultipleAsync(@$"
+                SELECT COUNT(c.Id) TotalItems FROM Carts c INNER JOIN CartItems ci ON ci.CartId = c.Id WHERE c.UserId = @userId  
+                SELECT
+                    c.Id,
+                    c.UserId,
+                    ci.Id,
+                    ci.ProductId,
+                    ci.Quantity,
+                    p.Id,
+                    p.Name,
+                    p.Price
+                FROM Carts c
+                INNER JOIN CartItems ci ON ci.CartId = c.Id
+                INNER JOIN Products p ON ci.ProductId = p.Id
+                WHERE c.UserId = @userId
+                ORDER BY ci.Id
+                OFFSET (@pageIndex - 1) * @pageSize ROWS
+                FETCH NEXT @pageSize ROWS ONLY
+            ", new { userId, pageIndex = cart.PageIndex, pageSize = cart.PageSize });
+
+            cart.SetCount(items.Read<int>().Single());
+
+            items.Read<Cart, CartItem, Product, Cart>((parent, item, product) => {
+
+                if (cart.Items == null) {
+                    cart.Items = new List<CartItem>();
+                    cart.Id = parent.Id;
+                    cart.UserId = parent.UserId;
+                }
+
+                item.Product = product;
+                cart.Items.Add(item);
+
+                return parent;                
+            }, splitOn: "Id,Id");
+
+            return cart;
+
+        }
+
         public async Task<Cart?> GetCart(Guid userId)
         {
-            //return await context.Carts
-            //    .Include("Items")
-            //    .Include("Items.Product")
-            //    .AsNoTracking()
-            //    .OrderBy(o => o.Id)
-            //    .FirstOrDefaultAsync(c => c.UserId.Equals(userId));
-
-            // return await context.Carts
-            //     .Include("Items")
-            //     .Include("Items.Product")
-            //     .Select(s => new Cart
-            //     {
-            //         Id = s.Id,
-            //         UserId = s.UserId,
-            //         Items = s.Items != null ?
-            //             new List<CartItem>(s.Items.Select(si => 
-            //                 new CartItem 
-            //                 {
-            //                     Id = si.Id,
-            //                     ProductId = si.ProductId,
-            //                     Quantity = si.Quantity,
-            //                     Product = si.Product != null ?
-            //                         new Product 
-            //                         { 
-            //                             Id = si.Product.Id, 
-            //                             Price = si.Product.Price, 
-            //                             Name = si.Product.Name,
-            //                         } : null
-            //                 })) : null
-            //     })
-            //     .OrderBy(o => o.Id)
-            //     .FirstOrDefaultAsync(c => c.UserId.Equals(userId));
-
             var items = await context.Database.GetDbConnection().QueryMultipleAsync(@$"
                 SELECT
                     c.Id,
@@ -141,6 +155,14 @@ namespace Marketplace.API.Repositories
                 .AsNoTracking()
                 .OrderBy(o => o.Id)
                 .FirstOrDefaultAsync(c => c.Id.Equals(cartItemId));
+        }
+
+        public async Task<bool> UpdateCartItems(IEnumerable<CartItem> items)
+        {
+            foreach (var item in items)
+                context.Entry<CartItem>(item).State = EntityState.Modified;
+
+            return await context.SaveChangesAsync() > 0;
         }
     }
 }
