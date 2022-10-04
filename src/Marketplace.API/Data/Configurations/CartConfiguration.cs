@@ -18,6 +18,18 @@ namespace Marketplace.API.Data.Configurations
               .HasForeignKey<Cart>(c => c.UserId);
 
             mb.Entity<Cart>()
+              .Ignore(c => c.PageCount);
+            
+            mb.Entity<Cart>()
+              .Ignore(c => c.PageIndex);
+
+            mb.Entity<Cart>()
+              .Ignore(c => c.PageSize);
+
+            mb.Entity<Cart>()
+              .Ignore(c => c.TotalItems);
+
+            mb.Entity<Cart>()
               .HasMany(c => c.Items);
 
             return mb;
