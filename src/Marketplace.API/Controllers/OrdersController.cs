@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Marketplace.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         
     }

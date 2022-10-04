@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Marketplace.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/favorites")]
     [ApiController]
     public class FavoritesController : ControllerBase
     {

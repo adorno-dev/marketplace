@@ -22,7 +22,7 @@ namespace Marketplace.API.Services
             {
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenSettings.GetSecret()),
                 SecurityAlgorithms.HmacSha256Signature),
-                Expires = DateTime.UtcNow.AddHours(8),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 Subject = claimsIdentity
             };
 

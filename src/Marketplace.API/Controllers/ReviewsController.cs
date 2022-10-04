@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/reviews")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
