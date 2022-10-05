@@ -27,6 +27,7 @@ namespace Marketplace.API.Controllers
             return Ok(categories);
         }
 
+        [AllowAnonymous]
         [HttpGet("pages/{skip:int?}/{take:int?}")]
         public async Task<ActionResult<IPagination<FavoriteResponse>>> GetStores(int skip = 1, int take = 12)
         {
@@ -38,6 +39,7 @@ namespace Marketplace.API.Controllers
             return Ok(stores);
         } 
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<StoreResponse?>> GetStore(Guid id)
         {
@@ -49,10 +51,10 @@ namespace Marketplace.API.Controllers
             return Ok(category);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<StoreResponse?>> GetStoreByUserId(Guid userId)
+        [HttpGet("user")]
+        public async Task<ActionResult<StoreResponse?>> GetStoreByUserId()
         {
-            var category = await service.GetStoreByUserId(userId);
+            var category = await service.GetStoreByUserId(UserId);
 
             if (category is null)
                 return NotFound();
