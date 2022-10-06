@@ -45,7 +45,15 @@ namespace Marketplace.API.Services
         {
             var store = await repository.GetStoreByUserId(userId);
 
-            return mapper.Map<StoreResponse?>(store);
+            var response = mapper.Map<StoreResponse?>(store);
+
+            if (response is not null)
+            {
+                response.Logo = GetLogo(userId);
+                response.Banner = GetBanner(userId);
+            }
+            
+            return response;
         }
 
         public async Task<Guid?> GetStoreIdByUserId(Guid userId)
@@ -70,6 +78,29 @@ namespace Marketplace.API.Services
         public async Task<bool> DeleteStore(Guid id)
         {
             return await repository.DeleteStore(id);
+        }
+
+        public string? GetLogo(Guid id) => $"https://localhost:5000/uploads/stores/{id}/logo.jpg";
+
+        public string? GetBanner(Guid id) => $"https://localhost:5000/uploads/stores/{id}/banner.jpg";
+
+        public async Task<bool> SaveStoreImages(Guid id, IFormFile? logo, IFormFile? banner)
+        {
+            string directory = $"wwwroot/uploads/stores/{id}";
+
+            if (logo == null || banner == null)
+                return false;
+            
+            if (! Directory.Exists(directory))
+                  Directory.CreateDirectory(directory);
+            
+            using (var fs = new FileStream($"{directory}/{logo.FileName}", FileMode.Create))
+                await logo.CopyToAsync(fs);
+            
+            using (var fs = new FileStream($"{directory}/{banner.FileName}", FileMode.Create))
+                await banner.CopyToAsync(fs);
+            
+            return true;
         }
     }
 }

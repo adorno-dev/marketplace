@@ -7,6 +7,8 @@ namespace Marketplace.API.Contracts.Responses
         public string? Url { get; set; }
         public string? Profile { get; set; }
         public string? Politics { get; set; }
+        public string? Logo { get; set; }
+        public string? Banner { get; set; }
         public UserResponse? User { get; set; }
     }
 }

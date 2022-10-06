@@ -22,9 +22,9 @@ namespace Marketplace.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StoreResponse>>> GetStores()
         {
-            var categories = await service.GetStores();
+            var stores = await service.GetStores();
 
-            return Ok(categories);
+            return Ok(stores);
         }
 
         [AllowAnonymous]
@@ -43,23 +43,23 @@ namespace Marketplace.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StoreResponse?>> GetStore(Guid id)
         {
-            var category = await service.GetStore(id);
+            var store = await service.GetStore(id);
 
-            if (category is null)
+            if (store is null)
                 return NotFound();
             
-            return Ok(category);
+            return Ok(store);
         }
 
         [HttpGet("user")]
         public async Task<ActionResult<StoreResponse?>> GetStoreByUserId()
         {
-            var category = await service.GetStoreByUserId(UserId);
+            var store = await service.GetStoreByUserId(UserId);
 
-            if (category is null)
+            if (store is null)
                 return NotFound();
             
-            return Ok(category);
+            return Ok(store);
         }
 
         [HttpPost]
@@ -69,6 +69,12 @@ namespace Marketplace.API.Controllers
             {
                 request.UserId = UserId;
                 
+                // request.Banner == 700x100 (1MB) (jpg, png or gif)
+                // request.Logo == 45x45 (jpg, png or gif)
+                // use userId instead of storeId to garantee that same user can't have many stores (same image folder)
+                if (! await service.SaveStoreImages(request.UserId, request.Logo, request.Banner))
+                    return BadRequest();
+
                 return await service.CreateStore(request) ?
                     Ok():
                     BadRequest();

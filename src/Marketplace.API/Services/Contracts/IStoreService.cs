@@ -14,5 +14,7 @@ namespace Marketplace.API.Services.Contracts
         Task<bool> CreateStore(CreateStoreRequest request);
         Task<bool> UpdateStore(UpdateStoreRequest request);
         Task<bool> DeleteStore(Guid id);
+
+        Task<bool> SaveStoreImages(Guid id, IFormFile? logo, IFormFile? banner);
     }
 }
