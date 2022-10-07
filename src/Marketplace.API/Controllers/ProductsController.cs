@@ -74,6 +74,8 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
+                Guid? productId = null;
+
                 var storeId = await storeService.GetStoreIdByUserId(UserId);
 
                 if (storeId is null || storeId.Equals(Guid.Empty))
@@ -81,12 +83,15 @@ namespace Marketplace.API.Controllers
                 
                 request.StoreId = storeId.Value;
 
-                if (request.Screenshoots != null)
-                    await productService.SaveProductScreenshoots(request.Id, request.Screenshoots);
+                productId = await productService.CreateProduct(request);
+                
+                if (productId is null)
+                    return BadRequest();
 
-                return await productService.CreateProduct(request) ?
-                    Ok():
-                    BadRequest();
+                if (productId is not null && request.Screenshoots != null)
+                    await productService.SaveProductScreenshoots(productId.Value, request.Screenshoots);
+                
+                return Ok();
             }
 
             return BadRequest(ModelState.Values);

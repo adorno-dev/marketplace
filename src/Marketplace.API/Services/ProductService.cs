@@ -42,7 +42,7 @@ namespace Marketplace.API.Services
             return mapper.Map<ProductResponse>(product);
         }
 
-        public async Task<bool> CreateProduct(CreateProductRequest request)
+        public async Task<Guid?> CreateProduct(CreateProductRequest request)
         {
             var product = mapper.Map<Product>(request);
 

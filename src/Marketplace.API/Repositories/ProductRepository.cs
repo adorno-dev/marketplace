@@ -80,11 +80,12 @@ namespace Marketplace.API.Repositories
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
         }
 
-        public async Task<bool> CreateProduct(Product product)
+        public async Task<Guid?> CreateProduct(Product product)
         {
             context.Products.Add(product);
 
-            return await context.SaveChangesAsync() > 0;
+            return await context.SaveChangesAsync() > 0 ?
+                product.Id : null;
         }
 
         public async Task<bool> UpdateProduct(Product product)
