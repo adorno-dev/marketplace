@@ -11,7 +11,10 @@ namespace Marketplace.API.Data.Configurations
               .HasKey(c => c.Id)
               .Metadata
               .IsPrimaryKey();
-            
+
+            mb.Entity<Store>()
+              .Property(p => p.Joined);
+
             mb.Entity<Store>()
               .Property(c => c.Name)
               .HasMaxLength(255)
@@ -33,6 +36,11 @@ namespace Marketplace.API.Data.Configurations
               .HasOne(u => u.User)
               .WithOne(s => s.Store)
               .HasForeignKey<Store>(u => u.UserId);
+
+            mb.Entity<Store>()
+              .HasMany(s => s.Products)
+              .WithOne(p => p.Store)
+              .OnDelete(DeleteBehavior.Cascade);
 
             return mb;
         }

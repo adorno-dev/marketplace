@@ -3,6 +3,7 @@ namespace Marketplace.API.Contracts.Responses
     public sealed class StoreResponse
     {
         public Guid Id { get; set; }
+        public DateTime Joined { get; set; }
         public string? Name { get; set; }
         public string? Url { get; set; }
         public string? Profile { get; set; }
@@ -10,5 +11,7 @@ namespace Marketplace.API.Contracts.Responses
         public string? Logo { get; set; }
         public string? Banner { get; set; }
         public UserResponse? User { get; set; }
+
+        public IList<ProductResponse>? Products { get; set; }
     }
 }

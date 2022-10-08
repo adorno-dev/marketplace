@@ -11,7 +11,7 @@ namespace Marketplace.API.Services.Contracts
         Task<StoreResponse?> GetStore(Guid id);
         Task<StoreResponse?> GetStoreByUserId(Guid userId);
         Task<Guid?> GetStoreIdByUserId(Guid userId);
-        Task<bool> CreateStore(CreateStoreRequest request);
+        Task<Guid?> CreateStore(CreateStoreRequest request);
         Task<bool> UpdateStore(UpdateStoreRequest request);
         Task<bool> DeleteStore(Guid id);
 

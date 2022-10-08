@@ -38,7 +38,15 @@ namespace Marketplace.API.Services
         {
             var store = await repository.GetStore(id);
 
-            return mapper.Map<StoreResponse?>(store);
+            var response = mapper.Map<StoreResponse?>(store);
+
+            if (store is not null && response is not null)
+            {
+                response.Logo = GetLogo(store.Id);
+                response.Banner = GetBanner(store.Id);
+            }
+            
+            return response;
         }
 
         public async Task<StoreResponse?> GetStoreByUserId(Guid userId)
@@ -47,10 +55,10 @@ namespace Marketplace.API.Services
 
             var response = mapper.Map<StoreResponse?>(store);
 
-            if (response is not null)
+            if (store is not null && response is not null)
             {
-                response.Logo = GetLogo(userId);
-                response.Banner = GetBanner(userId);
+                response.Logo = GetLogo(store.Id);
+                response.Banner = GetBanner(store.Id);
             }
             
             return response;
@@ -61,9 +69,11 @@ namespace Marketplace.API.Services
             return await repository.GetStoreIdByUserId(userId);
         }
 
-        public async Task<bool> CreateStore(CreateStoreRequest request)
+        public async Task<Guid?> CreateStore(CreateStoreRequest request)
         {
             var store = mapper.Map<Store>(request);
+
+            store.Joined = DateTime.UtcNow;
             
             return await repository.CreateStore(store);
         }

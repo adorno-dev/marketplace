@@ -5,6 +5,7 @@ namespace Marketplace.API.Contracts.Responses
         public Guid Id { get; set; }        
         public Guid? CartId { get; set; }
         public Guid ProductId { get; set; }
+        public Guid StoreId { get; set; }
 
         public string? Description { get; set; }
         public ushort Quantity { get; set; }

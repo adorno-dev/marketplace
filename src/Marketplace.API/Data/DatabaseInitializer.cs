@@ -61,7 +61,7 @@ namespace Marketplace.API.Data
 
             if (store is null)
             {
-              store = new Store { UserId = user.Id, Name = "A4U Weapons" };
+              store = new Store { UserId = user.Id, Name = "A4U Weapons", Joined = DateTime.UtcNow };
               context.Stores.Add(store);
               context.SaveChanges();
             }

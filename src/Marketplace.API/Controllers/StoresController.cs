@@ -67,17 +67,22 @@ namespace Marketplace.API.Controllers
         {
             if (ModelState.IsValid)                
             {
+                Guid? storeId = null;
+
                 request.UserId = UserId;
+
+                storeId = await service.CreateStore(request);
+
+                if (storeId is null)
+                    return BadRequest();
                 
                 // request.Banner == 700x100 (1MB) (jpg, png or gif)
                 // request.Logo == 45x45 (jpg, png or gif)
-                // use userId instead of storeId to garantee that same user can't have many stores (same image folder)
-                if (! await service.SaveStoreImages(request.UserId, request.Logo, request.Banner))
+
+                if (! await service.SaveStoreImages(storeId.Value, request.Logo, request.Banner))
                     return BadRequest();
 
-                return await service.CreateStore(request) ?
-                    Ok():
-                    BadRequest();
+                return Ok();
             }
 
             return BadRequest(ModelState.Values);

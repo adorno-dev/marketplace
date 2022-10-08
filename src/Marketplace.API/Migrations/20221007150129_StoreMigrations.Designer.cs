@@ -4,6 +4,7 @@ using Marketplace.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221007150129_StoreMigrations")]
+    partial class StoreMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,7 +296,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 10, 7, 15, 59, 32, 238, DateTimeKind.Utc).AddTicks(5429));
+                        .HasDefaultValue(new DateTime(2022, 10, 7, 15, 1, 29, 43, DateTimeKind.Utc).AddTicks(2443));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -322,9 +324,6 @@ namespace Marketplace.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Joined")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()

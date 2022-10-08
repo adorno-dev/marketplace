@@ -78,6 +78,7 @@ namespace Marketplace.API.Repositories
                     ci.ProductId,
                     ci.Quantity,
                     p.Id,
+                    p.StoreId,
                     p.Name,
                     p.Price
                 FROM Carts c
@@ -99,6 +100,7 @@ namespace Marketplace.API.Repositories
                     cart.UserId = parent.UserId;
                 }
 
+                item.StoreId = product.StoreId ?? Guid.Empty;
                 item.Product = product;
                 cart.Items.Add(item);
 
@@ -119,6 +121,7 @@ namespace Marketplace.API.Repositories
                     ci.ProductId,
                     ci.Quantity,
                     p.Id,
+                    p.StoreId,
                     p.Name,
                     p.Price
                 FROM Carts c
@@ -137,6 +140,7 @@ namespace Marketplace.API.Repositories
                     cart.Items = new List<CartItem>();
                 }
 
+                item.StoreId = product.StoreId ?? Guid.Empty;
                 item.Product = product;
                 cart.Items?.Add(item);
 
