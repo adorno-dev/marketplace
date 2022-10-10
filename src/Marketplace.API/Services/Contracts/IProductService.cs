@@ -13,8 +13,8 @@ namespace Marketplace.API.Services.Contracts
         Task<bool> UpdateProduct(UpdateProductRequest request);
         Task<bool> DeleteProduct(Guid id);
 
-        Task<string[]?> GetScreenshoots(Guid id);
-        Task<string?> GetScreenshot(Guid id);
+        // Task<string[]?> GetScreenshoots(Guid id);
+        // Task<string?> GetScreenshot(Guid id);
 
         Task SaveProductScreenshoots(Guid id, IFormFileCollection files);
     }

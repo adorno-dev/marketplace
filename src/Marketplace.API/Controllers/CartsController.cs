@@ -33,7 +33,7 @@ namespace Marketplace.API.Controllers
                 return BadRequest();
 
             foreach (var item in cart.Items)
-                item.Screenshoot = await productService.GetScreenshot(item.ProductId);
+                item.Screenshoot = item.GetScreenshoot();
 
             return Ok(cart);
         }
@@ -47,7 +47,7 @@ namespace Marketplace.API.Controllers
                 return Ok(new CartResponse { Id = Guid.NewGuid(), UserId = UserId, Items = Array.Empty<CartItemResponse>() });
 
             foreach (var item in cart.Items)
-                item.Screenshoot = await productService.GetScreenshot(item.ProductId);
+                item.Screenshoot = item.GetScreenshoot();
 
             return Ok(cart);
         }
@@ -61,7 +61,7 @@ namespace Marketplace.API.Controllers
                 return Ok(new CartResponse { Id = Guid.NewGuid(), UserId = UserId, Items = Array.Empty<CartItemResponse>() });
 
             foreach (var item in cart.Items)
-                item.Screenshoot = await productService.GetScreenshot(item.ProductId);
+                item.Screenshoot = item.GetScreenshoot();;
 
             return Ok(cart);
         }

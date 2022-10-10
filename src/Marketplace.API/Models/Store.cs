@@ -13,6 +13,10 @@ namespace Marketplace.API.Models
         public Guid? UserId { get; set; }
         public User? User { get; set; }
 
-        public ICollection<Product>? Products { get; set; }
+        public IList<Product>? Products { get; set; }
+
+        public string? GetLogo() => $"https://localhost:5000/uploads/stores/{Id}/logo.jpg";
+
+        public string? GetBanner() => $"https://localhost:5000/uploads/stores/{Id}/banner.jpg";
     }
 }

@@ -16,5 +16,36 @@ namespace Marketplace.API.Models
         public Store? Store { get; set; }
         public Category? Category { get; set; }
         public ICollection<Review>? Reviews { get; set; }
+
+
+        public string[]? GetScreenshoots()
+        {
+            string[]? screenshoots = null;
+
+            try
+            {
+                screenshoots = Directory.GetFiles($"wwwroot/uploads/products/{Id}")
+                                        .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+                                        .ToArray();
+            }
+            catch (IOException) {}
+
+            return screenshoots;
+        }
+
+        public string? GetScreenshoot()
+        {
+            string? screenshoot = null;
+
+            try
+            {
+                screenshoot = Directory.GetFiles($"wwwroot/uploads/products/{Id}")
+                                       .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+                                       .FirstOrDefault();
+            }
+            catch (IOException) {}
+
+            return screenshoot;
+        }
     }
 }

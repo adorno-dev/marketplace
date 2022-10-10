@@ -62,39 +62,39 @@ namespace Marketplace.API.Services
         }
 
 
-        public async Task<string[]?> GetScreenshoots(Guid id)
-        {
-            string[]? screenshoots = null;
+        // public async Task<string[]?> GetScreenshoots(Guid id)
+        // {
+        //     string[]? screenshoots = null;
 
-            try
-            {
-                screenshoots = Directory.GetFiles($"wwwroot/uploads/products/{id}")
-                                        .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
-                                        .ToArray();
-            }
-            catch (IOException) {}
+        //     try
+        //     {
+        //         screenshoots = Directory.GetFiles($"wwwroot/uploads/products/{id}")
+        //                                 .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+        //                                 .ToArray();
+        //     }
+        //     catch (IOException) {}
                                                 
-            await Task.CompletedTask;
+        //     await Task.CompletedTask;
 
-            return screenshoots;
-        }
+        //     return screenshoots;
+        // }
 
-        public async Task<string?> GetScreenshot(Guid id)
-        {
-            string? screenshoot = null;
+        // public async Task<string?> GetScreenshot(Guid id)
+        // {
+        //     string? screenshoot = null;
 
-            try
-            {
-                screenshoot = Directory.GetFiles($"wwwroot/uploads/products/{id}")
-                                       .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
-                                       .FirstOrDefault();
-            }
-            catch (IOException) {}
+        //     try
+        //     {
+        //         screenshoot = Directory.GetFiles($"wwwroot/uploads/products/{id}")
+        //                                .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
+        //                                .FirstOrDefault();
+        //     }
+        //     catch (IOException) {}
 
-            await Task.CompletedTask;
+        //     await Task.CompletedTask;
 
-            return screenshoot;
-        }
+        //     return screenshoot;
+        // }
 
         public async Task SaveProductScreenshoots(Guid id, IFormFileCollection files)
         {

@@ -48,7 +48,7 @@ namespace Marketplace.API.Controllers
                 return NotFound();
             
             foreach (var item in products.Items)
-                item.Screenshoot = await productService.GetScreenshot(item.Id);
+                item.Screenshoot = item.GetScreenshoot();
             
             return Ok(products);
         }
@@ -64,7 +64,7 @@ namespace Marketplace.API.Controllers
             if (product is null)
                 return NotFound();
             
-            product.Screenshoots = await productService.GetScreenshoots(id);
+            product.Screenshoots = product.GetScreenshoots();
 
             return Ok(product);
         }

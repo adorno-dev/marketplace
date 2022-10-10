@@ -1,3 +1,4 @@
+using Dapper;
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
@@ -52,12 +53,75 @@ namespace Marketplace.API.Repositories
 
         public async Task<Store?> GetStore(Guid id)
         {
-            return await context.Stores.Include("User").Include(x => x.Products).AsNoTracking().FirstOrDefaultAsync(s => s.Id.Equals(id));
+            var result = await context.Database
+                .GetDbConnection()
+                .QueryMultipleAsync(@"
+                    SELECT
+                        s.Id,
+                        s.Name,
+                        s.Url,
+                        s.Profile,
+                        s.Politics,
+                        s.Joined,
+                        s.UserId,
+                        u.UserName
+                    FROM Stores s
+                    INNER JOIN AspNetUsers u ON u.Id = s.UserId
+                    WHERE s.Id = @storeId
+
+                    SELECT
+                        p.Id,
+                        p.Name,
+                        p.Price,
+                        p.CategoryId,
+                        c.Name CategoryName
+                    FROM Products p
+                    INNER JOIN Categories c ON c.Id = p.CategoryId
+                    WHERE p.StoreId = @storeId
+                ", new { storeId = id });
+            
+            // var store = result.Read<Store>().Single();
+
+            var store = result.Read<Store, User, Store>((store, user) =>
+            {
+                store.User = user;
+                return store;
+            }, splitOn: "Id,UserId").Single();
+
+            store.Products = result.Read<Product>().ToList();
+
+            // store.Products = result.Read<Product, Category, Product>((product, category) => {
+
+            //     product.Category = category;
+
+            //     return product;
+
+            // }, splitOn: "Id,Id,CategoryId").ToList();
+
+            return store;
+
+            // return await context.Stores
+            //     .Include("User")
+            //     .Select(s => new Store {
+            //         Id = s.Id,
+            //         Joined = s.Joined,
+            //         Name = s.Name,
+            //         Politics = s.Politics,
+            //         Profile = s.Profile,
+            //         Url = s.Url,
+            //         UserId = s.UserId,
+            //     })
+            //     .AsNoTracking()
+            //     .FirstOrDefaultAsync(s => s.Id.Equals(id));
         }
 
         public async Task<Store?> GetStoreByUserId(Guid userId)
         {
-            return await context.Stores.AsNoTracking().Include("User").FirstOrDefaultAsync(s => s.UserId.Equals(userId));
+            return await context.Stores
+                .Include("User")
+                .Include("Products")
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.UserId.Equals(userId));
         }
 
         public async Task<Guid?> GetStoreIdByUserId(Guid userId)

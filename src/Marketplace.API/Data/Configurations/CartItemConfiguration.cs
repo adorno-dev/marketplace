@@ -22,6 +22,9 @@ namespace Marketplace.API.Data.Configurations
             //   .IsRequired();
 
             mb.Entity<CartItem>()
+              .Ignore(c => c.StoreId);
+
+            mb.Entity<CartItem>()
               .Ignore(c => c.Description);
             
             mb.Entity<CartItem>()

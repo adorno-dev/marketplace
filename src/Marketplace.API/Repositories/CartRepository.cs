@@ -156,6 +156,7 @@ namespace Marketplace.API.Repositories
             return await context.CartItems
                 .Include("Cart")
                 .Include("Cart.User")
+                .Include("Product")
                 .AsNoTracking()
                 .OrderBy(o => o.Id)
                 .FirstOrDefaultAsync(c => c.Id.Equals(cartItemId));

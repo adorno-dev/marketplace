@@ -42,8 +42,8 @@ namespace Marketplace.API.Services
 
             if (store is not null && response is not null)
             {
-                response.Logo = GetLogo(store.Id);
-                response.Banner = GetBanner(store.Id);
+                response.Logo = store.GetLogo();
+                response.Banner = store.GetBanner();
             }
             
             return response;
@@ -57,8 +57,8 @@ namespace Marketplace.API.Services
 
             if (store is not null && response is not null)
             {
-                response.Logo = GetLogo(store.Id);
-                response.Banner = GetBanner(store.Id);
+                response.Logo = store.GetLogo();
+                response.Banner = store.GetBanner();
             }
             
             return response;
@@ -89,10 +89,6 @@ namespace Marketplace.API.Services
         {
             return await repository.DeleteStore(id);
         }
-
-        public string? GetLogo(Guid id) => $"https://localhost:5000/uploads/stores/{id}/logo.jpg";
-
-        public string? GetBanner(Guid id) => $"https://localhost:5000/uploads/stores/{id}/banner.jpg";
 
         public async Task<bool> SaveStoreImages(Guid id, IFormFile? logo, IFormFile? banner)
         {

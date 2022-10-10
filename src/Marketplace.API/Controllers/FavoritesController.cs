@@ -43,7 +43,7 @@ namespace Marketplace.API.Controllers
                 return NotFound();
             
             foreach (var item in favorites.Items)
-                item.Screenshoot = await productService.GetScreenshot(item.Id);
+                item.Screenshoot = item.GetScreenshoot();
 
             return Ok(favorites);
         }
