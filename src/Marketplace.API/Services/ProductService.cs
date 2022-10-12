@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using AutoMapper;
 using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
@@ -60,41 +59,6 @@ namespace Marketplace.API.Services
         {
             return await repository.DeleteProduct(id);
         }
-
-
-        // public async Task<string[]?> GetScreenshoots(Guid id)
-        // {
-        //     string[]? screenshoots = null;
-
-        //     try
-        //     {
-        //         screenshoots = Directory.GetFiles($"wwwroot/uploads/products/{id}")
-        //                                 .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
-        //                                 .ToArray();
-        //     }
-        //     catch (IOException) {}
-                                                
-        //     await Task.CompletedTask;
-
-        //     return screenshoots;
-        // }
-
-        // public async Task<string?> GetScreenshot(Guid id)
-        // {
-        //     string? screenshoot = null;
-
-        //     try
-        //     {
-        //         screenshoot = Directory.GetFiles($"wwwroot/uploads/products/{id}")
-        //                                .Select(s => s.Replace("wwwroot", "https://localhost:5000"))
-        //                                .FirstOrDefault();
-        //     }
-        //     catch (IOException) {}
-
-        //     await Task.CompletedTask;
-
-        //     return screenshoot;
-        // }
 
         public async Task SaveProductScreenshoots(Guid id, IFormFileCollection files)
         {

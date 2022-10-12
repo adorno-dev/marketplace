@@ -90,29 +90,7 @@ namespace Marketplace.API.Repositories
 
             store.Products = result.Read<Product>().ToList();
 
-            // store.Products = result.Read<Product, Category, Product>((product, category) => {
-
-            //     product.Category = category;
-
-            //     return product;
-
-            // }, splitOn: "Id,Id,CategoryId").ToList();
-
             return store;
-
-            // return await context.Stores
-            //     .Include("User")
-            //     .Select(s => new Store {
-            //         Id = s.Id,
-            //         Joined = s.Joined,
-            //         Name = s.Name,
-            //         Politics = s.Politics,
-            //         Profile = s.Profile,
-            //         Url = s.Url,
-            //         UserId = s.UserId,
-            //     })
-            //     .AsNoTracking()
-            //     .FirstOrDefaultAsync(s => s.Id.Equals(id));
         }
 
         public async Task<Store?> GetStoreByUserId(Guid userId)
