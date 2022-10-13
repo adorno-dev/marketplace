@@ -1,0 +1,1 @@
+> Marketplace.Web is obsolete, use [marketplace-ui](https://github.com/adorno-dev/marketplace-ui) instead.
