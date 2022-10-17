@@ -13,6 +13,7 @@ namespace Marketplace.API.Services
     {
         private readonly IMapper mapper;
         private readonly IStoreRepository repository;
+        private string storeImageFiles = "";
 
         public StoreService(IMapper mapper, IStoreRepository repository)
         {
@@ -87,23 +88,30 @@ namespace Marketplace.API.Services
 
         public async Task<bool> DeleteStore(Guid id)
         {
-            return await repository.DeleteStore(id);
+            var result = await repository.DeleteStore(id);
+
+            storeImageFiles = $"wwwroot/uploads/stores/{id}";
+
+            if (result && Directory.Exists(storeImageFiles))
+                Directory.Delete(storeImageFiles, true);
+
+            return result;
         }
 
         public async Task<bool> SaveStoreImages(Guid id, IFormFile? logo, IFormFile? banner)
         {
-            string directory = $"wwwroot/uploads/stores/{id}";
+            storeImageFiles = $"wwwroot/uploads/stores/{id}";
 
             if (logo == null || banner == null)
                 return false;
             
-            if (! Directory.Exists(directory))
-                  Directory.CreateDirectory(directory);
+            if (! Directory.Exists(storeImageFiles))
+                  Directory.CreateDirectory(storeImageFiles);
             
-            using (var fs = new FileStream($"{directory}/{logo.FileName}", FileMode.Create))
+            using (var fs = new FileStream($"{storeImageFiles}/{logo.FileName}", FileMode.Create))
                 await logo.CopyToAsync(fs);
             
-            using (var fs = new FileStream($"{directory}/{banner.FileName}", FileMode.Create))
+            using (var fs = new FileStream($"{storeImageFiles}/{banner.FileName}", FileMode.Create))
                 await banner.CopyToAsync(fs);
             
             return true;

@@ -79,8 +79,6 @@ namespace Marketplace.API.Repositories
                     INNER JOIN Categories c ON c.Id = p.CategoryId
                     WHERE p.StoreId = @storeId
                 ", new { storeId = id });
-            
-            // var store = result.Read<Store>().Single();
 
             var store = result.Read<Store, User, Store>((store, user) =>
             {

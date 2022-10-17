@@ -17,8 +17,6 @@ namespace Marketplace.API.Repositories
         {
             return includeParent ?
                 await context.Categories
-                    // .Include(c => c.Parent)
-                    // .Include("Parent.Parent")
                     .AsNoTracking()
                     .OrderBy(o => o.Id)
                     .ToListAsync():
@@ -39,7 +37,6 @@ namespace Marketplace.API.Repositories
             categories.Items = includeParent ? 
                 await context.Categories
                     .Include(c => c.Parent)
-                    // .Include("Parent.Parent")
                     .AsNoTracking()
                     .OrderBy(o => o.Id)
                     .Skip((categories.PageIndex - 1) * categories.PageSize)
