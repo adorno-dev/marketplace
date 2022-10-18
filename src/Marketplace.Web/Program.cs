@@ -48,10 +48,6 @@ builder.Services
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
-
-
-// builder.Services.AddAuthorization();
-
 builder.Services.ConfigureApplicationCookie(o =>
 {
     o.Cookie.Name = "MarketplaceCookie";
@@ -66,34 +62,11 @@ builder.Services.ConfigureApplicationCookie(o =>
 
 
 
-
-// builder.Services.AddAuthentication(options =>
-// {
-//     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//     options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
-// })
-// .AddJwtBearer(options =>
-// {
-//     var settings = tokenSettings.Get<TokenSettings>();
-//     options.RequireHttpsMetadata = false;
-//     options.SaveToken = true;
-//     options.TokenValidationParameters = new TokenValidationParameters
-//     {
-//         IssuerSigningKey = new SymmetricSecurityKey(settings.GetSecret()),
-//         ValidateIssuerSigningKey = true,
-//         ValidateIssuer = false,
-//         ValidateAudience = false
-//     };
-// });
-
 builder.Services.AddScoped<ITokenService>(options =>
 {
     var scope = options.CreateScope();
     return (ITokenService) new TokenService(
         scope.ServiceProvider.GetRequiredService<IOptions<TokenSettings>>());
-        // scope.ServiceProvider.GetRequiredService<UserManager<User>>());
 });
 
 builder.Services.AddScoped<LocalStorage>();
