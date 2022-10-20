@@ -46,7 +46,7 @@ namespace Marketplace.API.Services
             if (cart is not null && cart.Items is not null)
                 foreach (var item in cart.Items)
                 {
-                    item.Price = item.Product?.Price * item.Quantity;
+                    item.Price = item.Product?.Price;
                     item.Description = item.Product?.Name;
                 }
 
@@ -60,7 +60,7 @@ namespace Marketplace.API.Services
             if (cart is not null && cart.Items is not null)
                 foreach (var item in cart.Items)
                 {
-                    item.Price = item.Product?.Price * item.Quantity;
+                    item.Price = item.Product?.Price;
                     item.Description = item.Product?.Name;
                 }
 
