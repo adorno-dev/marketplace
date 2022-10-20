@@ -51,8 +51,11 @@ namespace Marketplace.API.Repositories
             return stores;
         }
 
-        public async Task<Store?> GetStore(Guid id)
+        public async Task<Store?> GetStore(Guid id, int skip, int take)
         {
+            int pageIndex = skip <= 0 ? 1 : skip;
+            int pageSize = take;
+
             var result = await context.Database
                 .GetDbConnection()
                 .QueryMultipleAsync(@"
@@ -69,6 +72,8 @@ namespace Marketplace.API.Repositories
                     INNER JOIN AspNetUsers u ON u.Id = s.UserId
                     WHERE s.Id = @storeId
 
+                    SELECT COUNT(Id) TotalItems FROM Products WHERE StoreId = @storeId
+
                     SELECT
                         p.Id,
                         p.Name,
@@ -78,7 +83,10 @@ namespace Marketplace.API.Repositories
                     FROM Products p
                     INNER JOIN Categories c ON c.Id = p.CategoryId
                     WHERE p.StoreId = @storeId
-                ", new { storeId = id });
+                    ORDER BY p.Id
+                    OFFSET (@pageIndex - 1) * @pageSize ROWS
+                    FETCH NEXT @pageSize ROWS ONLY
+                ", new { storeId = id, pageIndex, pageSize });
 
             var store = result.Read<Store, User, Store>((store, user) =>
             {
@@ -86,7 +94,10 @@ namespace Marketplace.API.Repositories
                 return store;
             }, splitOn: "Id,UserId").Single();
 
-            store.Products = result.Read<Product>().ToList();
+            store.PageIndex = pageIndex;
+            store.PageSize = pageSize;
+            store.SetCount(result.ReadSingle<int>());
+            store.Items = result.Read<Product>().ToList();
 
             return store;
         }
@@ -95,7 +106,7 @@ namespace Marketplace.API.Repositories
         {
             return await context.Stores
                 .Include("User")
-                .Include("Products")
+                .Include("Items")
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.UserId.Equals(userId));
         }

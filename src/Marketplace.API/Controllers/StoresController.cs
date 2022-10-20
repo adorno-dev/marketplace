@@ -41,9 +41,10 @@ namespace Marketplace.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<StoreResponse?>> GetStore(Guid id)
+        [HttpGet("{id}/pages/{skip:int?}/{take:int?}")]
+        public async Task<ActionResult<StorePaginatedResponse?>> GetStore(Guid id, int skip = 1, int take = 12)
         {
-            var store = await service.GetStore(id);
+            var store = await service.GetStore(id, skip, take);
 
             if (store is null)
                 return NotFound();

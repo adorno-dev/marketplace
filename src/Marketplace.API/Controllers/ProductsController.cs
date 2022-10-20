@@ -38,7 +38,7 @@ namespace Marketplace.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("pages/{skip:int?}/{take:int?}")]
-        public async Task<ActionResult<IPagination<ProductResponse>>> GetProductsPaginated(int skip = 1, int take = 10)
+        public async Task<ActionResult<IPagination<ProductResponse>>> GetProductsPaginated(int skip = 1, int take = 20)
         {
             Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId);
 

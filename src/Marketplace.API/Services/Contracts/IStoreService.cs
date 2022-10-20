@@ -8,7 +8,7 @@ namespace Marketplace.API.Services.Contracts
     {
         Task<IEnumerable<StoreResponse>?> GetStores();
         Task<IPagination<StoreResponse>?> GetStoresPaginated(int skip, int take);
-        Task<StoreResponse?> GetStore(Guid id);
+        Task<StorePaginatedResponse?> GetStore(Guid id, int skip, int take);
         Task<StoreResponse?> GetStoreByUserId(Guid userId);
         Task<Guid?> GetStoreIdByUserId(Guid userId);
         Task<Guid?> CreateStore(CreateStoreRequest request);

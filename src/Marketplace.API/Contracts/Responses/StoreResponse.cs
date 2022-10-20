@@ -1,6 +1,6 @@
 namespace Marketplace.API.Contracts.Responses
 {
-    public sealed class StoreResponse
+    public class StoreResponse
     {
         public Guid Id { get; set; }
         public DateTime Joined { get; set; }
@@ -12,6 +12,14 @@ namespace Marketplace.API.Contracts.Responses
         public string? Banner { get; set; }
         public UserResponse? User { get; set; }
 
-        public IList<ProductResponse>? Products { get; set; }
+        public IList<ProductResponse>? Items { get; set; }
+    }
+
+    public sealed class StorePaginatedResponse : StoreResponse
+    {
+        public int TotalItems { get; set; }
+        public int PageSize { get; set; }
+        public int PageCount { get; set; }
+        public int PageIndex { get; set; }
     }
 }

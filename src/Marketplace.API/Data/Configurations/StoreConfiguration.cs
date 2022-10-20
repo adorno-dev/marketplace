@@ -37,8 +37,22 @@ namespace Marketplace.API.Data.Configurations
               .WithOne(s => s.Store)
               .HasForeignKey<Store>(u => u.UserId);
 
+
             mb.Entity<Store>()
-              .HasMany(s => s.Products)
+              .Ignore(c => c.PageCount);
+            
+            mb.Entity<Store>()
+              .Ignore(c => c.PageIndex);
+
+            mb.Entity<Store>()
+              .Ignore(c => c.PageSize);
+
+            mb.Entity<Store>()
+              .Ignore(c => c.TotalItems);
+
+
+            mb.Entity<Store>()
+              .HasMany(s => s.Items)
               .WithOne(p => p.Store)
               .OnDelete(DeleteBehavior.Cascade);
 

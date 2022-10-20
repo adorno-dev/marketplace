@@ -11,10 +11,13 @@ namespace Marketplace.API.Contracts.Mappings
         public StoreMappingProfile()
         {
             CreateMap<StoreResponse, User>().ReverseMap();
+            CreateMap<StorePaginatedResponse, User>().ReverseMap();
             CreateMap<StoreResponse, Store>().ReverseMap();
+            CreateMap<StorePaginatedResponse, Store>().ReverseMap();
             CreateMap<CreateStoreRequest, Store>().ReverseMap();
             CreateMap<UpdateStoreRequest, Store>().ReverseMap();
             CreateMap(typeof(Pagination<StoreResponse>), typeof(Pagination<Store>)).ReverseMap();
+            CreateMap(typeof(Pagination<StorePaginatedResponse>), typeof(Pagination<Store>)).ReverseMap();
         }
     }
 }

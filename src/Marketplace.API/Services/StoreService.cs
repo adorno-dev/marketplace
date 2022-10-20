@@ -35,11 +35,11 @@ namespace Marketplace.API.Services
             return mapper.Map<Pagination<StoreResponse>?>(stores);
         }
 
-        public async Task<StoreResponse?> GetStore(Guid id)
+        public async Task<StorePaginatedResponse?> GetStore(Guid id, int skip, int take)
         {
-            var store = await repository.GetStore(id);
+            var store = await repository.GetStore(id, skip, take);
 
-            var response = mapper.Map<StoreResponse?>(store);
+            var response = mapper.Map<StorePaginatedResponse?>(store);
 
             if (store is not null && response is not null)
             {
