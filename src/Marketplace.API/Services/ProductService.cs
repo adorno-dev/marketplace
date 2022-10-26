@@ -34,6 +34,13 @@ namespace Marketplace.API.Services
             return mapper.Map<Pagination<ProductResponse>?>(products);
         }
 
+        public async Task<IPagination<ProductResponse>?> GetStoreProductsPaginated(Guid userId, Guid storeId, int skip, int take, bool includeParent = false)
+        {
+            var products = await repository.GetStoreProductsPaginated(userId, storeId, skip, take, includeParent);
+
+            return mapper.Map<Pagination<ProductResponse>?>(products);
+        }
+
         public async Task<ProductResponse?> GetProduct(Guid userId, Guid id)
         {
             var product = await repository.GetProduct(userId, id);

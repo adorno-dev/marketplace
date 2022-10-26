@@ -53,6 +53,22 @@ namespace Marketplace.API.Controllers
             return Ok(products);
         }
 
+        [HttpGet("store/{storeId}/pages/{skip:int?}/{take:int?}")]
+        public async Task<ActionResult<IPagination<ProductResponse>>> GetStoreProductsPaginated(Guid storeId, int skip = 1, int take = 20)
+        {
+            Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid userId);
+
+            var products = await productService.GetStoreProductsPaginated(userId, storeId, skip, take, includeParent: true);
+
+            if (products?.Items is null)
+                return NotFound();
+            
+            foreach (var item in products.Items)
+                item.Screenshoot = item.GetScreenshoot();
+            
+            return Ok(products);
+        }
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponse?>> GetProduct(Guid id)

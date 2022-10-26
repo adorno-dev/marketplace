@@ -106,7 +106,7 @@ namespace Marketplace.API.Repositories
         {
             return await context.Stores
                 .Include("User")
-                .Include("Items")
+                // .Include("Items")
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.UserId.Equals(userId));
         }

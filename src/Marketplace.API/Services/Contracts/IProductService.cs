@@ -8,6 +8,7 @@ namespace Marketplace.API.Services.Contracts
     {
         Task<IEnumerable<ProductResponse>?> GetProducts(Guid userId);
         Task<IPagination<ProductResponse>?> GetProductsPaginated(Guid userId, int skip, int take, bool includeParent = false);
+        Task<IPagination<ProductResponse>?> GetStoreProductsPaginated(Guid userId, Guid storeId, int skip, int take, bool includeParent = false);
         Task<ProductResponse?> GetProduct(Guid userId, Guid id);
         Task<Guid?> CreateProduct(CreateProductRequest request);
         Task<bool> UpdateProduct(UpdateProductRequest request);

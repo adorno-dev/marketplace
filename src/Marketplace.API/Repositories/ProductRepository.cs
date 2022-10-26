@@ -56,6 +56,44 @@ namespace Marketplace.API.Repositories
             return products.Items.Any() ? products : null;
         }
 
+        public async Task<IPagination<Product>?> GetStoreProductsPaginated(Guid userId, Guid storeId, int skip, int take, bool includeParent = false)
+        {
+            var products = new Pagination<Product>();
+
+            products.PageIndex = skip <= 0 ? 1 : skip;
+            products.PageSize = take;
+            products.SetCount(await context.Products.Where(p => p.StoreId.Equals(storeId)).AsNoTracking().Select(p => p.Id).CountAsync());
+
+            products.Items = await context.Products
+                .Include(c => c.Category)
+                .Include(s => s.Store)
+                .AsNoTracking()
+                .OrderBy(o => o.Name)
+                .Select(s => new Product {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Price = s.Price,
+                    Stock = s.Stock,
+                    Favorite = context.Favorites.Any(w => w.ProductId.Equals(s.Id) && w.UserId.Equals(userId)),
+                    Category = s.Category,
+                    StoreId = s.StoreId,
+                    Store = s.Store != null ? new () 
+                    { 
+                        Id = s.Store.Id, 
+                        Name = s.Store.Name,
+                        Joined = s.Store.Joined
+                    } : null,
+                    
+                })
+                .Where(w => w.StoreId.Equals(storeId))
+                .Skip((products.PageIndex - 1) * products.PageSize)
+                .Take(products.PageSize)
+                .ToListAsync();
+
+            return products.Items.Any() ? products : null;
+        }
+
         public async Task<Product?> GetProduct(Guid userId, Guid id)
         {
             return await context.Products

@@ -1,5 +1,10 @@
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Marketplace.API.Data;
 using Marketplace.API.Data.Contracts;
 using Marketplace.API.Data.Extensions;
@@ -9,11 +14,6 @@ using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.Services;
 using Marketplace.API.Services.Contracts;
 using Marketplace.API.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
