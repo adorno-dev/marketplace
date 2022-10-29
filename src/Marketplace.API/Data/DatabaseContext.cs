@@ -16,13 +16,17 @@ namespace Marketplace.API.Data
 
         public DbSet<Product> Products => Set<Product>();
 
+        public DbSet<Favorite> Favorites => Set<Favorite>();
+
         public DbSet<Review> Reviews => Set<Review>();
 
         public DbSet<Cart> Carts => Set<Cart>();
 
         public DbSet<CartItem> CartItems => Set<CartItem>();
 
-        public DbSet<Favorite> Favorites => Set<Favorite>();
+        public DbSet<Order> Orders => Set<Order>();
+
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
@@ -34,10 +38,12 @@ namespace Marketplace.API.Data
 
             mb.ConfigureProduct();
             mb.ConfigureUser();
+            mb.ConfigureFavorite();
             mb.ConfigureReview();
             mb.ConfigureCart();
             mb.ConfigureCartItem();
-            mb.ConfigureFavorite();
+            mb.ConfigureOrder();
+            mb.ConfigureOrderItem();
 
             base.OnModelCreating(mb);
         }

@@ -11,23 +11,23 @@ namespace Marketplace.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly ICartService cartService;
+        private readonly IOrderService orderService;
 
         private Guid userId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
 
-        public OrdersController(ICartService cartService)
+        public OrdersController(ICartService cartService, IOrderService orderService)
         {
             this.cartService = cartService;
+            this.orderService = orderService;
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> PlaceOrder()
         {
-            var cart = await cartService.GetCart(userId);
-
-            
-
-            return BadRequest();
+            return await orderService.PlaceOrder(userId) ?
+                Ok():
+                BadRequest();
         }
     }
 }

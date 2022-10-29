@@ -247,6 +247,60 @@ namespace Marketplace.API.Migrations
                     b.ToTable("Favorites", (string)null);
                 });
 
+            modelBuilder.Entity("Marketplace.API.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Marketplace.API.Models.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Price")
+                        .IsRequired()
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -294,7 +348,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 10, 7, 15, 59, 32, 238, DateTimeKind.Utc).AddTicks(5429));
+                        .HasDefaultValue(new DateTime(2022, 10, 28, 14, 53, 13, 768, DateTimeKind.Utc).AddTicks(6732));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -608,6 +662,34 @@ namespace Marketplace.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Marketplace.API.Models.Order", b =>
+                {
+                    b.HasOne("Marketplace.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Marketplace.API.Models.OrderItem", b =>
+                {
+                    b.HasOne("Marketplace.API.Models.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Marketplace.API.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
                     b.HasOne("Marketplace.API.Models.Category", "Category")
@@ -615,7 +697,7 @@ namespace Marketplace.API.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("Marketplace.API.Models.Store", "Store")
-                        .WithMany("Products")
+                        .WithMany("Items")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -713,6 +795,11 @@ namespace Marketplace.API.Migrations
                     b.Navigation("Categories");
                 });
 
+            modelBuilder.Entity("Marketplace.API.Models.Order", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("Marketplace.API.Models.Product", b =>
                 {
                     b.Navigation("Reviews");
@@ -720,7 +807,7 @@ namespace Marketplace.API.Migrations
 
             modelBuilder.Entity("Marketplace.API.Models.Store", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Marketplace.API.Models.User", b =>
