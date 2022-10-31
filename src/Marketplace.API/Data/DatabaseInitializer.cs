@@ -44,6 +44,7 @@ namespace Marketplace.API.Data
                     var claims = new List<Claim>();
 
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.UserName));
                     claims.Add(new Claim(ClaimTypes.Email, user.Email));
 
                     result = userManager.AddClaimsAsync(user, claims).Result;
@@ -61,7 +62,13 @@ namespace Marketplace.API.Data
 
             if (store is null)
             {
-              store = new Store { UserId = user.Id, Name = "A4U Weapons", Joined = DateTime.UtcNow };
+              store = new Store 
+              {
+                Id = Guid.Parse("d8248594-84c9-48ca-c7fa-08daa87e0632"), 
+                UserId = user.Id, 
+                Name = "A4U Weapons", 
+                Joined = DateTime.UtcNow
+              };
               context.Stores.Add(store);
               context.SaveChanges();
             }

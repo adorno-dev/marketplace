@@ -4,6 +4,7 @@ using Marketplace.API.Contracts.Requests;
 using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Models;
 using Marketplace.API.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,7 @@ namespace Marketplace.API.Controllers
                 if (result.Succeeded)
                 {
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                    claims.Add(new Claim(ClaimTypes.Name, user.UserName ?? ""));
                     claims.Add(new Claim(ClaimTypes.Email, user.Email ?? ""));
 
                     result = await userManager.AddClaimsAsync(user, claims);
@@ -64,9 +66,18 @@ namespace Marketplace.API.Controllers
                 {
                     tokenService.GenerateToken(user, out string token);
 
+                    var credentials = new AuthenticationResponse 
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Token = token
+                    };
+
                     return string.IsNullOrEmpty(token) ?
                         BadRequest():
-                        Ok(mapper.Map<AuthenticationResponse>(token));
+                        Ok(credentials);
+                        // Ok(mapper.Map<AuthenticationResponse>(token));
                 }
             }
 
@@ -89,6 +100,23 @@ namespace Marketplace.API.Controllers
             }
 
             return BadRequest();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("whoami")]
+        public async Task<IActionResult> WhoAmI()
+        {
+            tokenService.GetUserInfo(HttpContext, out string userId, out string userName, out string email);
+
+            await Task.CompletedTask;
+
+            return Ok(new UserResponse
+            {
+                Id = Guid.Parse(userId),
+                Username = userName,
+                Email = email
+            });
         }
     }
 }

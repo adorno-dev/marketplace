@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221028145314_Initial")]
+    [Migration("20221031123816_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -350,7 +350,7 @@ namespace Marketplace.API.Migrations
                     b.Property<DateTime>("Posted")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 10, 28, 14, 53, 13, 768, DateTimeKind.Utc).AddTicks(6732));
+                        .HasDefaultValue(new DateTime(2022, 10, 31, 12, 38, 16, 162, DateTimeKind.Utc).AddTicks(7671));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");

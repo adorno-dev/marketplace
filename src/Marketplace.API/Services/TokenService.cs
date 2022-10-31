@@ -82,13 +82,26 @@ namespace Marketplace.API.Services
             return claimsPrincipal;
         }
 
+        public string GetToken(HttpContext context) => context.Request.Headers.Authorization.First()?.Split(" ")[1] ?? "";
+
         public string GetUserIdFromRequest(HttpContext context)
         {
-            var token = context.Request.Headers.Authorization.First()?.Split(" ")[1] ?? "";
+            var token = GetToken(context);
 
             var claims = GetClaimsPrincipalFromExpiredToken(token);
 
             return claims.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        }
+
+        public void GetUserInfo(HttpContext context, out string userId, out string userName, out string email)
+        {
+            var token = GetToken(context);
+
+            var claims = GetClaimsPrincipalFromExpiredToken(token);
+
+            userId = claims.FindFirstValue(ClaimTypes.NameIdentifier); 
+            userName = claims.FindFirstValue(ClaimTypes.Name);
+            email = claims.FindFirstValue(ClaimTypes.Email);
         }
 
         public void GenerateToken(User user, out string token) => token = GenerateToken(user).Result;
