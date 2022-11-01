@@ -14,6 +14,8 @@ using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.Services;
 using Marketplace.API.Services.Contracts;
 using Marketplace.API.Settings;
+using Marketplace.API.UnitOfWorks.Contracts;
+using Marketplace.API.UnitOfWorks;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
@@ -105,6 +107,8 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers().AddJsonOptions(options => {

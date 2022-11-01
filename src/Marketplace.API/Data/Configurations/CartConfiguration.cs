@@ -30,7 +30,9 @@ namespace Marketplace.API.Data.Configurations
               .Ignore(c => c.TotalItems);
 
             mb.Entity<Cart>()
-              .HasMany(c => c.Items);
+              .HasMany(c => c.Items)
+              .WithOne(c => c.Cart)
+              .OnDelete(DeleteBehavior.Cascade);
 
             return mb;
         }

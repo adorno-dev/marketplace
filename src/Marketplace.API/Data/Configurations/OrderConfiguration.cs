@@ -20,7 +20,9 @@ namespace Marketplace.API.Data.Configurations
               .IsRequired();
             
             mb.Entity<Order>()
-              .HasMany(o => o.Items);
+              .HasMany(o => o.Items)
+              .WithOne(o => o.Order)
+              .OnDelete(DeleteBehavior.Cascade);
 
             return mb;
         }

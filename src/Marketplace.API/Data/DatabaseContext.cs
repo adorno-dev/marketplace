@@ -37,7 +37,10 @@ namespace Marketplace.API.Data
               .WithDataStores();
 
             mb.ConfigureProduct();
+
             mb.ConfigureUser();
+            // new UserConfiguration().Configure(mb.Entity<User>());
+
             mb.ConfigureFavorite();
             mb.ConfigureReview();
             mb.ConfigureCart();

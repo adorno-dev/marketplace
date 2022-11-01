@@ -12,12 +12,20 @@ namespace Marketplace.API.Repositories
 
         public async Task<bool> PlaceOrder(Order order)
         {
-            int rowsAffected;
+            int rowsAffected = 0;
+
+            try
+            {
+                await context.Database.BeginTransactionAsync();
+                context.Add(order);
+                rowsAffected =  await context.SaveChangesAsync();                
+                await context.Database.CommitTransactionAsync();
+            }
+            catch
+            {
+                await context.Database.RollbackTransactionAsync();
+            }
             
-            await context.Database.BeginTransactionAsync();
-            context.Add(order);
-            await context.Database.CommitTransactionAsync();
-            rowsAffected =  await context.SaveChangesAsync();
             
             return rowsAffected > 0;
         }

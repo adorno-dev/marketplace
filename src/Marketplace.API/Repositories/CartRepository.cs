@@ -42,6 +42,13 @@ namespace Marketplace.API.Repositories
             return false;
         }
 
+        public async Task<bool> DeleteCart(Cart cart)
+        {
+            context.Carts.Remove(cart);
+
+            return await context.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> DeleteCartItem(Guid userId, CartItem item)
         {
             var cartItem = await context.CartItems
@@ -141,6 +148,7 @@ namespace Marketplace.API.Repositories
                 }
 
                 item.StoreId = product.StoreId ?? Guid.Empty;
+                item.Price = product.Price;
                 item.Product = product;
                 cart.Items?.Add(item);
 
