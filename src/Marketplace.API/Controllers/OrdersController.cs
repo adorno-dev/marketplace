@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +13,29 @@ namespace Marketplace.API.Controllers
     {
         private readonly ICartService cartService;
         private readonly IOrderService orderService;
+        private readonly IStoreService storeService;
 
         private Guid userId { get => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? ""); }
 
-        public OrdersController(ICartService cartService, IOrderService orderService)
+        public OrdersController(ICartService cartService, IOrderService orderService, IStoreService storeService)
         {
             this.cartService = cartService;
             this.orderService = orderService;
+            this.storeService = storeService;
         }
 
-        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> GetOrders()
+        {
+            var storeId = await storeService.GetStoreIdByUserId(userId);
+
+            if (storeId is null)
+                return BadRequest("You don't have a store.");
+
+            return Ok(await orderService.GetOrders(storeId.Value));
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> PlaceOrder()
         {

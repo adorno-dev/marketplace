@@ -1,3 +1,4 @@
+using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories;
@@ -31,6 +32,11 @@ namespace Marketplace.API.UnitOfWorks
             await context.Database.RollbackTransactionAsync();
         }
 
+        public async Task<IList<OrderItem>> GetOrders(Guid storeId)
+        {
+            return await orderRepository.GetOrders(storeId);
+        }
+
         public async Task<bool> PlaceOrder(Guid userId)
         {
             var cart = await cartRepository.GetCart(userId);
@@ -41,6 +47,7 @@ namespace Marketplace.API.UnitOfWorks
 
                 var success = false;
 
+                order.CartId = cart.Id;
                 order.Items = cart.Items.Select(s => new OrderItem
                 {
                     OrderId = order.Id,

@@ -1,6 +1,7 @@
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Repositories
 {
@@ -9,6 +10,16 @@ namespace Marketplace.API.Repositories
         private readonly DatabaseContext context;
 
         public OrderRepository(DatabaseContext context) => this.context = context;
+
+        public async Task<IList<OrderItem>> GetOrders(Guid storeId)
+        {
+            return await context.OrderItems
+                    .Include("Order")
+                    .Include("Product")
+                    .Where(oi => oi.StoreId.Equals(storeId))
+                    .AsNoTracking()
+                    .ToListAsync();
+        }
 
         public async Task<bool> PlaceOrder(Order order)
         {
