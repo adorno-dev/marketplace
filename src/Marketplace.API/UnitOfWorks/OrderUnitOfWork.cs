@@ -1,10 +1,8 @@
-using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Data;
 using Marketplace.API.Models;
 using Marketplace.API.Repositories;
 using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.UnitOfWorks.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.UnitOfWorks
 {
@@ -37,42 +35,48 @@ namespace Marketplace.API.UnitOfWorks
             return await orderRepository.GetOrders(storeId);
         }
 
-        public async Task<bool> PlaceOrder(Guid userId)
+        public async Task<Guid?> PlaceOrder(Guid userId)
         {
             var cart = await cartRepository.GetCart(userId);
 
             if (cart is not null && cart.Items?.Count > 0)
             {
-                var order = new Order(userId);
-
-                var success = false;
-
-                order.CartId = cart.Id;
-                order.Items = cart.Items.Select(s => new OrderItem
+                try
                 {
-                    OrderId = order.Id,
-                    ProductId = s.ProductId,
-                    StoreId = s.StoreId,
-                    Quantity = s.Quantity,
-                    Price = s.Price
+                    var order = new Order(userId);
 
-                }).ToList();
+                    var success = false;
 
-                await context.Database.BeginTransactionAsync();
-                context.Orders.Add(order);
-                context.Carts.Remove(cart);
+                    order.CartId = cart.Id;
+                    order.Items = cart.Items.Select(s => new OrderItem
+                    {
+                        OrderId = order.Id,
+                        ProductId = s.ProductId,
+                        StoreId = s.StoreId,
+                        Quantity = s.Quantity,
+                        Price = s.Price
 
-                success = await context.SaveChangesAsync() > 0;
+                    }).ToList();
 
-                if (success)
+                    await context.Database.BeginTransactionAsync();
+                    context.Orders.Add(order);
+                    context.Carts.Remove(cart);
+
+                    success = await context.SaveChangesAsync() > 0;
+
                     await Commit();
-                else
+
+                    return order.Id;
+                }
+                catch (System.Exception)
+                {
                     await Rollback();
 
-                return success;
+                    return null;
+                }
             }
 
-            return false;
+            return null;
         }
     }
 }

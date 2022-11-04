@@ -5,6 +5,6 @@ namespace Marketplace.API.Services.Contracts
     public interface IOrderService
     {
         Task<IList<OrderItemResponse?>> GetOrders(Guid storeId);
-        Task<bool> PlaceOrder(Guid userId);        
+        Task<Guid?> PlaceOrder(Guid userId);        
     }
 }

@@ -26,7 +26,7 @@ namespace Marketplace.API.Services
             return mapper.Map<IList<OrderItemResponse?>>(orderItems);
         }
 
-        public Task<bool> PlaceOrder(Guid userId)
+        public Task<Guid?> PlaceOrder(Guid userId)
         {
             return orderUnitOfWork.PlaceOrder(userId);
         }

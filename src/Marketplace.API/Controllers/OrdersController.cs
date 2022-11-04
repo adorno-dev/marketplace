@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Marketplace.API.Contracts.Responses;
 using Marketplace.API.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +38,10 @@ namespace Marketplace.API.Controllers
         [HttpPost]
         public async Task<ActionResult> PlaceOrder()
         {
-            return await orderService.PlaceOrder(userId) ?
-                Ok():
+            var orderId = await orderService.PlaceOrder(userId);
+
+            return orderId is not null ?
+                Ok(orderId) :
                 BadRequest();
         }
     }

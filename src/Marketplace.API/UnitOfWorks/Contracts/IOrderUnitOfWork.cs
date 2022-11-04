@@ -7,6 +7,6 @@ namespace Marketplace.API.UnitOfWorks.Contracts
         Task Commit();
         Task Rollback();
         Task<IList<OrderItem>> GetOrders(Guid storeId);
-        Task<bool> PlaceOrder(Guid userId);
+        Task<Guid?> PlaceOrder(Guid userId);
     }
 }
