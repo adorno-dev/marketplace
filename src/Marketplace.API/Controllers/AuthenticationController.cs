@@ -107,9 +107,12 @@ namespace Marketplace.API.Controllers
         [Route("whoami")]
         public async Task<IActionResult> WhoAmI()
         {
-            tokenService.GetUserInfo(HttpContext, out string userId, out string userName, out string email);
+            tokenService.GetUserInfo(HttpContext, out string? userId, out string? userName, out string? email);
 
             await Task.CompletedTask;
+
+            if (userId is null)
+                return BadRequest("Unknown User ID");
 
             return Ok(new UserResponse
             {

@@ -93,7 +93,7 @@ namespace Marketplace.API.Services
             return claims.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
         }
 
-        public void GetUserInfo(HttpContext context, out string userId, out string userName, out string email)
+        public void GetUserInfo(HttpContext context, out string? userId, out string? userName, out string? email)
         {
             var token = GetToken(context);
 

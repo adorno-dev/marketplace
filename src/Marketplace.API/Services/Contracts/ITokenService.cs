@@ -13,7 +13,7 @@ namespace Marketplace.API.Services.Contracts
         string GetToken(HttpContext context);
         string GetUserIdFromRequest(HttpContext context);
         
-        void GetUserInfo(HttpContext context, out string userId, out string userName, out string email);
+        void GetUserInfo(HttpContext context, out string? userId, out string? userName, out string? email);
         
         void GenerateToken(User user, out string token);
         void GenerateToken(IEnumerable<Claim> claims, out string token);
