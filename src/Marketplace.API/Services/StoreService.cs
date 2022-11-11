@@ -6,6 +6,7 @@ using Marketplace.API.Repositories.Contracts;
 using Marketplace.API.Services.Contracts;
 using Marketplace.API.Utils;
 using Marketplace.API.Utils.Contracts;
+using System.Linq;
 
 namespace Marketplace.API.Services
 {
@@ -14,6 +15,7 @@ namespace Marketplace.API.Services
         private readonly IMapper mapper;
         private readonly IStoreRepository repository;
         private string storeImageFiles = "";
+        private string storeProductFiles = "";
 
         public StoreService(IMapper mapper, IStoreRepository repository)
         {
@@ -90,12 +92,30 @@ namespace Marketplace.API.Services
         {
             var result = await repository.DeleteStore(id);
 
-            storeImageFiles = $"wwwroot/uploads/stores/{id}";
+            // TODO: Separate this file management on delete store
 
-            if (result && Directory.Exists(storeImageFiles))
-                Directory.Delete(storeImageFiles, true);
+            storeImageFiles = $"wwwroot/uploads/stores/{id}";            
 
-            return result;
+            // if (result is not null && Directory.Exists(storeImageFiles))
+            //     Directory.Delete(storeImageFiles, true);
+
+            if (result is not null)
+            {
+                if (Directory.Exists(storeImageFiles))
+                    Directory.Delete(storeImageFiles, true);
+                
+                if (result.Items != null)
+                    foreach (var item in result.Items)
+                    {
+                        storeProductFiles = $"wwwroot/uploads/products/{item.Id}";
+
+                        if (Directory.Exists(storeProductFiles))
+                            Directory.Delete($"{storeProductFiles}", true);
+                    }
+            }
+
+
+            return result is not null;
         }
 
         public async Task<bool> SaveStoreImages(Guid id, IFormFile? logo, IFormFile? banner)

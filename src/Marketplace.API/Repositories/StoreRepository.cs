@@ -131,18 +131,20 @@ namespace Marketplace.API.Repositories
             return await context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteStore(Guid id)
+        public async Task<Store?> DeleteStore(Guid id)
         {
-            var store = await context.Stores.FindAsync(id);
+            var store = await context.Stores.Include("Items").FirstOrDefaultAsync(s => s.Id.Equals(id));
 
             if (store is not null)
             {
                 context.Stores.Remove(store);
 
-                return await context.SaveChangesAsync() > 0;
+                await context.SaveChangesAsync();
+
+                return store;
             }
 
-            return false;
+            return null;
         }
     }
 }
